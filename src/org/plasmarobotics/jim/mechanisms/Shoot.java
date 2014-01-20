@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.plasmarobotics.jim.manipulator;
+package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
-import org.plasmarobotics.jim.Controls;
+import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.RobotNameHere;
+import org.plasmarobotics.jim.controls.ControlPack;
 
-import org.plasmarobotics.jim.sensors.ToggleableButton;
+import org.plasmarobotics.jim.controls.ToggleableButton;
 /**
  *Class to manage shooting functionality of the robot
  * @author Jim
@@ -29,21 +30,14 @@ public class Shoot {
             motorToggle;
     
     /**
-     * Sets up a froboShoot object
+     * Sets up a RobotNameHereShoot object
      * @param rightStick Needed to bind the JoystickButton to shoot
-     * @param frobo an instance of the main frobo class
+     * @param RobotNameHere an instance of the main RobotNameHere class
      */
-    public Shoot(Joystick rightStick, RobotNameHere frobo){
+    public Shoot(ControlPack controls){
         
-        this.rightJoystick = frobo.getRightJoystick();
+        this.rightJoystick = controls.getRightJoystick();
 
-        this.shootBtn = new ToggleableButton(rightStick, Constants.SHOOT_TRIGGER_BUTTON);
-
-        
-        this.shootBtn = new ToggleableButton(rightStick, Constants.JOYSTICK_TRIGGER_BUTTON);
-        this.motorToggle = new ToggleableButton(rightStick, Constants.JOYSTICK_MIDDLE_THUMB_BUTTON);
-
-        
         this.shootSolenoid = new DoubleSolenoid(Constants.SHOOT_KICKER_FORWARD_CHANNEL, Constants.SHOOT_KICKER_REVERSE_CHANNEL);
         
         this.frontShootVictor = new Victor(Constants.FRONT_SHOOT_CHANNEL);

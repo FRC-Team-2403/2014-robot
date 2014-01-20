@@ -9,6 +9,7 @@ package org.plasmarobotics.jim;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,14 +19,20 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * directory.
  */
 public class RobotNameHere extends IterativeRobot {
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-
+        
+        
     }
 
+    public void autonomousInit() {
+        
+    }
+    
     /**
      * This function is called periodically during autonomous
      */
@@ -33,11 +40,23 @@ public class RobotNameHere extends IterativeRobot {
 
     }
 
+    public void teleopInit() {
+        
+    }
+
+    
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
         
     }
+
+    public void disabledInit() {
+        
+    }
+    
+    
+    
     
 }

@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.plasmarobotics.jim.manipulator;
+package org.plasmarobotics.jim.mechanisms;
 
 import org.plasmarobotics.jim.Constants;
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import org.plasmarobotics.jim.RobotNameHere;
+import org.plasmarobotics.jim.controls.ControlPack;
+import org.plasmarobotics.jim.sensors.PlasmaEncoder;
+import org.plasmarobotics.jim.sensors.PlasmaGyro;
+import org.plasmarobotics.jim.sensors.SensorPack;
 
 
 /**
@@ -25,10 +25,10 @@ public class Drive {
    
     private RobotDrive chassis;
     
-    private Encoder LeftEncoder,
+    private PlasmaEncoder LeftEncoder,
             RightEncoder;
     
-    private Gyro gyro;
+    private PlasmaGyro gyro;
     
     private boolean resetNeeded;
     
@@ -37,12 +37,12 @@ public class Drive {
      * 
      * @param leftJoystick Left joystick for tank drive
      * @param rightJoystick Right joystick for tank drive
-     * @param frobo Instance of the main class
+     * @param RobotNameHere Instance of the main class
      */
-    public Drive(Joystick leftJoystick, Joystick rightJoystick){
+    public Drive(ControlPack controls, SensorPack sensors){
         //Binds the joysticks...
-        this.leftJoystick = frobo.getLeftJoystick();
-        this.rightJoystick = frobo.getRightJoystick();
+        this.rightJoystick = controls.getRightJoystick();
+        this.leftJoystick = controls.getLeftJoystick();
         
         //Creates a RobotDrive...
         chassis = new RobotDrive(Constants.FRONT_LEFT_DRIVE_CHANNEL, 
@@ -51,21 +51,16 @@ public class Drive {
                 Constants.BACK_RIGHT_DRIVE_CHANNEL);
         
         //setting up encoders
-        LeftEncoder = new Encoder(Constants.LEFT_ENCODER_A_CHANNEL, Constants.LEFT_ENCODER_B_CHANNEL, false, CounterBase.EncodingType.k4X); //normal direciton
-        LeftEncoder.setDistancePerPulse(Constants.ENCODER_DISTANCE_PER_PULSE);
-        LeftEncoder.start();
-        
-        RightEncoder = new Encoder(Constants.RIGHT_ENCODER_A_CHANNEL, Constants.RIGHT_ENCODER_B_CHANNEL, true, CounterBase.EncodingType.k4X); //reverse    
-        RightEncoder.setDistancePerPulse(Constants.ENCODER_DISTANCE_PER_PULSE);
-        RightEncoder.start();
-        
+        this.LeftEncoder = sensors.getLeftEncoder();
+        this.RightEncoder = sensors.getRightEncoder();
+                
         //gyro
-        gyro = new Gyro(Constants.GYRO_CHANNEL);
-        gyro.setSensitivity(Constants.GYRO_SENSITIVITY);
-        gyro.reset();
+        this.gyro = sensors.getGyro();
         
         resetNeeded = true;
     }
+    
+    
     
     /**
      * Meant to be run once before teleop. 
@@ -111,9 +106,9 @@ public class Drive {
             reset();
             resetNeeded = false;
         }
-        double angle = gyro.getAngle();
+        
         if(((LeftEncoder.getDistance() + RightEncoder.getDistance())/2) < distance){
-            chassis.drive(speed, angle * .03);//stay on track with .03 curve
+            chassis.drive(speed, (gyro.getAngle() * .03));//stay on track with .03 curve
             return false;
         } else{
             resetNeeded = true;
@@ -141,18 +136,18 @@ public class Drive {
         if(Math.abs(difference) > 5){
             if(difference > 0){
                 chassis.drive(.3, -1);//turn left
-                System.out.println("Turning left");
+                
                 return false;
             } else {
                 chassis.drive(.3, 1);//turn right
-                System.out.println("Turning right");
+                
                 return false;
             } 
 
         } else {
             chassis.drive(0,0); //stop the robot
             resetNeeded = true;
-            System.out.println("Stoping turn");
+            
             return true;
         }           
 
