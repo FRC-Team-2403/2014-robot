@@ -6,7 +6,7 @@ package org.plasmarobotics.jim.controls;
 
 /**
  *
- * @author Jim
+ * @author Sam
  */
 public class Gamepad {
     

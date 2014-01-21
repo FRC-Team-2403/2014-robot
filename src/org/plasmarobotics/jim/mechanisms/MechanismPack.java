@@ -12,6 +12,8 @@ import org.plasmarobotics.jim.sensors.SensorPack;
  * @author Jim
  */
 public final class MechanismPack {
+    private static MechanismPack pack;
+    
     private SensorPack sensors = new SensorPack();
     private ControlPack controls = new ControlPack();
     
@@ -40,5 +42,11 @@ public final class MechanismPack {
         return pickup;
     }
     
+    public static MechanismPack getInstance(){
+        if(pack == null){
+            pack = new MechanismPack();
+        }
+        return pack;
+    }
     
 }

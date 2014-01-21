@@ -24,6 +24,8 @@ public class Autonomous {
     Drive drive;
     Shoot shooter;
     Pickup pickup;
+    byte setting; //which autonomous?
+    
     
     public Autonomous(MechanismPack mechanisms){
         
@@ -35,8 +37,12 @@ public class Autonomous {
         
     }
     
+    /**
+     * This is the code that runs continously during auto
+     */
     public void run(){
         
     }
+    
     
 }

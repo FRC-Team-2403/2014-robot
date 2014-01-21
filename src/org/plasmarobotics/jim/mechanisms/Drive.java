@@ -120,12 +120,13 @@ public class Drive {
             
     }
     
+    
     public boolean turn(float degrees){
         if(resetNeeded){
             reset();
             resetNeeded = false;
         }
-        degrees = -degrees;
+        degrees = -degrees; //Robot was turning the wrong way
         
         double difference = degrees - gyro.getAngle();
         
@@ -153,9 +154,12 @@ public class Drive {
 
     }
     
+        
     public void reset(){
         LeftEncoder.reset();
         RightEncoder.reset();
         gyro.reset();
     }
+    
+    
 }

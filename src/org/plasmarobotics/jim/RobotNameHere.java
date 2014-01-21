@@ -9,7 +9,11 @@ package org.plasmarobotics.jim;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
+import org.plasmarobotics.jim.controls.ControlPack;
+import org.plasmarobotics.jim.gamemode.Autonomous;
+import org.plasmarobotics.jim.gamemode.Teleop;
+import org.plasmarobotics.jim.mechanisms.MechanismPack;
+import org.plasmarobotics.jim.sensors.SensorPack;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,6 +23,8 @@ import edu.wpi.first.wpilibj.Joystick;
  * directory.
  */
 public class RobotNameHere extends IterativeRobot {
+    private Autonomous auto;
+    private Teleop teleop;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -30,18 +36,20 @@ public class RobotNameHere extends IterativeRobot {
     }
 
     public void autonomousInit() {
-        
+        auto = new Autonomous(MechanismPack.getInstance());
     }
     
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-
+        auto.run();
     }
 
     public void teleopInit() {
-        
+        teleop = new Teleop(ControlPack.getInstance(), 
+                MechanismPack.getInstance(), 
+                SensorPack.getInstance());
     }
 
     
@@ -49,7 +57,7 @@ public class RobotNameHere extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        
+        teleop.run();
     }
 
     public void disabledInit() {

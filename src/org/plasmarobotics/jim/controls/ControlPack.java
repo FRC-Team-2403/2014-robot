@@ -13,6 +13,8 @@ import org.plasmarobotics.jim.Constants;
  * @author Jim
  */
 public final class ControlPack {
+    private static ControlPack controlPack = null;
+    
     //controllers
     private PlasmaJoystick rightJoystick = new PlasmaJoystick(Constants.LEFT_STICK_PORT);
     private PlasmaJoystick leftJoystick = new PlasmaJoystick(Constants.RIGHT_STICK_PORT);
@@ -41,4 +43,10 @@ public final class ControlPack {
         return gamepad;
     }
 
+    public static ControlPack getInstance(){
+        if(controlPack == null){
+            controlPack = new ControlPack();
+        }
+        return controlPack;
+    }
 }

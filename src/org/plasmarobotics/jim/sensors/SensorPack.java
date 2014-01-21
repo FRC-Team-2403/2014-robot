@@ -12,6 +12,8 @@ import org.plasmarobotics.jim.Constants;
  * @author Jim
  */
 public final class SensorPack {
+    private static SensorPack pack = null;
+    
     private PlasmaGyro gyro = new PlasmaGyro(Constants.GYRO_CHANNEL);
     
     private SonicRange rangeFinder = new SonicRange(Constants.RANGE_CHANNEL, 
@@ -66,7 +68,12 @@ public final class SensorPack {
         return rightEncoder;
     }
     
-    
+    public static SensorPack getInstance(){
+        if(pack == null){
+            pack = new SensorPack();
+        }
+        return pack;
+    }
 
     
     
