@@ -41,7 +41,8 @@ public class Aimbot {
         rangeFinder = sensors.getRangeFinder();
         drive = mechanisms.getDrive();
         
+        System.out.println("Aimbot online");
         //unique to the robot, cannot be reset every action in auto
-        gyro = new PlasmaGyro(Constants.GYRO_CHANNEL, Constants.GYRO_SENSITIVITY);
+        //gyro = new PlasmaGyro(Constants.GYRO_CHANNEL, Constants.GYRO_SENSITIVITY);
     }
 }

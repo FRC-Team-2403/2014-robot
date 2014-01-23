@@ -20,6 +20,13 @@ public final class ControlPack {
     private PlasmaJoystick leftJoystick = new PlasmaJoystick(Constants.RIGHT_STICK_PORT);
     private Gamepad gamepad = new Gamepad();
     
+    /**
+     * prevents instantiation
+     */
+    private ControlPack(){
+        
+    }
+    
     //create switches for the Driver Station
 
     /**

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This is an improved and modified version of the JoystickButton class
+ * (also difficult to pronounce)
  * @author Jim
  */
 public class ToggleableButton extends JoystickButton{

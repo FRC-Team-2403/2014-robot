@@ -27,12 +27,18 @@ public final class SensorPack {
                 CounterBase.EncodingType.k4X,
                 Constants.ENCODER_DISTANCE_PER_PULSE); 
     
-    private PlasmaEncoder rightEncoder = new PlasmaEncoder(Constants.LEFT_ENCODER_A_CHANNEL, 
-                Constants.LEFT_ENCODER_B_CHANNEL, 
+    private PlasmaEncoder rightEncoder = new PlasmaEncoder(Constants.RIGHT_ENCODER_A_CHANNEL, 
+                Constants.RIGHT_ENCODER_B_CHANNEL, 
                 true, //reverse direction
                 CounterBase.EncodingType.k4X,
                 Constants.ENCODER_DISTANCE_PER_PULSE); 
 
+    /**
+     * prevents instantiation
+     */
+    private SensorPack(){
+        
+    }
     /**
      * @return the gyro
      */

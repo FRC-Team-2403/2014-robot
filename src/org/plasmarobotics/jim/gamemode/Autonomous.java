@@ -4,17 +4,10 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
-import edu.wpi.first.wpilibj.CounterBase;
-import org.plasmarobotics.jim.Constants;
-import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
 import org.plasmarobotics.jim.mechanisms.Shoot;
-import org.plasmarobotics.jim.sensors.PlasmaEncoder;
-import org.plasmarobotics.jim.sensors.PlasmaGyro;
-import org.plasmarobotics.jim.sensors.SonicRange;
-import org.plasmarobotics.jim.sensors.Vision;
 
 /**
  *
@@ -25,6 +18,7 @@ public class Autonomous {
     Shoot shooter;
     Pickup pickup;
     byte setting; //which autonomous?
+    byte step;
     
     
     public Autonomous(MechanismPack mechanisms){
@@ -33,7 +27,13 @@ public class Autonomous {
         shooter = mechanisms.getShooter();
         pickup = mechanisms.getPickup();
         
+        drive.setupAutonomous();
+        shooter.setupAutonomous();
+        pickup.setupAutonomous();
         
+        step = 0;
+        
+        //get setting 
         
     }
     
@@ -41,7 +41,29 @@ public class Autonomous {
      * This is the code that runs continously during auto
      */
     public void run(){
-        
+        switch(step){
+            case 0:
+                if(drive.drive(.5, 12 * 5))
+                    step++;
+                break;
+                
+            case 1:
+                if(drive.turn(180))
+                    step++;
+                break;
+                
+            case 2:
+                if(drive.drive(.5, 12 * 5))
+                    step++;
+                break;
+                
+            default:
+                drive.drive(0, 0); //stops the robot
+                break;
+                
+                
+        }
+            
     }
     
     

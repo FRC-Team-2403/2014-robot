@@ -18,7 +18,7 @@ import org.plasmarobotics.jim.sensors.SensorPack;
  * @author Jim
  */
 
-public class Drive {
+public class Drive implements Mechanism{
     
     private Joystick leftJoystick,
             rightJoystick;
@@ -33,11 +33,10 @@ public class Drive {
     private boolean resetNeeded;
     
     /**
-     * Used to create a FroboDrive object to control all driving controls
+     * Used to create a FroboDrive object to control all driving operations
      * 
      * @param leftJoystick Left joystick for tank drive
      * @param rightJoystick Right joystick for tank drive
-     * @param RobotNameHere Instance of the main class
      */
     public Drive(ControlPack controls, SensorPack sensors){
         //Binds the joysticks...
@@ -58,6 +57,7 @@ public class Drive {
         this.gyro = sensors.getGyro();
         
         resetNeeded = true;
+        System.out.println("Drive online");
     }
     
     
@@ -85,19 +85,32 @@ public class Drive {
         chassis.setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
         reset();
     }
+  
     /*
-     * Method called in teleop loop to provide tank drive for the robot
+     * called periodically during teleop
      */
     public void updateTeleop(){
         chassis.tankDrive(leftJoystick, rightJoystick);
         
     }
+
+    /**
+     * called periodically during autonomous
+     */
+    public void updateAutonomous() {
+    
+    }
+
+    
+    
+    
     
     
     /**
      * The robot will drive in a straight line for a given distance
      * @param distance Distance (in inches) to drive
      * @param speed Speed of motors (-1 to 1 scale)
+     * @return true when operation is completed
      */
     
 
@@ -108,7 +121,7 @@ public class Drive {
         }
         
         if(((LeftEncoder.getDistance() + RightEncoder.getDistance())/2) < distance){
-            chassis.drive(speed, (gyro.getAngle() * .03));//stay on track with .03 curve
+            chassis.drive(speed, (gyro.getAbsoluteAngle() * .03));//stay on track with .03 curve
             return false;
         } else{
             resetNeeded = true;
@@ -120,6 +133,11 @@ public class Drive {
             
     }
     
+    /**
+     * Turns the robot
+     * @param degrees angle to rotate (degrees, not radians)
+     * @return true when operation is complete
+     */
     
     public boolean turn(float degrees){
         if(resetNeeded){
@@ -128,11 +146,11 @@ public class Drive {
         }
         degrees = -degrees; //Robot was turning the wrong way
         
-        double difference = degrees - gyro.getAngle();
+        double difference = degrees - gyro.getAbsoluteAngle();
         
-        System.out.println("Gyro: " + gyro.getAngle());
+        System.out.println("Gyro: " + gyro.getAbsoluteAngle());
         
-        System.out.println(gyro.getAngle());
+        System.out.println(gyro.getAbsoluteAngle());
         
         if(Math.abs(difference) > 5){
             if(difference > 0){
@@ -154,11 +172,17 @@ public class Drive {
 
     }
     
-        
+    /**
+     * resets the sensors on the robot
+     */
     public void reset(){
         LeftEncoder.reset();
         RightEncoder.reset();
         gyro.reset();
+    }
+
+    public void disable() {
+       
     }
     
     

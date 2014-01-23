@@ -41,6 +41,10 @@ public class Teleop{
         this.drive = mechanisms.getDrive();
         this.shooter = mechanisms.getShooter();
         this.pickup = mechanisms.getPickup();
+        
+        drive.setupTeleop();
+        shooter.setupTeleop();
+        pickup.setupTeleop();
           
         
     }
@@ -49,6 +53,9 @@ public class Teleop{
      * This gets called periodically during teleop
      */
     public void run(){
+        drive.updateTeleop();
+        shooter.updateTeleop();
+        pickup.updateTeleop();
         
     }
     

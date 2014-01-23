@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
  * @author Jim
  */
 public class PlasmaEncoder extends Encoder{
-
+  
     /**
      * Creates an instance of PlasmaEncoder
      * @param aChannel aChannel on the side car
@@ -25,5 +25,7 @@ public class PlasmaEncoder extends Encoder{
         this.setDistancePerPulse(distancePerPulse);
         this.start();
     }
+    
+    
     
 }

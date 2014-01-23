@@ -14,13 +14,19 @@ import org.plasmarobotics.jim.sensors.SensorPack;
 public final class MechanismPack {
     private static MechanismPack pack;
     
-    private SensorPack sensors = new SensorPack();
-    private ControlPack controls = new ControlPack();
+    private SensorPack sensors = SensorPack.getInstance();
+    private ControlPack controls = ControlPack.getInstance();
     
     private Drive drive = new Drive(controls, sensors);
     private Shoot shooter = new Shoot(controls);
     private Pickup pickup = new Pickup(controls, sensors);
 
+    /**
+     * prevents instantiation
+     */
+    private MechanismPack(){
+        
+    }
     /**
      * @return the drive
      */

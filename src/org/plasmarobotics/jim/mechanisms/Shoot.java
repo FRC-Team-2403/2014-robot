@@ -16,7 +16,7 @@ import org.plasmarobotics.jim.controls.ToggleableButton;
  *Class to manage shooting functionality of the robot
  * @author Jim
  */
-public class Shoot {
+public class Shoot implements Mechanism{
     
     private static Victor frontShootVictor,
             backShootVictor;
@@ -44,6 +44,8 @@ public class Shoot {
         this.backShootVictor = new Victor(Constants.BACK_SHOOT_CHANNEL);
         
         motorsSpinning = false;
+        
+        System.out.println("Shooter online");
     }
     
     /**
@@ -77,6 +79,26 @@ public class Shoot {
             backShootVictor.set(0);
         }
     }
+
+    public void disable() {
+        
+    }
+
+    public void setupAutonomous() {
+       
+    }
+
+    public void updateAutonomous() {
+    }
+
+    
+    public void setupTeleop() {
+       
+    }
+
+    public void updateTeleop() {
+    }
+    
     
         
 }
