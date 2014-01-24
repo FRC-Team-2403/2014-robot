@@ -85,7 +85,7 @@ public class Shoot implements Mechanism{
     }
 
     public void setupAutonomous() {
-       
+        System.out.println("Shoot prepared for autonomous");
     }
 
     public void updateAutonomous() {
@@ -93,7 +93,7 @@ public class Shoot implements Mechanism{
 
     
     public void setupTeleop() {
-       
+        System.out.println("Shoot prepared for teleop");
     }
 
     public void updateTeleop() {

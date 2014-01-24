@@ -62,4 +62,14 @@ public class SonicRange {
     public double getDistance(){
         return sensor.getVoltage()/rangeConstant;
     }
+    
+    /**
+     * Just like Zero...
+     * @param target Target distance to achieve
+     * @param tolerance difference from perfect(You will never be AT an EXACT spot)
+     * @return true if you are close to target range
+     */
+    public boolean isClose(double target, double tolerance){
+        return Math.abs(this.getDistance() - target) < tolerance;
+    }
 }

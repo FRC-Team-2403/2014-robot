@@ -42,20 +42,35 @@ public class Teleop{
         this.shooter = mechanisms.getShooter();
         this.pickup = mechanisms.getPickup();
         
-        drive.setupTeleop();
-        shooter.setupTeleop();
-        pickup.setupTeleop();
+        this.aimbot = new Aimbot(sensors, mechanisms);
           
         
     }
     
     /**
+     * used to get the robot ready for teleop
+     */
+    public void teleopInit(){
+        drive.setupTeleop();
+        shooter.setupTeleop();
+        pickup.setupTeleop();
+    }
+    /**
      * This gets called periodically during teleop
      */
     public void run(){
-        drive.updateTeleop();
-        shooter.updateTeleop();
-        pickup.updateTeleop();
+        
+        if(rightJoystick.getTriggerButton().get()){
+            aimbot.aim();
+        } else{
+            System.out.println("Distance: " + SensorPack.getInstance().getRangeFinder().getDistance());
+            drive.updateTeleop();
+            shooter.updateTeleop();
+            pickup.updateTeleop();
+            aimbot.reset();
+        }
+        
+        
         
     }
     

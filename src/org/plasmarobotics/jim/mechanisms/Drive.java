@@ -71,6 +71,7 @@ public class Drive implements Mechanism{
         chassis.setInvertedMotor(RobotDrive.MotorType.kRearLeft,true);
         chassis.setInvertedMotor(RobotDrive.MotorType.kFrontRight,true);
         chassis.setInvertedMotor(RobotDrive.MotorType.kRearRight,true);
+        System.out.println("Drive prepared for teleop");
     }
     
     /**
@@ -84,6 +85,7 @@ public class Drive implements Mechanism{
         chassis.setInvertedMotor(RobotDrive.MotorType.kFrontRight,false);
         chassis.setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
         reset();
+        System.out.println("Drive prepared for autonomous");
     }
   
     /*
@@ -108,15 +110,17 @@ public class Drive implements Mechanism{
     
     /**
      * The robot will drive in a straight line for a given distance
-     * @param distance Distance (in inches) to drive
      * @param speed Speed of motors (-1 to 1 scale)
+     * @param distance Distance (in inches) to drive
      * @return true when operation is completed
      */
     
-
+                
+    //TODO: add dampaning
     public boolean drive(double speed, double distance){
         if(resetNeeded){
-            reset();
+            LeftEncoder.reset();
+            RightEncoder.reset();
             resetNeeded = false;
         }
         
@@ -139,27 +143,28 @@ public class Drive implements Mechanism{
      * @return true when operation is complete
      */
     
-    public boolean turn(float degrees){
+    //TODO: Dampaning
+    public boolean turn(double degrees){
         if(resetNeeded){
-            reset();
+            gyro.reset();
             resetNeeded = false;
         }
         degrees = -degrees; //Robot was turning the wrong way
         
-        double difference = degrees - gyro.getAbsoluteAngle();
+        double difference = degrees + gyro.getAbsoluteAngle();
         
         System.out.println("Gyro: " + gyro.getAbsoluteAngle());
         
-        System.out.println(gyro.getAbsoluteAngle());
+        System.out.println(difference);
         
         if(Math.abs(difference) > 5){
             if(difference > 0){
                 chassis.drive(.3, -1);//turn left
-                
+//                System.out.println("Turning left");
                 return false;
             } else {
                 chassis.drive(.3, 1);//turn right
-                
+//                System.out.println("Turning right");
                 return false;
             } 
 

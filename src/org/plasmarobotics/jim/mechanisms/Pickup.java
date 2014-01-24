@@ -62,18 +62,18 @@ public class Pickup implements Mechanism{
     }
 
     public void setupAutonomous() {
-        
+        System.out.println("Pickup prepared for autonomous");
     }
 
     public void updateAutonomous() {
-    
+        
     }
     
     
     
 
     public void setupTeleop() {
-        
+        System.out.println("Pickup prepared for autonomous");
     }
 
     public void updateTeleop() {

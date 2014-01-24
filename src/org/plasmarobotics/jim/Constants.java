@@ -24,6 +24,13 @@ public final class Constants {
     public static final int FRONT_RIGHT_DRIVE_CHANNEL = 1;
     public static final int BACK_RIGHT_DRIVE_CHANNEL = 2;
     
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    *Shooter
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+    
+    public static final double SHOOT_RANGE = 48;
+    public static final double SHOOT_TOLERANCE  = 6;
     //Shooting ports
     public static final int FRONT_SHOOT_CHANNEL = 5;
     public static final int BACK_SHOOT_CHANNEL = 6;

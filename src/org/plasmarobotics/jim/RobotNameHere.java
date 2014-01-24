@@ -31,12 +31,19 @@ public class RobotNameHere extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        auto = new Autonomous(MechanismPack.getInstance());
         
+        teleop = new Teleop(ControlPack.getInstance(), 
+                MechanismPack.getInstance(), 
+                SensorPack.getInstance());
         
+        SensorPack.getInstance().getGyro().reset();
+        
+        System.out.println("Robot initilization complete.");
     }
 
     public void autonomousInit() {
-        auto = new Autonomous(MechanismPack.getInstance());
+        auto.autoInit();
     }
     
     /**
@@ -47,9 +54,7 @@ public class RobotNameHere extends IterativeRobot {
     }
 
     public void teleopInit() {
-        teleop = new Teleop(ControlPack.getInstance(), 
-                MechanismPack.getInstance(), 
-                SensorPack.getInstance());
+        teleop.teleopInit();
     }
 
     
@@ -61,8 +66,13 @@ public class RobotNameHere extends IterativeRobot {
     }
 
     public void disabledInit() {
+        auto.reset();
+    }
+
+    public void disabledContinuous() {
         
     }
+    
     
     
     

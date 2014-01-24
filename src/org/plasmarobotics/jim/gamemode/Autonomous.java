@@ -37,6 +37,11 @@ public class Autonomous {
         
     }
     
+    public void autoInit(){
+        drive.setupAutonomous();
+        shooter.setupAutonomous();
+        pickup.setupAutonomous();
+    }
     /**
      * This is the code that runs continously during auto
      */
@@ -64,6 +69,10 @@ public class Autonomous {
                 
         }
             
+    }
+    
+    public void reset(){
+        this.step = 0;
     }
     
     

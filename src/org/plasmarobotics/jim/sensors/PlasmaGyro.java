@@ -13,7 +13,7 @@ import org.plasmarobotics.jim.Constants;
  * @author Jim
  */
 public class PlasmaGyro extends Gyro{
-    double zero = 0; //keeps track of where the zero is
+    private double zero = 0; //keeps track of where the zero is
     /**
      * Creates an instance of the PlasmaGyro
      * @param channel AnalogChannel where the gyro is connected
@@ -52,26 +52,25 @@ public class PlasmaGyro extends Gyro{
     
     /**
      * Gets the angle that the robot is facing
-     * @return getAngle % 360
+     * @return getAngle % 360 (0-360)
      */
     public double getAbsoluteAngle(){
-       //make this work
-            return 0;
+       return super.getAngle() % 360;
     }
 
     public void reset() {
-        zero = zero - this.getAbsoluteAngle();
+        zero = this.zero - this.getAbsoluteAngle();
         
         super.reset(); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
-     * @return angle%360
+     * @return the zero
      */
-    public double getAngle() {
-        //make this work
-        return 0;
+    public double getZero() {
+        return zero;
     }
+
 
    
     
