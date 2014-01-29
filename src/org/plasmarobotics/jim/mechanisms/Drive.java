@@ -7,6 +7,7 @@ package org.plasmarobotics.jim.mechanisms;
 import org.plasmarobotics.jim.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.sensors.PlasmaEncoder;
 import org.plasmarobotics.jim.sensors.PlasmaGyro;
@@ -143,37 +144,29 @@ public class Drive implements Mechanism{
      * @return true when operation is complete
      */
     
-    //TODO: Dampaning
+    //TODO: Fix logic
+    
     public boolean turn(double degrees){
         if(resetNeeded){
             gyro.reset();
             resetNeeded = false;
         }
-        degrees = -degrees; //Robot was turning the wrong way
         
-        double difference = degrees + gyro.getAbsoluteAngle();
+        double difference = Math.abs(degrees - gyro.getAbsoluteAngle());
+        double motorOutput = (1/(1+(180/difference)));
         
-        System.out.println("Gyro: " + gyro.getAbsoluteAngle());
-        
-        System.out.println(difference);
-        
-        if(Math.abs(difference) > 5){
-            if(difference > 0){
-                chassis.drive(.3, -1);//turn left
-//                System.out.println("Turning left");
-                return false;
-            } else {
-                chassis.drive(.3, 1);//turn right
-//                System.out.println("Turning right");
-                return false;
-            } 
-
-        } else {
-            chassis.drive(0,0); //stop the robot
-            resetNeeded = true;
-            
+        if(gyro.getAbsoluteAngle() - degrees < 175){
+            chassis.drive(.3, -1);
+            Logger.log("Turning right", this, 3);
+        } else if(gyro.getAbsoluteAngle() - degrees > 185){
+            chassis.drive(.3, 1);
+            Logger.log("Turning left", this, 3);
+        } else{
+            chassis.drive(0, 0);
             return true;
-        }           
+        }
+        
+        return false;
 
     }
     

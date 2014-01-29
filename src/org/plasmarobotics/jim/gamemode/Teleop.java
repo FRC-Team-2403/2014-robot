@@ -5,6 +5,7 @@
 package org.plasmarobotics.jim.gamemode;
 
 import org.plasmarobotics.jim.Aimbot;
+import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.controls.Gamepad;
 import org.plasmarobotics.jim.controls.PlasmaJoystick;
@@ -58,16 +59,31 @@ public class Teleop{
     /**
      * This gets called periodically during teleop
      */
+    boolean aimbotNeedReset = false;
     public void run(){
+        
+        
+        if(leftJoystick.getSix().isPressed())
+            Logger.raisePriority();
+        
+        if(leftJoystick.getSeven().isPressed())
+            Logger.lowerPriority();
         
         if(rightJoystick.getTriggerButton().get()){
             aimbot.aim();
+            aimbotNeedReset = true;
         } else{
-            System.out.println("Distance: " + SensorPack.getInstance().getRangeFinder().getDistance());
+            
+            if(aimbotNeedReset){
+                aimbot.reset();
+                aimbotNeedReset = false;
+            }
+                
+            Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
             drive.updateTeleop();
             shooter.updateTeleop();
             pickup.updateTeleop();
-            aimbot.reset();
+            
         }
         
         

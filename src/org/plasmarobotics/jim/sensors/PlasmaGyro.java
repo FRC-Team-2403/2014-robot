@@ -7,6 +7,7 @@ package org.plasmarobotics.jim.sensors;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
 import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Logger;
 
 /**
  *This class outputs information from they gyro
@@ -14,6 +15,8 @@ import org.plasmarobotics.jim.Constants;
  */
 public class PlasmaGyro extends Gyro{
     private double zero = 0; //keeps track of where the zero is
+    double angle; //current angle of the gyro
+    
     /**
      * Creates an instance of the PlasmaGyro
      * @param channel AnalogChannel where the gyro is connected
@@ -55,11 +58,18 @@ public class PlasmaGyro extends Gyro{
      * @return getAngle % 360 (0-360)
      */
     public double getAbsoluteAngle(){
-       return super.getAngle() % 360;
+            angle = -super.getAngle()%360;
+            
+            if(angle < 0)
+                angle = 360 + angle%360;
+            
+            
+            return angle;
     }
 
     public void reset() {
         zero = this.zero - this.getAbsoluteAngle();
+        Logger.log("reset", this, 4);
         
         super.reset(); //To change body of generated methods, choose Tools | Templates.
     }

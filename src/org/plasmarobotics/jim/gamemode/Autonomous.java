@@ -4,6 +4,7 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
+import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
@@ -48,13 +49,14 @@ public class Autonomous {
     public void run(){
         switch(step){
             case 0:
-                if(drive.drive(.5, 12 * 5))
-                    step++;
+                if(drive.turn(90))
+                    Logger.log("turn complete", this, 4);
+                
                 break;
                 
             case 1:
-                if(drive.turn(180))
-                    step++;
+                
+                
                 break;
                 
             case 2:

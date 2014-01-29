@@ -30,7 +30,7 @@ public class Aimbot {
     public boolean aim(){
         switch(step){
             case 0:
-                System.out.println("Facing wall...");
+                Logger.log("Facing wall...", this, 4);
                 step++;
                 break;
                 
@@ -39,8 +39,8 @@ public class Aimbot {
                     step++;
                 break;
                 
-            case 2:
-                System.out.println("Getting range...");
+            case 6:
+                Logger.log("Setting Range...", this, 4);
                 step++;
                 break;
                 
@@ -51,11 +51,12 @@ public class Aimbot {
                 
             case 4:
                 
-                System.out.println("Ready to shoot.");
+                Logger.log("Ready to shoot", this, 4);
                 return true;
                 
             default:
-                System.err.println("STATE MACHINE BROKE IN AIMBOT");
+                Logger.log("STATE MACHINE IS BROKEN ON AIMBOT", this, 5);
+                drive.drive(0, 0);
         }
         return false;
         
@@ -70,7 +71,7 @@ public class Aimbot {
         rangeFinder = sensors.getRangeFinder();
         drive = mechanisms.getDrive();
         
-        System.out.println("Aimbot online");
+        Logger.log("Aimbot online.", this, 5);
         //unique to the robot, cannot be reset every action in auto
         gyro = sensors.getGyro();
     }
@@ -80,8 +81,8 @@ public class Aimbot {
      * @return true when action is complete
      */
     public boolean faceWall(){
-        System.out.println("Zero: " + gyro.getZero());
-        System.out.println("Angle: " + gyro.getAbsoluteAngle());
+        Logger.log("Zero: " + gyro.getZero(), this, 3);
+        Logger.log("Angle: " + gyro.getAbsoluteAngle(), this, 3);
         return drive.turn(gyro.getZero());
     }
     
@@ -90,7 +91,7 @@ public class Aimbot {
      * @return true when action complete. false when not in range
      */
     public boolean setRange(){
-        System.out.println("Range: " + rangeFinder.getDistance());
+        Logger.log("Range: " + rangeFinder.getDistance(), this, 1);
         if(rangeFinder.isClose(Constants.SHOOT_RANGE, Constants.SHOOT_TOLERANCE)){
             drive.drive(0, 0);
             return true;
@@ -100,12 +101,12 @@ public class Aimbot {
         //TODO: Calculate distances to travel
         if(rangeFinder.getDistance() - Constants.SHOOT_RANGE > 0){//robot is to far
             drive.drive(-.3, 12*4);//drive backwards
-            System.out.println("Driving forwards");
+            Logger.log("Driveing backwards...", this, 4);
             
             
         } else { //robot is too close
             drive.drive(.3, 120); //drive backwards
-            System.out.println("Driving reverse");
+            Logger.log("Driving forwards...", this, 4);
         }
         
         return false;
@@ -115,6 +116,7 @@ public class Aimbot {
      * resets the aimbot
      */
     public void reset(){
+        Logger.log("Resetting...", this, 5);
         this.step = 0;
     }
 }
