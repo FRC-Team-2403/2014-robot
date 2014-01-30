@@ -49,7 +49,7 @@ public class Autonomous {
     public void run(){
         switch(step){
             case 0:
-                if(drive.turn(90))
+                if(drive.turn(-90))
                     Logger.log("turn complete", this, 4);
                 
                 break;

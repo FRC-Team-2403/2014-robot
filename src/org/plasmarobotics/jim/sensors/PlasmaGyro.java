@@ -58,7 +58,7 @@ public class PlasmaGyro extends Gyro{
      * @return getAngle % 360 (0-360)
      */
     public double getAbsoluteAngle(){
-            return -super.getAngle()%360;
+            return super.getAngle()%360;
             
     }
     /*  TODO: fix stuff. resets gyro @ beginning of every turn

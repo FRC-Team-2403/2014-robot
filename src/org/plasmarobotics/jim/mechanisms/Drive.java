@@ -140,7 +140,7 @@ public class Drive implements Mechanism{
     
     /**
      * Turns the robot
-     * @param degrees angle to rotate (degrees, not radians)
+     * @param degrees angle to rotate (degrees, not radians) positive is counter clockwise.
      * @return true when operation is complete
      */
     
@@ -152,14 +152,15 @@ public class Drive implements Mechanism{
             resetNeeded = false;
         }
         
-        double difference = Math.abs(degrees - gyro.getAbsoluteAngle());
+        double difference = Math.abs(degrees + gyro.getAbsoluteAngle());
         double motorOutput = (1/(1+(180/difference)));
         
-        if(gyro.getAbsoluteAngle() - degrees < 175){
-            chassis.drive(.3, -1);
-            Logger.log("Turning right", this, 3);
-        } else if(gyro.getAbsoluteAngle() - degrees > 185){
+        Logger.log("Turning difference: " + difference, this, 4);
+        if(degrees - gyro.getAbsoluteAngle() < -5){
             chassis.drive(.3, 1);
+            Logger.log("Turning right", this, 3);
+        } else if(degrees - gyro.getAbsoluteAngle() > 5){
+            chassis.drive(.3, -1);
             Logger.log("Turning left", this, 3);
         } else{
             chassis.drive(0, 0);
