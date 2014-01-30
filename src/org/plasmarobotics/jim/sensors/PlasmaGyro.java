@@ -58,18 +58,19 @@ public class PlasmaGyro extends Gyro{
      * @return getAngle % 360 (0-360)
      */
     public double getAbsoluteAngle(){
-            angle = -super.getAngle()%360;
+            return -super.getAngle()%360;
             
-            if(angle < 0)
-                angle = 360 + angle%360;
-            
-            
-            return angle;
     }
-
+    /*  TODO: fix stuff. resets gyro @ beginning of every turn
+        turn as far as parameter provided, keep going until
+        reach thingy
+    */
+    
     public void reset() {
-        zero = this.zero - this.getAbsoluteAngle();
-        Logger.log("reset", this, 4);
+        double old_zero = this.zero;
+        this.zero -= this.getAbsoluteAngle();
+        double diff = this.zero - old_zero;
+        Logger.log("Gyro.zero set from " + old_zero + " to " + this.zero + "; Diff: " + diff, this, 5);
         
         super.reset(); //To change body of generated methods, choose Tools | Templates.
     }
@@ -78,7 +79,7 @@ public class PlasmaGyro extends Gyro{
      * @return the zero
      */
     public double getZero() {
-        return zero;
+        return this.zero;
     }
 
 

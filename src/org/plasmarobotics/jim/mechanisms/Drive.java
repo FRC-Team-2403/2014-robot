@@ -57,7 +57,8 @@ public class Drive implements Mechanism{
         //gyro
         this.gyro = sensors.getGyro();
         
-        resetNeeded = true;
+        // resetNeeded = true;
+        // ^ gyro already reset during init
         System.out.println("Drive online");
     }
     
@@ -94,7 +95,6 @@ public class Drive implements Mechanism{
      */
     public void updateTeleop(){
         chassis.tankDrive(leftJoystick, rightJoystick);
-        
     }
 
     /**
@@ -117,7 +117,7 @@ public class Drive implements Mechanism{
      */
     
                 
-    //TODO: add dampaning
+    //TODO: add dampening
     public boolean drive(double speed, double distance){
         if(resetNeeded){
             LeftEncoder.reset();

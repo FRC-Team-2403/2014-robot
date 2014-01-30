@@ -72,15 +72,17 @@ public class Teleop{
         if(rightJoystick.getTriggerButton().get()){
             aimbot.aim();
             aimbotNeedReset = true;
-        } else{
+        } else {
             
             if(aimbotNeedReset){
-                aimbot.reset();
+                Logger.log("Aimbot stopped", this, 5);
+                aimbot.logGyroAngles();
+                aimbot.reset(); // set AimBot state to 0
                 aimbotNeedReset = false;
             }
                 
-            Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
-            drive.updateTeleop();
+            //Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
+            drive.updateTeleop(); // back to tank (AimBot took over
             shooter.updateTeleop();
             pickup.updateTeleop();
             

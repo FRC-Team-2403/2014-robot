@@ -29,17 +29,17 @@ public class Aimbot {
      */
     public boolean aim(){
         switch(step){
-            case 0:
+            case 0: // nothing yet
                 Logger.log("Facing wall...", this, 4);
                 step++;
                 break;
                 
-            case 1:
+            case 1: // nothing yet
                 if(faceWall())
                     step++;
                 break;
                 
-            case 6:
+            case 2:
                 Logger.log("Setting Range...", this, 4);
                 step++;
                 break;
@@ -76,13 +76,18 @@ public class Aimbot {
         gyro = sensors.getGyro();
     }
     
+    public void logGyroAngles() {
+        Logger.log("Zero: " + gyro.getZero(), this, 5);
+        Logger.log("Angle: " + gyro.getAbsoluteAngle(), this, 5);
+    }
+    
     /**
      * Orients the robot towards the wall
      * @return true when action is complete
      */
     public boolean faceWall(){
-        Logger.log("Zero: " + gyro.getZero(), this, 3);
-        Logger.log("Angle: " + gyro.getAbsoluteAngle(), this, 3);
+        // problem in here somewhere: never stops turning
+        logGyroAngles();
         return drive.turn(gyro.getZero());
     }
     
@@ -101,7 +106,7 @@ public class Aimbot {
         //TODO: Calculate distances to travel
         if(rangeFinder.getDistance() - Constants.SHOOT_RANGE > 0){//robot is to far
             drive.drive(-.3, 12*4);//drive backwards
-            Logger.log("Driveing backwards...", this, 4);
+            Logger.log("Driving backwards...", this, 4);
             
             
         } else { //robot is too close
