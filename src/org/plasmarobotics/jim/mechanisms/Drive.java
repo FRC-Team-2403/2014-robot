@@ -119,11 +119,7 @@ public class Drive implements Mechanism{
                 
     //TODO: add dampening
     public boolean drive(double speed, double distance){
-        if(resetNeeded){
-            LeftEncoder.reset();
-            RightEncoder.reset();
-            resetNeeded = false;
-        }
+        reset();
         
         if(((LeftEncoder.getDistance() + RightEncoder.getDistance())/2) < distance){
             chassis.drive(speed, (gyro.getAbsoluteAngle() * .03));//stay on track with .03 curve
@@ -147,10 +143,7 @@ public class Drive implements Mechanism{
     //TODO: Fix logic
     
     public boolean turn(double degrees){
-        if(resetNeeded){
-            gyro.reset();
-            resetNeeded = false;
-        }
+        reset();
         
         double difference = Math.abs(degrees + gyro.getAbsoluteAngle());
         double motorOutput = (1/(1+(180/difference)));
@@ -164,6 +157,8 @@ public class Drive implements Mechanism{
             Logger.log("Turning left", this, 3);
         } else{
             chassis.drive(0, 0);
+            Logger.log("Turn complete.", this, 4);
+            resetNeeded = true;
             return true;
         }
         
@@ -175,9 +170,13 @@ public class Drive implements Mechanism{
      * resets the sensors on the robot
      */
     public void reset(){
-        LeftEncoder.reset();
-        RightEncoder.reset();
-        gyro.reset();
+        if(resetNeeded){
+            LeftEncoder.reset();
+            RightEncoder.reset();
+            gyro.reset();
+            resetNeeded = false;
+        }
+        
     }
 
     public void disable() {
