@@ -18,7 +18,7 @@ public final class ControlPack {
     //controllers
     private PlasmaJoystick rightJoystick = new PlasmaJoystick(Constants.LEFT_STICK_PORT);
     private PlasmaJoystick leftJoystick = new PlasmaJoystick(Constants.RIGHT_STICK_PORT);
-    private Gamepad gamepad = new Gamepad();
+    private PlasmaGamepad gamepad = new PlasmaGamepad(Constants.GAMEPAD_PORT);
     
     /**
      * prevents instantiation
@@ -46,7 +46,7 @@ public final class ControlPack {
     /**
      * @return the gamepad
      */
-    public Gamepad getGamepad() {
+    public PlasmaGamepad getGamepad() {
         return gamepad;
     }
 
