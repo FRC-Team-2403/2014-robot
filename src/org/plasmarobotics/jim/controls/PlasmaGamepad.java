@@ -58,4 +58,20 @@ public class PlasmaGamepad extends Joystick {
     public ToggleableButton getRightJoystickButton() {
         return this.rightJoystickButton;
     }
+    
+    public double getLeftJoystickXAxis() {
+        return super.getRawAxis(1);
+    }
+    public double getLeftJoystickYAxis() {
+        return super.getRawAxis(2);
+    }
+    public double getRightJoystickXAxis() {
+        return super.getRawAxis(4);
+    }
+    public double getRightJoystickYAxis() {
+        return super.getRawAxis(5);
+    }
+    public double getTriggerAxis() {
+        return super.getRawAxis(3);
+    }
 }
