@@ -27,7 +27,6 @@ public class PlasmaGamepad extends Joystick {
     public PlasmaGamepad(int port) {
         super(port);
     }
-    
     public ToggleableButton getAButton() {
         return this.aButton;
     }
@@ -52,25 +51,53 @@ public class PlasmaGamepad extends Joystick {
     public ToggleableButton getStartButton() {
         return this.startButton;
     }
+    /**
+     * Get left joystick button (pressed in or not).
+     **/
     public ToggleableButton getLeftJoystickButton() {
         return this.leftJoystickButton;
     }
+    /**
+     * Get right joystick button (pressed in or not).
+     **/
     public ToggleableButton getRightJoystickButton() {
         return this.rightJoystickButton;
     }
     
+    /**
+     * Get left joystick x-axis (left-right).
+     * Full left = -1, full right = +1.
+     **/
     public double getLeftJoystickXAxis() {
         return super.getRawAxis(1);
     }
+    /**
+     * Get left joystick y-axis (up-down).
+     * Full up = -1, full down = +1.
+     **/
     public double getLeftJoystickYAxis() {
         return super.getRawAxis(2);
     }
+    /**
+     * Get right joystick x-axis (left-right).
+     * Full left = -1, full right = +1.
+     **/
     public double getRightJoystickXAxis() {
         return super.getRawAxis(4);
     }
+    /**
+     * Get right joystick y-axis (up-down).
+     * Full up = -1, full down = +1.
+     **/
     public double getRightJoystickYAxis() {
         return super.getRawAxis(5);
     }
+    /**
+     * Get trigger axis.
+     * Right depressed -> -1
+     * Left depressed -> +1
+     * Both fully depressed = 0
+     **/
     public double getTriggerAxis() {
         return super.getRawAxis(3);
     }
