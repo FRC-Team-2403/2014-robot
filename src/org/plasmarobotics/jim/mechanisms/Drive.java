@@ -95,6 +95,7 @@ public class Drive implements Mechanism{
      */
     public void updateTeleop(){
         chassis.tankDrive(leftJoystick, rightJoystick);
+        
     }
 
     /**
@@ -122,7 +123,7 @@ public class Drive implements Mechanism{
         reset();
         
         if(((LeftEncoder.getDistance() + RightEncoder.getDistance())/2) < distance){
-            chassis.drive(speed, (gyro.getAbsoluteAngle() * .03));//stay on track with .03 curve
+            chassis.drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve
             return false;
         } else{
             resetNeeded = true;
@@ -145,20 +146,23 @@ public class Drive implements Mechanism{
     public boolean turn(double degrees){
         reset();
         
-        double difference = Math.abs(degrees + gyro.getAbsoluteAngle());
-        double motorOutput = (1/(1+(180/difference)));
+        double positiveAngle;
+        double negativeAngle;
         
-        Logger.log("Turning difference: " + difference, this, 4);
-        if(degrees - gyro.getAbsoluteAngle() < -5){
-            chassis.drive(.3, 1);
-            Logger.log("Turning right", this, 3);
-        } else if(degrees - gyro.getAbsoluteAngle() > 5){
-            chassis.drive(.3, -1);
-            Logger.log("Turning left", this, 3);
+        if(degrees > 0){
+            positiveAngle = degrees;
+            negativeAngle = degrees - 360;
+            
         } else{
-            chassis.drive(0, 0);
-            Logger.log("Turn complete.", this, 4);
-            resetNeeded = true;
+            positiveAngle = degrees + 360;
+            negativeAngle = degrees;
+        }
+        Logger.log("turning thingy" + (gyro.getModdedAngle() - positiveAngle), this, 5);
+        if(Math.abs(gyro.getModdedAngle() - positiveAngle) > 175){
+            chassis.drive(.3, -1);
+        } else if(Math.abs(gyro.getModdedAngle() - positiveAngle) < 185){
+            chassis.drive(.3, 1);
+        } else{
             return true;
         }
         

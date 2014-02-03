@@ -57,10 +57,12 @@ public class PlasmaGyro extends Gyro{
      * Gets the angle that the robot is facing
      * @return getAngle % 360 (0-360)
      */
-    public double getAbsoluteAngle(){
-            return super.getAngle()%360;
+    public double getModdedAngle(){
+        return super.getAngle()%360;
             
     }
+    
+    
     /*  TODO: fix stuff. resets gyro @ beginning of every turn
         turn as far as parameter provided, keep going until
         reach thingy
@@ -68,7 +70,7 @@ public class PlasmaGyro extends Gyro{
     
     public void reset() {
         double old_zero = this.zero;
-        this.zero -= this.getAbsoluteAngle();
+        this.zero -= this.getModdedAngle();
         double diff = this.zero - old_zero;
         Logger.log("Gyro.zero set from " + old_zero + " to " + this.zero + "; Diff: " + diff, this, 5);
         

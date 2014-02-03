@@ -78,7 +78,7 @@ public class Aimbot {
     
     public void logGyroAngles() {
         Logger.log("Zero: " + gyro.getZero(), this, 5);
-        Logger.log("Angle: " + gyro.getAbsoluteAngle(), this, 5);
+        Logger.log("Angle: " + gyro.getModdedAngle(), this, 5);
     }
     
     /**
