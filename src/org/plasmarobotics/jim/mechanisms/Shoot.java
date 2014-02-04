@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import org.plasmarobotics.jim.Constants;
-import org.plasmarobotics.jim.RobotNameHere;
+import org.plasmarobotics.jim.RichardSimmons;
 import org.plasmarobotics.jim.controls.ControlPack;
 
 import org.plasmarobotics.jim.controls.ToggleableButton;

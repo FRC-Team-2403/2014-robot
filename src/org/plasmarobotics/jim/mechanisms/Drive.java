@@ -155,6 +155,8 @@ public class Drive implements Mechanism{
         } else{
             chassis.drive(0, 0);
             Logger.log("stopping robot", this, 4);
+            resetNeeded = true;
+            return true;
         }
         
         Logger.log("distanceToTurn:" + distanceToTurn, this, 4);
@@ -172,6 +174,7 @@ public class Drive implements Mechanism{
             RightEncoder.reset();
             gyro.reset();
             resetNeeded = false;
+            Logger.log("resetting...", this, 5);
         }
         
     }

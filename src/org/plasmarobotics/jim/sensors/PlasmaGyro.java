@@ -14,7 +14,7 @@ import org.plasmarobotics.jim.Logger;
  * @author Jim
  */
 public class PlasmaGyro extends Gyro{
-    private double zero = 0; //keeps track of where the zero is
+    private double zero = 113.73704707223966; //keeps track of where the zero is
     double angle; //current angle of the gyro
     
     /**
@@ -70,7 +70,12 @@ public class PlasmaGyro extends Gyro{
     
     public void reset() {
         double old_zero = this.zero;
+      
         this.zero -= this.getModdedAngle();
+            if (this.zero >=360) {
+                this.zero -= 360;
+            }
+        
         double diff = this.zero - old_zero;
         Logger.log("Gyro.zero set from " + old_zero + " to " + this.zero + "; Diff: " + diff, this, 5);
         

@@ -88,7 +88,7 @@ public class Aimbot {
     public boolean faceWall(){
         // problem in here somewhere: never stops turning
         logGyroAngles();
-        return drive.turn(90);
+        return drive.turn(gyro.getZero());
     }
     
     /**
