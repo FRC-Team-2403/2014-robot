@@ -162,9 +162,17 @@ public class Drive implements Mechanism{
         Logger.log("distanceToTurn:" + distanceToTurn, this, 4);
         
         return false;
+        
 
     }
     
+    /**
+     * tells drive its okay to reset
+     * @author Cathy
+     */
+    public void resetNeeded () {
+        this.resetNeeded = true;
+    }
     /**
      * resets the sensors on the robot
      */
