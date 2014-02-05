@@ -1,6 +1,6 @@
 MIDlet-Name: 2014
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: RobotNameHere, , org.plasmarobotics.jim.RobotNameHere
+MIDlet-1: RichardSimmons, , org.plasmarobotics.jim.RichardSimmons
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1

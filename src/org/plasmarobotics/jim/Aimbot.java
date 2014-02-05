@@ -123,5 +123,6 @@ public class Aimbot {
     public void reset(){
         Logger.log("Resetting...", this, 5);
         this.step = 0;
+        drive.resetNeeded();
     }
 }
