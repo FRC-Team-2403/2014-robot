@@ -26,11 +26,11 @@ public class Autonomous {
         
         drive = mechanisms.getDrive();
         shooter = mechanisms.getShooter();
-        pickup = mechanisms.getPickup();
+//        pickup = mechanisms.getPickup();
         
         drive.setupAutonomous();
         shooter.setupAutonomous();
-        pickup.setupAutonomous();
+//        pickup.setupAutonomous();
         
         step = 0;
         
@@ -41,7 +41,7 @@ public class Autonomous {
     public void autoInit(){
         drive.setupAutonomous();
         shooter.setupAutonomous();
-        pickup.setupAutonomous();
+//        pickup.setupAutonomous();
     }
     /**
      * This is the code that runs continously during auto

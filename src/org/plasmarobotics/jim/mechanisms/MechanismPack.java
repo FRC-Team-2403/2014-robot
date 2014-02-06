@@ -19,7 +19,7 @@ public final class MechanismPack {
     
     private Drive drive = new Drive(controls, sensors);
     private Shoot shooter = new Shoot(controls);
-    private Pickup pickup = new Pickup(controls, sensors);
+   // private Pickup pickup = new Pickup(controls, sensors);
 
     /**
      * prevents instantiation
@@ -44,9 +44,9 @@ public final class MechanismPack {
     /**
      * @return the pickup
      */
-    public Pickup getPickup() {
-        return pickup;
-    }
+//    public Pickup getPickup() {
+//        return pickup;
+//    }
     
     public static MechanismPack getInstance(){
         if(pack == null){

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
+import org.plasmarobotics.jim.controls.PlasmaGamepad;
 import org.plasmarobotics.jim.sensors.PlasmaEncoder;
 import org.plasmarobotics.jim.sensors.PlasmaGyro;
 import org.plasmarobotics.jim.sensors.SensorPack;
@@ -23,6 +24,8 @@ public class Drive implements Mechanism{
     
     private Joystick leftJoystick,
             rightJoystick;
+    
+    private PlasmaGamepad gamepad;
    
     private RobotDrive chassis;
     
@@ -42,7 +45,9 @@ public class Drive implements Mechanism{
     public Drive(ControlPack controls, SensorPack sensors){
         //Binds the joysticks...
         this.rightJoystick = controls.getRightJoystick();
-        this.leftJoystick = controls.getLeftJoystick();
+        this.leftJoystick = controls.getLeftJoystick(); 
+        this.gamepad = controls.getGamepad();
+        
         
         //Creates a RobotDrive...
         chassis = new RobotDrive(Constants.FRONT_LEFT_DRIVE_CHANNEL, 
@@ -93,8 +98,13 @@ public class Drive implements Mechanism{
     /*
      * called periodically during teleop
      */
-    public void updateTeleop(){
-        chassis.tankDrive(leftJoystick, rightJoystick);
+    public void updateTeleop(boolean joyStickNeeded){
+        if (joyStickNeeded) {
+            chassis.tankDrive(leftJoystick, rightJoystick); 
+        } else {
+            chassis.tankDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickYAxis());
+        }
+        
         
     }
 

@@ -4,10 +4,12 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
+import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
-import org.plasmarobotics.jim.controls.Gamepad;
+import org.plasmarobotics.jim.controls.PlasmaGamepad;
 import org.plasmarobotics.jim.controls.PlasmaJoystick;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
@@ -23,7 +25,7 @@ public class Teleop{
     private PlasmaJoystick leftJoystick,
             rightJoystick;
     
-    private Gamepad gamePad;
+    private PlasmaGamepad gamePad;
     
     private Drive drive;
     private Shoot shooter;
@@ -41,7 +43,7 @@ public class Teleop{
         //mechanisms
         this.drive = mechanisms.getDrive();
         this.shooter = mechanisms.getShooter();
-        this.pickup = mechanisms.getPickup();
+      //  this.pickup = mechanisms.getPickup();
         
         this.aimbot = new Aimbot(sensors, mechanisms);
           
@@ -54,7 +56,7 @@ public class Teleop{
     public void teleopInit(){
         drive.setupTeleop();
         shooter.setupTeleop();
-        pickup.setupTeleop();
+    //    pickup.setupTeleop();
     }
     /**
      * This gets called periodically during teleop
@@ -69,7 +71,7 @@ public class Teleop{
         if(leftJoystick.getSeven().isPressed())
             Logger.lowerPriority();
         
-        if(rightJoystick.getTriggerButton().get()){
+        if(rightJoystick.getTriggerButton().get() || gamePad.getYButton().get()){
             aimbot.aim();
             aimbotNeedReset = true;
         } else {
@@ -83,15 +85,16 @@ public class Teleop{
                 
           
             //Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
-            drive.updateTeleop(); // back to tank (AimBot took over
-            shooter.updateTeleop();
-            pickup.updateTeleop();
-            
+            drive.updateTeleop(Constants.USE_JOYSTICK); // back to tank (AimBot took over
+            shooter.updateTeleop(Constants.USE_JOYSTICK);
+          //  pickup.updateTeleop();
+            SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
         }
         
         
         
     }
+    
     
     
 }

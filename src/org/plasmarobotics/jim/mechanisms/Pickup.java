@@ -113,9 +113,11 @@ public class Pickup implements Mechanism{
         //preps pickup
     }
 
-    public void updateTeleop() {
-        //updates stuff durring teleop e.g. sensor feeds
+    public void updateTeleop(boolean useJoystick) {
+       
     }
+
+   
 
     
 

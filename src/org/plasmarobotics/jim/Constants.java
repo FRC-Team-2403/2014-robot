@@ -105,4 +105,6 @@ public final class Constants {
     public static final double RANGE_CONSTANT = .0098;
     public static final int RANGE_CHANNEL = 2;
     
+    public static final boolean USE_JOYSTICK = false;
+    
 }

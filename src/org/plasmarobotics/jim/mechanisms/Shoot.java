@@ -96,8 +96,11 @@ public class Shoot implements Mechanism{
         System.out.println("Shoot prepared for teleop");
     }
 
-    public void updateTeleop() {
+    public void updateTeleop(boolean useJoystick) {
+        
     }
+
+    
     
     
         

@@ -17,7 +17,7 @@ public interface Mechanism {
     public abstract void updateAutonomous();
     
     public abstract void setupTeleop();
-    public abstract void updateTeleop();
+    public abstract void updateTeleop(boolean useJoystick);
     
     public abstract void disable();
     
