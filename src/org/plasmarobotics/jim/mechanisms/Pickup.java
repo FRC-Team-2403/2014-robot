@@ -116,17 +116,6 @@ public class Pickup implements Mechanism{
     public void updateTeleop(boolean useJoystick) {
        
     }
-
-   
-
-    
-
-    
-    
-    
-    
-    
-    
     
     
 }

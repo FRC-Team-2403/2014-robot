@@ -131,8 +131,10 @@ public class Drive implements Mechanism{
     //TODO: add dampening
     public boolean drive(double speed, double distance){
         reset();
+        double distTraveled = (LeftEncoder.getDistance() + RightEncoder.getDistance())/2;
         
-        if(((LeftEncoder.getDistance() + RightEncoder.getDistance())/2) < distance){
+        
+        if(distTraveled < distance){
             chassis.drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve
             return false;
         } else{

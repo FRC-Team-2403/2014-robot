@@ -6,6 +6,7 @@ package org.plasmarobotics.jim.sensors;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.Logger;
 
@@ -71,13 +72,12 @@ public class PlasmaGyro extends Gyro{
     public void reset() {
         double old_zero = this.zero;
       
-        this.zero -= this.getModdedAngle();
-            if (this.zero >=360) {
-                this.zero -= 360;
-            }
-        
+        this.zero =(this.zero - this.getModdedAngle()) %360;
+                
         double diff = this.zero - old_zero;
-        Logger.log("Gyro.zero set from " + old_zero + " to " + this.zero + "; Diff: " + diff, this, 5);
+        
+        SmartDashboard.putNumber("Gyro zero: ", this.getZero());
+        SmartDashboard.putNumber("Gyro angle: ", this.getModdedAngle());
         
         super.reset(); //To change body of generated methods, choose Tools | Templates.
     }
