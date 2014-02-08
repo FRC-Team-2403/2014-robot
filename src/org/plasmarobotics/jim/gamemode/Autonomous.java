@@ -103,6 +103,9 @@ public class Autonomous {
     public void autoRunThree () {
         switch(step) {
             case 0:
+                //TODO: This distance MAY need to be adjusted based on the shooters ability 
+                // to hit at that distance or not.  
+                
                 if (drive.drive(.3, 36))
                     step++;
                 break;
@@ -123,7 +126,9 @@ public class Autonomous {
                     step++;
                 break;
             case 5:
-                if (drive.drive(.3, -36))
+                //TODO: This distance MAY need to be adjusted based on the shooters ability 
+                // to hit at that distance or not.  
+                if (drive.drive(.3, -42))
                     step++;
                 break;
             case 6:
