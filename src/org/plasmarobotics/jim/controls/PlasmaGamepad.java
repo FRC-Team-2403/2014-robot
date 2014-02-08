@@ -23,6 +23,7 @@ public class PlasmaGamepad extends Joystick {
             leftJoystickButton = new ToggleableButton(this, 9),
             rightJoystickButton = new ToggleableButton(this, 10);
             
+            
     
     public PlasmaGamepad(int port) {
         super(port);
@@ -101,4 +102,6 @@ public class PlasmaGamepad extends Joystick {
     public double getTriggerAxis() {
         return super.getRawAxis(3);
     }
+    
+    
 }

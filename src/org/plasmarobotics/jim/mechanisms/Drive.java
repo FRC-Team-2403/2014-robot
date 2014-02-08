@@ -98,11 +98,12 @@ public class Drive implements Mechanism{
     /*
      * called periodically during teleop
      */
-    public void updateTeleop(boolean joyStickNeeded){
-        if (joyStickNeeded) {
+    public void updateTeleop(){
+        if (Constants.USE_JOYSTICK) {
             chassis.tankDrive(leftJoystick, rightJoystick); 
         } else {
-            chassis.tankDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickYAxis());
+            chassis.arcadeDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickXAxis());
+            //chassis.tankDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickYAxis());
         }
         
         

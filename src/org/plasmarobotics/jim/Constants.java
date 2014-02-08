@@ -105,6 +105,12 @@ public final class Constants {
     public static final double RANGE_CONSTANT = .0098;
     public static final int RANGE_CHANNEL = 2;
     
+    //controls
     public static final boolean USE_JOYSTICK = false;
+    
+    //switches
+    public static final int SHOOT_LOADED_CHANNEL = 1;
+    public static final int PICKUP_RAISED_CHANNEL = 4;
+    public static final int PICKUP_LOWERED_CHANNEL = 6;
     
 }

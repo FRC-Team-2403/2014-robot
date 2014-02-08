@@ -49,6 +49,20 @@ public final class ControlPack {
     public PlasmaGamepad getGamepad() {
         return gamepad;
     }
+    
+    public ToggleableButton getAimbotButton(){
+        if(Constants.USE_JOYSTICK)
+            return getLeftJoystick().getTriggerButton();
+        else
+            return getGamepad().getLeftBumper();
+    }
+    
+    public ToggleableButton getShootButton(){
+        if(Constants.USE_JOYSTICK)
+            return getRightJoystick().getTriggerButton();
+        else
+            return getGamepad().getRightBumper();
+    }
 
     public static ControlPack getInstance(){
         if(controlPack == null){

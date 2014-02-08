@@ -4,7 +4,9 @@
  */
 package org.plasmarobotics.jim.mechanisms;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
@@ -18,6 +20,9 @@ public class Shoot implements Mechanism{
             rightSolenoid;
 
     ControlPack controls;
+    boolean goalShoot = true; //if shooting for goal
+    
+    DigitalInput loadedSwitch = new DigitalInput(Constants.SHOOT_LOADED_CHANNEL);
     
     public Shoot(ControlPack controls) {
         this.controls = controls;
@@ -36,7 +41,7 @@ public class Shoot implements Mechanism{
         Logger.log("setup for teleop", this, 5);
     }
 
-    public void updateTeleop(boolean useJoystick) {
+    public void updateTeleop() {
         goalShot();
     }
     
@@ -46,26 +51,18 @@ public class Shoot implements Mechanism{
      * called once every cycle
      */
     private void goalShot(){
-        if(Constants.USE_JOYSTICK){ //joystick controls
+        SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
+        if (!loadedSwitch.get()){// if ball is there
             
-            if(controls.getRightJoystick().getTriggerButton().get()){ //right trigger button pressed
+ 
+            if(ControlPack.getInstance().getShootButton().isPressed()){
                 leftSolenoid.set(DoubleSolenoid.Value.kForward);
                 rightSolenoid.set(DoubleSolenoid.Value.kForward);
-            } else{ //not pressed
+            } 
+
+        }else{ //not pressed
                 leftSolenoid.set(DoubleSolenoid.Value.kReverse);
                 rightSolenoid.set(DoubleSolenoid.Value.kReverse);
-            }
-        } else{//gamepad controls
-            
-            if(controls.getGamepad().getRightBumper().get()){//buttons pressed
-                leftSolenoid.set(DoubleSolenoid.Value.kForward);
-                rightSolenoid.set(DoubleSolenoid.Value.kForward);
-                
-            } else{//not pressed
-                
-                leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-                rightSolenoid.set(DoubleSolenoid.Value.kReverse);
-            }
         }
     }
         

@@ -71,9 +71,11 @@ public class Teleop{
         if(leftJoystick.getSeven().isPressed())
             Logger.lowerPriority();
         
-        if(rightJoystick.getTriggerButton().get() || gamePad.getYButton().get()){
+        
+        if(ControlPack.getInstance().getAimbotButton().get()){
             aimbot.aim();
             aimbotNeedReset = true;
+            Logger.log("aimbotting", this, 5);
         } else {
             
             if(aimbotNeedReset){
@@ -82,16 +84,16 @@ public class Teleop{
                 aimbot.reset(); // set AimBot state to 0
                 aimbotNeedReset = false;
             }
-                
+            
           
             //Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
-            drive.updateTeleop(Constants.USE_JOYSTICK); // back to tank (AimBot took over
-            shooter.updateTeleop(Constants.USE_JOYSTICK);
+            drive.updateTeleop(); // back to tank (AimBot took over
+//            shooter.updateTeleop();
           //  pickup.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
+           
+        
         }
-        
-        
         
     }
     
