@@ -42,28 +42,47 @@ public class Shoot implements Mechanism{
     }
 
     public void updateTeleop() {
-        goalShot();
+        SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
+        if (ControlPack.getInstance().getShootButton().isPressed()) {
+            shoot(0);
+        }
+        
     }
     
-
     /**
-     * Shooting method intended for hitting the goal
-     * called once every cycle
+     * Shoots the ball for different modes
+     * @param mode to shoot the ball (0 = goal shot, 1 = truss shot, 2 = pass)
+     * @return true when the shot is complete, false if no ball or shot not complete
      */
-    private void goalShot(){
-        SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
-        if (!loadedSwitch.get()){// if ball is there
-            
- 
-            if(ControlPack.getInstance().getShootButton().isPressed()){
-                leftSolenoid.set(DoubleSolenoid.Value.kForward);
-                rightSolenoid.set(DoubleSolenoid.Value.kForward);
-            } 
-
-        }else{ //not pressed
-                leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-                rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+    public boolean shoot(int mode){
+        long waitTime = 0;
+        
+        if (mode == 0) {
+            waitTime = Constants.GOAL_SHOT_WAIT_TIME;
+        } else if (mode == 1) {
+            waitTime = Constants.TRUSS_SHOT_WAIT_TIME;
+        } else if (mode == 2) {
+            waitTime = Constants.PASS_WAIT_TIME;
+        } else {
+            return false;
         }
+        
+        if (loadedSwitch.get()) { //not loaded
+            return false;
+        } else {
+            leftSolenoid.set(DoubleSolenoid.Value.kForward);
+            rightSolenoid.set(DoubleSolenoid.Value.kForward);
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            
+            leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+            rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+            return true;
+        }
+        
     }
         
 }

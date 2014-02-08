@@ -113,4 +113,8 @@ public final class Constants {
     public static final int PICKUP_RAISED_CHANNEL = 4;
     public static final int PICKUP_LOWERED_CHANNEL = 6;
     
+    //shooter wait times
+    public static final long TRUSS_SHOT_WAIT_TIME = 7;
+    public static final long GOAL_SHOT_WAIT_TIME = 6;
+    public static final long PASS_WAIT_TIME = 5;
 }

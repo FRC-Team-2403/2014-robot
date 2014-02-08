@@ -4,15 +4,15 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
-import org.plasmarobotics.jim.Logger;
+import org.plasmarobotics.jim.Aimbot;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
 import org.plasmarobotics.jim.mechanisms.Shoot;
 
 /**
- *
- * @author Jim
+ * manages actions during autonomous mode
+ * @author cathy 
  */
 public class Autonomous {
     Drive drive;
@@ -20,8 +20,14 @@ public class Autonomous {
     Pickup pickup;
     byte setting; //which autonomous?
     byte step;
+    Aimbot aimbot;
     
-    
+    /**
+     * creates an autonomous object that handles all things autonomous
+     * @param mechanisms mechanismPack.getInstance()
+     * 
+     * @author Jim
+     */
     public Autonomous(MechanismPack mechanisms){
         
         drive = mechanisms.getDrive();
@@ -37,7 +43,10 @@ public class Autonomous {
         //get setting 
         
     }
-    
+    /**
+     * prepares the robot for autonomous
+     * @author Jim
+     */
     public void autoInit(){
         drive.setupAutonomous();
         shooter.setupAutonomous();
@@ -47,31 +56,119 @@ public class Autonomous {
      * This is the code that runs continously during auto
      */
     public void run(){
-        switch(step){
+        
+            
+    }
+    /**
+     * moves 3 ft during autonomous
+     * @author cathy
+     */
+    public void autoRunOne (){
+        switch(step) {
             case 0:
-                if(drive.turn(-90))
+                if(drive.drive(.3, 36))
                     step++;
-                
                 break;
-                
+            
+            default:
+                drive.drive(0, 0);
+        }
+    }
+    /**
+     * moves forward and shoots for the goal
+     * @author cathy
+     */
+    public void autoRunTwo () {
+        switch(step){
+            case 0: 
+                if(drive.drive(.3, 36))
+                    step++;
+                break;
             case 1:
-                if(drive.turn(90))
+                if (aimbot.aim())
                     step++;
-                
                 break;
-                
             case 2:
-                if(drive.turn(180))
-                    step++;
+                shooter.shoot(0);
                 break;
                 
             default:
-                drive.drive(0, 0); //stops the robot
+                drive.drive(0, 0);
+        }
+    }
+    /**
+     * moves forward, shoots, then picks up ball to shoot again
+     * @author cathy
+     */
+    public void autoRunThree () {
+        switch(step) {
+            case 0:
+                if (drive.drive(.3, 36))
+                    step++;
+                break;
+            case 1:
+                if (aimbot.aim())
+                    step++;
+                break;
+            case 2:
+                if (shooter.shoot(0))
+                    step++;
+                break;
+            case 3:
+                if (pickup.lower())
+                    step++;
+                break;
+            case 4:
+                if (pickup.forward())
+                    step++;
+                break;
+            case 5:
+                if (drive.drive(.3, -36))
+                    step++;
+                break;
+            case 6:
+                if (aimbot.aim())
+                    step++;
+                break;
+            case 7:
+                if (shooter.shoot(0)){
+                    pickup.stop();
+                    step++;
+                }
+                break;
+            default:
+                drive.drive(0, 0);
                 break;
                 
-                
         }
+    }
+    /**
+     * turns, moves forward and shoots
+     * @author cathy
+     */
+    public void autoRunFour () {
+        switch(step){
+            case 0:
+                if (drive.turn(-90))
+                    step++;
+                break;
+            case 1:
+                if (drive.drive(.3, 36))
+                    step++;
+                break;
+            case 2:
+                if (aimbot.aim())
+                    step++;
+                break;
+            case 3:
+                if (shooter.shoot(0))
+                    step++;
+                break;
+            default:
+                drive.drive(0, 0);
+                break;
             
+        }
     }
     
     public void reset(){
