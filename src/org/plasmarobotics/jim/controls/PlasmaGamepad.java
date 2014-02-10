@@ -109,4 +109,24 @@ public class PlasmaGamepad extends Joystick {
     public boolean leftTriggerPressed() {
     	return (getTriggerAxis() > 0);
     }
+    /**
+     * Get DPad axis.
+     * Right = 1
+     * Left = -1
+     **/
+    public int getDPadXAxis() {
+        return (int) (super.getRawAxis(6));
+    }
+    /**
+     * Check if D-Pad is pressed right.
+     **/
+    public boolean rightDPadPressed() {
+        return (getDPadXAxis() == 1);
+    }
+    /**
+     * Check if D-Pad is pressed left.
+     **/
+    public boolean leftDPadPressed() {
+        return (getDPadXAxis() == -1);
+    }
 }
