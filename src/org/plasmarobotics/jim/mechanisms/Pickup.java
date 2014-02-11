@@ -5,7 +5,9 @@
 package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
+import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.sensors.SensorPack;
 
@@ -20,52 +22,75 @@ public class Pickup implements Mechanism{
      */
     
     //victor motor controlers, reset ports
-    Victor roller1 = new Victor(1,3);
-    Victor roller2 = new Victor(1,4);
-    Victor liftesc = new Victor(1,5);
+    Victor leftPickupRoller,
+            rightPickupRoller,
+            pickupUpDown;
+
+  
     //check port for limit switchs | digital IO
-    DigitalInput liftlimit1 = new DigitalInput(5);
-    DigitalInput liftlimit2 = new DigitalInput(6);
-    //for possible encoders
+    DigitalInput pickupLoweredSwitch,
+            pickupLiftedSwitch;
     
+    Encoder pickupEncoder;
+    
+    ControlPack controls;
+    
+    boolean isRaised = true, //keep track of where pickup is
+            isPickupering = false;
+            
     public Pickup(ControlPack controls, SensorPack sensors){
+        //motors
+        rightPickupRoller = new Victor(Constants.RIGHT_PICKUP_ROLLER_CHANNEL);
+        leftPickupRoller = new Victor(Constants.LEFT_PICKUP_ROLLER_CHANNEL);
+        pickupUpDown = new Victor(1, Constants.PICKUP_RAISE_LOWER_CHANNEL);
         
+        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_A_CHANNEL);
+        //sensors
+        pickupLoweredSwitch = new DigitalInput(Constants.PICKUP_LOWERED_CHANNEL);
+        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_SWITCH);
+        
+        controls = ControlPack.getInstance();
         System.out.println("Pickup online");
     }
+    
     /**
      * raise the pickup mechanism
-     * @return when the action is completed
+     * @return true when the pickup is raised false otherwise
      */
     public boolean raise(){
-        //raises pickup untill trigering limit switch
-        if (liftlimit1.get() == false){
-            liftesc.set(1);
-        }else{
-            liftesc.set(0);
+        //not lifted
+        if(!pickupLiftedSwitch.get()){//TODO: add encoder
+            pickupUpDown.set(.3);
+            return false;
+        } else{//it is lifted
+            pickupUpDown.set(0);
+            return true;
         }
-        return true;
+            
     }
     
     /**
      * lower the pickup mechanism
-     * @return when the action is completed
+     * @return true if the mechanism is lowered, false otherwise
      */
     public boolean lower(){
-        if (liftlimit2.get() == false){
-            liftesc.set(-1);
-        }else{
-            liftesc.set(0);
+        //not lowered
+        if(!pickupLoweredSwitch.get()){//TODO: add encoder
+            pickupUpDown.set(-.3);
+            return false;
+        } else{
+            pickupUpDown.set(0);
+            return true;
         }
-        return true;
     }
     
     /**
      * pickup the ball
-     * @return when the action is completed
+     * @return if the pickup is picking up
      */
     public boolean forward(){
-        roller1.set(1);
-        roller2.set(1);
+        leftPickupRoller.set(1);
+        rightPickupRoller.set(1);
         return true;
     }
     
@@ -74,26 +99,25 @@ public class Pickup implements Mechanism{
      * @return when the action is completed
      */
     public boolean stop(){
-        roller1.set(0);
-        roller2.set(0);
+        leftPickupRoller.set(0);
+        rightPickupRoller.set(0);
         return true;
     }
     
     /**
      * reverse the pickup 
-     * @return when the action is completed
+     * @return if the pickup is in reverse
      */
     public boolean reverse(){
-        roller1.set(-1);
-        roller2.set(-1);
+        leftPickupRoller.set(-1);
+        rightPickupRoller.set(-1);
         return true;
     }
 
     public void disable() {
-        //stops pickup rollers for rest of match
-        final int stop = 0;
-        roller1.set(stop);
-        roller2.set(stop);
+        this.stop();
+        this.raise();
+        
     }
 
     public void setupAutonomous() {
@@ -114,7 +138,41 @@ public class Pickup implements Mechanism{
     }
 
     public void updateTeleop() {
+       if(controls.getRaiseLowerShooterButton().isPressed()){
+           if(isRaised)
+               this.lower();
+           else
+               this.raise();
+           
+           isRaised = !isRaised;
+       }
        
+       if(controls.getBackwardPickUpButton().isPressed()){
+           if(isPickupering){
+               this.stop();
+           } else{
+               this.reverse();
+           }
+           
+           isPickupering = !isPickupering;
+               
+       }
+           
+       
+       if(controls.getFowardPickUpButton().isPressed()){
+           if (isPickupering) {
+               this.stop();
+           } else {
+               this.forward();
+           }
+           
+           isPickupering = !isPickupering;
+       }
+          
+       
+       
+                   
+                   
     }
     
     

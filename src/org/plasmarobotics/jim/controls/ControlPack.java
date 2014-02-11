@@ -63,7 +63,37 @@ public final class ControlPack {
         else
             return getGamepad().getRightBumper();
     }
+    
+    public ToggleableButton getRaiseLowerShooterButton(){ //R5 is labeled raise for pickup on board :(
+        if(Constants.USE_JOYSTICK)
+            return getRightJoystick().getFive();
+        else
+            return getGamepad().getRightBumper();
+        
+    }
 
+    
+    public ToggleableButton getToggleShootButton () { //toggles shoot (?)
+        if (Constants.USE_JOYSTICK)
+            return getLeftJoystick().getThree();
+        else 
+            return getGamepad().getYButton(); //(?)
+    }
+    
+    public ToggleableButton getFowardPickUpButton () {
+        if (Constants.USE_JOYSTICK)
+            return getRightJoystick().getThree();
+        else
+            return getGamepad().getXButton();
+    }
+    
+    public ToggleableButton getBackwardPickUpButton () {
+        if (Constants.USE_JOYSTICK)
+            return getRightJoystick().getTwo();
+        else 
+            return getGamepad().getBButton();
+    }
+    
     public static ControlPack getInstance(){
         if(controlPack == null){
             controlPack = new ControlPack();
