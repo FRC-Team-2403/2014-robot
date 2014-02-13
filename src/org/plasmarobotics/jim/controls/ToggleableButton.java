@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @author Jim
  */
 public class ToggleableButton extends JoystickButton{
-    private boolean isHeld = false; //If the button is being held
+    protected boolean isHeld = false; //If the button is being held
 
     /**
      * Creates an instance of the toggleableButton class

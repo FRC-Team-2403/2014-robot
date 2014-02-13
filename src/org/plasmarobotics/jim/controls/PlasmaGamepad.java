@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.plasmarobotics.jim.controls;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -12,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class PlasmaGamepad extends Joystick {
     
-    private ToggleableButton aButton = new ToggleableButton(this, 1),
+     private final ToggleableButton aButton = new ToggleableButton(this, 1),
             bButton = new ToggleableButton(this, 2),
             xButton = new ToggleableButton(this, 3),
             yButton = new ToggleableButton(this, 4),
@@ -97,11 +93,67 @@ public class PlasmaGamepad extends Joystick {
      * Get trigger axis.
      * Right depressed -> -1
      * Left depressed -> +1
-     * Both fully depressed = 0
+     * Both fully depressed/neither touched = 0
+     * @return Trigger axis value
      **/
     public double getTriggerAxis() {
         return super.getRawAxis(3);
     }
-    
-    
+    /**
+     * Check if right trigger is pressed (trigger axis < 0).
+     * @deprecated Prone to looping issues. Use
+     * PlasmaGamepad.getRightTriggerButton().get() instead.
+     * @return True if pressed
+     **/
+    public boolean rightTriggerPressed() {
+    	return (getTriggerAxis() < 0);
+    }
+    /**
+     * Check if left trigger is pressed (trigger axis > 0).
+     * @deprecated Prone to looping issues. Use
+     * PlasmaGamepad.getLeftTriggerButton().get() instead.
+     * @return True if pressed
+     **/
+    public boolean leftTriggerPressed() {
+    	return (getTriggerAxis() > 0);
+    }
+    /**
+     * Get DPad axis.
+     * Right = 1
+     * Left = -1
+     * @return DPad axis
+     **/
+    public int getDPadXAxis() {
+        return (int) (super.getRawAxis(6));
+    }
+    /**
+     * Check if D-Pad is pressed right.
+     * @deprecated Prone to looping issues. Use
+     * PlasmaGamepad.getRightDPadButton().get() instead.
+     * @return True if pressed
+     **/
+    public boolean rightDPadPressed() {
+        return (getDPadXAxis() == 1);
+    }
+    /**
+     * Check if D-Pad is pressed left.
+     * @deprecated Prone to looping issues. Use
+     * PlasmaGamepad.getLeftDPadButton().get() instead.
+     * @return True if pressed
+     **/
+    public boolean leftDPadPressed() {
+        return (getDPadXAxis() == -1);
+    }
+    public TriggerButton getRightDPadButton() {
+        return this.rightDPadButton;
+    }
+    public TriggerButton getLeftDPadButton() {
+        return this.leftDPadButton;
+    }
+    public TriggerButton getRightTriggerButton() {
+        return this.rightTriggerButton;
+    }
+    public TriggerButton getLeftTriggerButton() {
+        return this.leftTriggerButton;
+    }
 }
