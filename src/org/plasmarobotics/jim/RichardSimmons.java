@@ -8,6 +8,7 @@
 package org.plasmarobotics.jim;
 
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.gamemode.Autonomous;
@@ -25,7 +26,7 @@ import org.plasmarobotics.jim.sensors.SensorPack;
 public class RichardSimmons extends IterativeRobot {
     private Autonomous auto;
     private Teleop teleop;
-    
+    private Compressor compressor;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -37,6 +38,8 @@ public class RichardSimmons extends IterativeRobot {
                 MechanismPack.getInstance(), 
                 SensorPack.getInstance());
         
+        compressor = new Compressor(Constants.COMPRESSOR_PRESSURE_SWITCH_CHANNEL, Constants.COMPRESSOR_RELAY_CHANNEL);
+        compressor.start();
         SensorPack.getInstance().getGyro().reset();
         
         System.out.println("Robot initilization complete.");

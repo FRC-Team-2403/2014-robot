@@ -88,7 +88,7 @@ public class Teleop{
           
             //Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
             drive.updateTeleop(); // back to tank (AimBot took over
-//            shooter.updateTeleop();
+            shooter.updateTeleop();
           //  pickup.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
            

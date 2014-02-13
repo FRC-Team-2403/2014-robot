@@ -19,10 +19,10 @@ public final class Constants {
     public static final int GAMEPAD_PORT = 3;
     
     //Drive motors
-    public static final int FRONT_LEFT_DRIVE_CHANNEL = 3;
-    public static final int BACK_LEFT_DRIVE_CHANNEL = 4;
-    public static final int FRONT_RIGHT_DRIVE_CHANNEL = 1;
-    public static final int BACK_RIGHT_DRIVE_CHANNEL = 2;
+    public static final int FRONT_LEFT_DRIVE_CHANNEL = 4;
+    public static final int BACK_LEFT_DRIVE_CHANNEL = 2;
+    public static final int FRONT_RIGHT_DRIVE_CHANNEL = 3;
+    public static final int BACK_RIGHT_DRIVE_CHANNEL = 1;
     
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     *Shooter
@@ -39,13 +39,13 @@ public final class Constants {
     public static final int SHOOT_KICKER_FORWARD_CHANNEL = 8;
     public static final int SHOOT_KICKER_REVERSE_CHANNEL = 9;
     
-    //left climb arm
-    public static final int LEFT_SOLENOID_FORWARD_CHANNEL = 10;
-    public static final int LEFT_SOLENOID_REVERSE_CHANNEL = 11;
+    //left shoot
+    public static final int LEFT_SOLENOID_FORWARD_CHANNEL = 1;
+    public static final int LEFT_SOLENOID_REVERSE_CHANNEL = 2;
     
-    //right climb arm
-    public static final int RIGHT_SOLENOID_FORWARD_CHANNEL = 12;
-    public static final int RIGHT_SOLENOID_REVERSE_CHANNEL = 13;
+    //right shoot
+    public static final int RIGHT_SOLENOID_FORWARD_CHANNEL = 3;
+    public static final int RIGHT_SOLENOID_REVERSE_CHANNEL = 4;
     
     //Climb Victors
     public static final int LEFT_CLIMB_VICTOR_CHANNEL = 14;
@@ -85,7 +85,7 @@ public final class Constants {
     public static final int SHOOT_TRIGGER_BUTTON = 1;
     
     //Compressor
-    public static final int PRESSURE_SWITCH_CHANNEL = 14;
+    public static final int COMPRESSOR_PRESSURE_SWITCH_CHANNEL = 8;
     public static final int COMPRESSOR_RELAY_CHANNEL = 1;
     
     //Encoder
@@ -110,12 +110,12 @@ public final class Constants {
     
     //switches
     public static final int SHOOT_LOADED_CHANNEL = 1;
-    public static final int PICKUP_RAISED_CHANNEL = 4;
+    public static final int PICKUP_RAISED_CHANNEL = 7;
     public static final int PICKUP_LOWERED_CHANNEL = 6;
     
     //shooter wait times
     public static final long TRUSS_SHOT_WAIT_TIME = 7;
-    public static final long GOAL_SHOT_WAIT_TIME = 6;
+    public static final long GOAL_SHOT_WAIT_TIME = 1000;
     public static final long PASS_WAIT_TIME = 5;
     
     //pickup 

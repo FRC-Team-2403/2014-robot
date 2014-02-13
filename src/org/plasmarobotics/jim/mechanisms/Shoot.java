@@ -22,10 +22,15 @@ public class Shoot implements Mechanism{
     ControlPack controls;
     boolean goalShoot = true; //if shooting for goal
     
+    int step = 0;
+    
     DigitalInput loadedSwitch = new DigitalInput(Constants.SHOOT_LOADED_CHANNEL);
+    DigitalInput pistonHalf = new DigitalInput(6);
     
     public Shoot(ControlPack controls) {
         this.controls = controls;
+        leftSolenoid = new DoubleSolenoid(Constants.LEFT_SOLENOID_FORWARD_CHANNEL, Constants.LEFT_SOLENOID_REVERSE_CHANNEL);
+        rightSolenoid = new DoubleSolenoid(Constants.RIGHT_SOLENOID_FORWARD_CHANNEL, Constants.RIGHT_SOLENOID_REVERSE_CHANNEL);
     }
         
     public void disable() {
@@ -43,9 +48,14 @@ public class Shoot implements Mechanism{
 
     public void updateTeleop() {
         SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
-        if (ControlPack.getInstance().getShootButton().isPressed()) {
+        if (ControlPack.getInstance().getShootButton().get()) {
             shoot(0);
         }
+        
+        if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
+            retract();
+        }
+        
         
     }
     
@@ -55,34 +65,41 @@ public class Shoot implements Mechanism{
      * @return true when the shot is complete, false if no ball or shot not complete
      */
     public boolean shoot(int mode){
-        long waitTime = 0;
         
-        if (mode == 0) {
-            waitTime = Constants.GOAL_SHOT_WAIT_TIME;
-        } else if (mode == 1) {
-            waitTime = Constants.TRUSS_SHOT_WAIT_TIME;
-        } else if (mode == 2) {
-            waitTime = Constants.PASS_WAIT_TIME;
-        } else {
-            return false;
-        }
         
         if (loadedSwitch.get()) { //not loaded
             return false;
         } else {
-            leftSolenoid.set(DoubleSolenoid.Value.kForward);
-            rightSolenoid.set(DoubleSolenoid.Value.kForward);
-            try {
-                Thread.sleep(waitTime);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            
-            leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-            rightSolenoid.set(DoubleSolenoid.Value.kReverse);
-            return true;
+          switch(step){
+              case 0:
+                  leftSolenoid.set(DoubleSolenoid.Value.kForward);
+                  rightSolenoid.set(DoubleSolenoid.Value.kForward);
+                  step++;
+                  break;
+                  
+              case 1:
+                  if(!pistonHalf.get())
+                      step++;
+                  break;
+                  
+              case 2:
+                  leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+                  rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+                  break;
+                  
+              default:
+                  
+                  return true;
+          }
         }
+        return false;
         
     }
+     
+    private void retract(){
+        leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+        rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+        step = 0;
         
+    }
 }
