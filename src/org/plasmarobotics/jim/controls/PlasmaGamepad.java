@@ -18,10 +18,10 @@ public class PlasmaGamepad extends Joystick {
             startButton = new ToggleableButton(this, 8),
             leftJoystickButton = new ToggleableButton(this, 9),
             rightJoystickButton = new ToggleableButton(this, 10);
-    private final GhettoButton rightDPadButton = new GhettoButton(this, 6, false),
-            leftDPadButton = new GhettoButton(this, 6, true),
-            rightTriggerButton = new GhettoButton(this, 3, true),
-            leftTriggerButton = new GhettoButton(this, 3, true);
+    private final TriggerButton rightDPadButton = new TriggerButton(this, 6, false),
+            leftDPadButton = new TriggerButton(this, 6, true),
+            rightTriggerButton = new TriggerButton(this, 3, true),
+            leftTriggerButton = new TriggerButton(this, 3, true);
             
     
     public PlasmaGamepad(int port) {
@@ -147,16 +147,16 @@ public class PlasmaGamepad extends Joystick {
     public boolean leftDPadPressed() {
         return (getDPadXAxis() == -1);
     }
-    public GhettoButton getRightDPadButton() {
+    public TriggerButton getRightDPadButton() {
         return this.rightDPadButton;
     }
-    public GhettoButton getLeftDPadButton() {
+    public TriggerButton getLeftDPadButton() {
         return this.leftDPadButton;
     }
-    public GhettoButton getRightTriggerButton() {
+    public TriggerButton getRightTriggerButton() {
         return this.rightTriggerButton;
     }
-    public GhettoButton getLeftTriggerButton() {
+    public TriggerButton getLeftTriggerButton() {
         return this.leftTriggerButton;
     }
 }
