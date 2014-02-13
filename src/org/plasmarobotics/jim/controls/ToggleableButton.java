@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @author Jim
  */
 public class ToggleableButton extends JoystickButton{
-    private boolean isHeld = false; //If the button is being held
+    protected boolean isHeld = false; //If the button is being held
 
     /**
      * Creates an instance of the toggleableButton class
@@ -31,7 +31,7 @@ public class ToggleableButton extends JoystickButton{
      * @return True for one time that the button is pressed
      */
     public boolean isPressed() {
-        if(super.get()){
+        if(this.get()){
             
             if(!isHeld){
                 isHeld = true;
@@ -50,7 +50,7 @@ public class ToggleableButton extends JoystickButton{
      * @return True only when the button is released
      */
     public boolean isReleased(){
-        if(super.get()){
+        if(this.get()){
             isHeld = true;
             return false;
         } else if(isHeld){
