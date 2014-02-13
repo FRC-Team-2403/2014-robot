@@ -19,7 +19,10 @@ public class PlasmaGamepad extends Joystick {
             leftJoystickButton = new ToggleableButton(this, 9),
             rightJoystickButton = new ToggleableButton(this, 10);
             
-            
+            final TriggerButton leftTriggerButton = new TriggerButton(this, 3, false),
+                    rightTriggerButton = new TriggerButton(this, 3, true),
+                    rightDPadButton = new TriggerButton(this, 6, true),
+                    leftDPadButton = new TriggerButton(this, 6, false);
     
     public PlasmaGamepad(int port) {
         super(port);
