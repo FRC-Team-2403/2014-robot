@@ -27,6 +27,7 @@ public class RichardSimmons extends IterativeRobot {
     private Autonomous auto;
     private Teleop teleop;
     private Compressor compressor;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -42,7 +43,11 @@ public class RichardSimmons extends IterativeRobot {
         compressor.start();
         SensorPack.getInstance().getGyro().reset();
         
+        
+        
         System.out.println("Robot initilization complete.");
+        
+        
     }
 
     public void autonomousInit() {

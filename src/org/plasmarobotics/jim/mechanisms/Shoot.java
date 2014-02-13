@@ -22,6 +22,8 @@ public class Shoot implements Mechanism{
     ControlPack controls;
     boolean goalShoot = true; //if shooting for goal
     
+    boolean shoot = false;
+    
     int step = 0;
     
     DigitalInput loadedSwitch = new DigitalInput(Constants.SHOOT_LOADED_CHANNEL);
@@ -31,6 +33,8 @@ public class Shoot implements Mechanism{
         this.controls = controls;
         leftSolenoid = new DoubleSolenoid(Constants.LEFT_SOLENOID_FORWARD_CHANNEL, Constants.LEFT_SOLENOID_REVERSE_CHANNEL);
         rightSolenoid = new DoubleSolenoid(Constants.RIGHT_SOLENOID_FORWARD_CHANNEL, Constants.RIGHT_SOLENOID_REVERSE_CHANNEL);
+        
+       
     }
         
     public void disable() {
@@ -48,13 +52,20 @@ public class Shoot implements Mechanism{
 
     public void updateTeleop() {
         SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
-        if (ControlPack.getInstance().getShootButton().get()) {
-            shoot(0);
+        if (ControlPack.getInstance().getShootButton().isPressed()) {
+            shoot = true;
+
+            
         }
         
         if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
             retract();
         }
+        
+        if(shoot){
+            shoot(0);
+        }
+        System.out.println(pistonHalf.get());
         
         
     }
@@ -68,6 +79,7 @@ public class Shoot implements Mechanism{
         
         
         if (loadedSwitch.get()) { //not loaded
+            shoot = false;
             return false;
         } else {
           switch(step){
@@ -85,10 +97,15 @@ public class Shoot implements Mechanism{
               case 2:
                   leftSolenoid.set(DoubleSolenoid.Value.kReverse);
                   rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+                  step++;
                   break;
+                  
+              case 3:
                   
               default:
                   
+                  step = 0;
+                  shoot = false;
                   return true;
           }
         }
@@ -102,4 +119,11 @@ public class Shoot implements Mechanism{
         step = 0;
         
     }
+
+    /**
+     * used as an updateTeleop
+     */
+   
+    
+    
 }

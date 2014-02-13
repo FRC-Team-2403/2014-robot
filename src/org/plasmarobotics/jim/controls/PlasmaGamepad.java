@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.plasmarobotics.jim.controls;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -93,41 +97,11 @@ public class PlasmaGamepad extends Joystick {
      * Get trigger axis.
      * Right depressed -> -1
      * Left depressed -> +1
-     * Both fully depressed/neither touched = 0
+     * Both fully depressed = 0
      **/
     public double getTriggerAxis() {
         return super.getRawAxis(3);
     }
-    /**
-     * Check if right trigger is pressed (trigger axis < 0).
-     **/
-    public boolean rightTriggerPressed() {
-    	return (getTriggerAxis() < 0);
-    }
-    /**
-     * Check if left trigger is pressed (trigger axis > 0).
-     **/
-    public boolean leftTriggerPressed() {
-    	return (getTriggerAxis() > 0);
-    }
-    /**
-     * Get DPad axis.
-     * Right = 1
-     * Left = -1
-     **/
-    public int getDPadXAxis() {
-        return (int) (super.getRawAxis(6));
-    }
-    /**
-     * Check if D-Pad is pressed right.
-     **/
-    public boolean rightDPadPressed() {
-        return (getDPadXAxis() == 1);
-    }
-    /**
-     * Check if D-Pad is pressed left.
-     **/
-    public boolean leftDPadPressed() {
-        return (getDPadXAxis() == -1);
-    }
+    
+    
 }
