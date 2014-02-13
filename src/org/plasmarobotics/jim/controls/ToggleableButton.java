@@ -31,7 +31,7 @@ public class ToggleableButton extends JoystickButton{
      * @return True for one time that the button is pressed
      */
     public boolean isPressed() {
-        if(this.get()){
+        if(super.get()){
             
             if(!isHeld){
                 isHeld = true;
@@ -50,7 +50,7 @@ public class ToggleableButton extends JoystickButton{
      * @return True only when the button is released
      */
     public boolean isReleased(){
-        if(this.get()){
+        if(super.get()){
             isHeld = true;
             return false;
         } else if(isHeld){
