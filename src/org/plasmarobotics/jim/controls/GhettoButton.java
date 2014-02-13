@@ -15,11 +15,8 @@ import edu.wpi.first.wpilibj.GenericHID;
  * boolean value based its return.
  * @author Allek
  */
-public class GhettoButton {
-    private GenericHID joystick;
-    private int axisNumber;
-    private boolean isHeld = false,
-            negativeEnd;
+public class GhettoButton extends ToggleableButton {
+    private boolean negativeEnd;
     
     /**
      * @param joystick The joystick
@@ -27,8 +24,7 @@ public class GhettoButton {
      * @param negativeEnd If axis value approaches -1 when target entity is active.
      **/
     public GhettoButton(GenericHID joystick, int axisNumber, boolean negativeEnd) {
-        this.joystick = joystick;
-        this.axisNumber = axisNumber;
+        super(joystick, axisNumber);
         this.negativeEnd = negativeEnd;
     }
     public boolean get() {
