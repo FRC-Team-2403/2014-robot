@@ -4,6 +4,7 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
+import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
 import org.plasmarobotics.jim.Aimbot;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
@@ -15,13 +16,17 @@ import org.plasmarobotics.jim.mechanisms.Shoot;
  * @author cathy 
  */
 public class Autonomous {
+    private static final int SWITCH_ONE_PORT = 2,
+            SWITCH_TWO_PORT = 3;
+    
     Drive drive;
     Shoot shooter;
     Pickup pickup;
     byte setting; //which autonomous?
     byte step;
     Aimbot aimbot;
-    
+    DigitalIOButton optionsSwitchOne,
+            optionSwitchTwo; //autonomous mode selection switches
     /**
      * creates an autonomous object that handles all things autonomous
      * @param mechanisms mechanismPack.getInstance()
@@ -41,7 +46,9 @@ public class Autonomous {
         step = 0;
         
         //get setting 
-        
+        optionsSwitchOne = new DigitalIOButton(SWITCH_ONE_PORT);
+        optionSwitchTwo = new DigitalIOButton(SWITCH_TWO_PORT);
+                
     }
     /**
      * prepares the robot for autonomous
@@ -51,12 +58,34 @@ public class Autonomous {
         drive.setupAutonomous();
         shooter.setupAutonomous();
 //        pickup.setupAutonomous();
+        if(optionsSwitchOne.get())
+            setting += 1;
+        
+        if(optionSwitchTwo.get())
+            setting += 2;
+        
+        
     }
     /**
      * This is the code that runs continously during auto
      */
     public void run(){
-        
+        switch(setting){
+            case 0:
+                autoRunOne();
+                break;
+            case 1:
+                autoRunTwo();
+                break;
+            case 2:
+                autoRunThree();
+                break;
+            case 3:
+                autoRunFour();
+                break;
+            
+                      
+        }
             
     }
     /**
