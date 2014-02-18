@@ -22,10 +22,10 @@ public class Shoot implements Mechanism{
     ControlPack controls;
     boolean goalShoot = true; //if shooting for goal
     
-    boolean shoot = false;
-    
-    int step = 0;
-    
+    boolean shoot = false;//allows for only one execution of shoot
+    int shootingMode = 0;//0=high, 1=truss, 2=pass
+    int step = 0;//step in the state machine
+    long timeToWait; //how long to sleep the thread in truss and pass shots
     DigitalInput loadedSwitch = new DigitalInput(Constants.SHOOT_LOADED_CHANNEL);
     DigitalInput pistonHalf = new DigitalInput(6);
     
@@ -52,20 +52,24 @@ public class Shoot implements Mechanism{
 
     public void updateTeleop() {
         SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
-        if (ControlPack.getInstance().getShootButton().isPressed()) {
+        if (controls.getShootButton().isPressed()) {
             shoot = true;
-
-            
+            System.out.println("shoot");
         }
         
-        if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
+        if(controls.getToggleShootButton().isPressed()){
+            toggleShootMode();
+        }
+            
+        if(controls.getGamepad().getXButton().isPressed()){
             retract();
         }
         
         if(shoot){
-            shoot(0);
+            shoot(shootingMode);
         }
-        System.out.println(pistonHalf.get());
+       
+        
         
         
     }
@@ -76,39 +80,57 @@ public class Shoot implements Mechanism{
      * @return true when the shot is complete, false if no ball or shot not complete
      */
     public boolean shoot(int mode){
+        shootingMode = mode;
         
-        
-        if (loadedSwitch.get()) { //not loaded
-            shoot = false;
-            return false;
-        } else {
-          switch(step){
-              case 0:
-                  leftSolenoid.set(DoubleSolenoid.Value.kForward);
-                  rightSolenoid.set(DoubleSolenoid.Value.kForward);
-                  step++;
-                  break;
-                  
-              case 1:
-                  if(!pistonHalf.get())
-                      step++;
-                  break;
-                  
-              case 2:
-                  leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-                  rightSolenoid.set(DoubleSolenoid.Value.kReverse);
-                  step++;
-                  break;
-                  
-              case 3:
-                  
-              default:
-                  
-                  step = 0;
-                  shoot = false;
-                  return true;
-          }
+
+
+        switch(step){
+            case 0:
+                if(!loadedSwitch.get()){
+                    leftSolenoid.set(DoubleSolenoid.Value.kForward);
+                    rightSolenoid.set(DoubleSolenoid.Value.kForward);
+                    step++;    
+                } else{
+                    shoot = false;
+                    return false;
+                }
+
+                break;
+
+            case 1:
+                if(shootingMode != 0){
+                    try{
+                        Thread.sleep(timeToWait);
+                        System.out.println("Sleeping");
+                    }catch(Exception e){
+
+                    }
+                    step++;
+                }
+
+
+                if(!pistonHalf.get())
+                    step++;
+
+
+                break;
+
+            case 2:
+                leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+                rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+                step++;
+                break;
+
+            default:
+
+                step = 0;
+                shoot = false;
+                return true;
+
+
         }
+
+       
         return false;
         
     }
@@ -120,9 +142,21 @@ public class Shoot implements Mechanism{
         
     }
 
-    /**
-     * used as an updateTeleop
-     */
+    private void toggleShootMode(){
+        System.out.println("Changing shooting mode");
+        if(shootingMode == 2)
+            shootingMode = -1;
+        
+        shootingMode += 1;
+        
+        if(shootingMode == 1)
+            timeToWait = Constants.TRUSS_SHOT_WAIT_TIME;
+        
+        if(shootingMode == 2)
+            timeToWait = Constants.PASS_WAIT_TIME;
+                
+        SmartDashboard.putNumber("shooting mode", shootingMode);
+    }
    
     
     

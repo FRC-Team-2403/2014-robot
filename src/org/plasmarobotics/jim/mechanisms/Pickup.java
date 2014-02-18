@@ -44,12 +44,12 @@ public class Pickup implements Mechanism{
         leftPickupRoller = new Victor(Constants.LEFT_PICKUP_ROLLER_CHANNEL);
         pickupUpDown = new Victor(1, Constants.PICKUP_RAISE_LOWER_CHANNEL);
         
-        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_A_CHANNEL);
+        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_B_CHANNEL);
         //sensors
         pickupLoweredSwitch = new DigitalInput(Constants.PICKUP_LOWERED_CHANNEL);
-        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_SWITCH);
+        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_CHANNEL);
         
-        controls = ControlPack.getInstance();
+        this.controls = ControlPack.getInstance();
         System.out.println("Pickup online");
     }
     
@@ -138,36 +138,50 @@ public class Pickup implements Mechanism{
     }
 
     public void updateTeleop() {
-       if(controls.getRaiseLowerShooterButton().isPressed()){
-           if(isRaised)
-               this.lower();
-           else
-               this.raise();
+//       if(controls.getRaiseLowerShooterButton().isPressed()){
+//           if(isRaised)
+//               this.lower();
+//           else
+//               this.raise();
+//           
+//           isRaised = !isRaised;
+//       }
+//      
+        pickupUpDown.set(0);
+        
+        if(controls.getGamepad().getLeftJoystickButton().get())
+            pickupUpDown.set(-.5);
+        
+        if(controls.getGamepad().getRightJoystickButton().get())
+            pickupUpDown.set(.5);
+        
+        
+       //moving the rollers
+       leftPickupRoller.set(controls.getGamepad().getTriggerAxis());
+       rightPickupRoller.set(controls.getGamepad().getTriggerAxis());
            
-           isRaised = !isRaised;
-       }
-       
-       if(controls.getBackwardPickUpButton().isPressed()){
-           if(isPickupering){
-               this.stop();
-           } else{
-               this.reverse();
-           }
-           
-           isPickupering = !isPickupering;
-               
-       }
-           
-       
-       if(controls.getFowardPickUpButton().isPressed()){
-           if (isPickupering) {
-               this.stop();
-           } else {
-               this.forward();
-           }
-           
-           isPickupering = !isPickupering;
-       }
+        
+//       if(controls.getBackwardPickUpButton().isPressed()){
+//           if(isPickupering){
+//               this.stop();
+//           } else{
+//               this.reverse();
+//           }
+//           
+//           isPickupering = !isPickupering;
+//               
+//       }
+//           
+//       
+//       if(controls.getFowardPickUpButton().isPressed()){
+//           if (isPickupering) {
+//               this.stop();
+//           } else {
+//               this.forward();
+//           }
+//           
+//           isPickupering = !isPickupering;
+//       }
           
        
        

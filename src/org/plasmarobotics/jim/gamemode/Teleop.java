@@ -43,7 +43,7 @@ public class Teleop{
         //mechanisms
         this.drive = mechanisms.getDrive();
         this.shooter = mechanisms.getShooter();
-      //  this.pickup = mechanisms.getPickup();
+        this.pickup = mechanisms.getPickup();
         
         this.aimbot = new Aimbot(sensors, mechanisms);
           
@@ -89,7 +89,7 @@ public class Teleop{
             //Logger.log("angle: " + SensorPack.getInstance().getGyro().getAbsoluteAngle(), this, 3);
             drive.updateTeleop(); // back to tank (AimBot took over
             shooter.updateTeleop();
-          //  pickup.updateTeleop();
+            pickup.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
            
         

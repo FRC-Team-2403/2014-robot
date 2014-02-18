@@ -50,6 +50,9 @@ public final class ControlPack {
         return gamepad;
     }
     
+    /**
+     * @return Button to activate aimbot
+     */
     public ToggleableButton getAimbotButton(){
         if(Constants.USE_JOYSTICK)
             return getLeftJoystick().getTriggerButton();
@@ -57,6 +60,10 @@ public final class ControlPack {
             return getGamepad().getLeftBumper();
     }
     
+    /**
+     * 
+     * @return Button to activate the shooter
+     */
     public ToggleableButton getShootButton(){
         if(Constants.USE_JOYSTICK)
             return getRightJoystick().getTriggerButton();
@@ -64,8 +71,10 @@ public final class ControlPack {
             return getGamepad().getRightBumper();
     }
     
-    
-    
+    /**
+     * 
+     * @return button to toggle raised state of the pickup
+     */
     public ToggleableButton getRaiseLowerShooterButton(){ //R5 is labeled raise for pickup on board :(
         if(Constants.USE_JOYSTICK)
             return getRightJoystick().getFive();
@@ -74,12 +83,15 @@ public final class ControlPack {
         
     }
 
-    
+    /**
+     * 
+     * @return button to toggle shooting mode of the robot
+     */
     public ToggleableButton getToggleShootButton () { //toggles shoot (?)
         if (Constants.USE_JOYSTICK)
             return getLeftJoystick().getThree();
         else 
-            return getGamepad().getXButton(); //(?)
+            return getGamepad().getYButton(); //(?)
     }
     
     public ToggleableButton getFowardPickUpButton () {

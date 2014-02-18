@@ -22,8 +22,8 @@ public class Autonomous {
     Drive drive;
     Shoot shooter;
     Pickup pickup;
-    byte setting; //which autonomous?
-    byte step;
+    byte setting = 0, //which autonomous?
+        step;
     Aimbot aimbot;
     DigitalIOButton optionsSwitchOne,
             optionSwitchTwo; //autonomous mode selection switches

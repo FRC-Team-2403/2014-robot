@@ -100,6 +100,7 @@ public class PlasmaGamepad extends Joystick {
      * @return Trigger axis value
      **/
     public double getTriggerAxis() {
+        
         return super.getRawAxis(3);
     }
     /**
