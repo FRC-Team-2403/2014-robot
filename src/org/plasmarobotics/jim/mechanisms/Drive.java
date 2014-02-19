@@ -129,7 +129,7 @@ public class Drive implements Mechanism{
      */
     
                 
-    //TODO: add dampening
+
     public boolean drive(double speed, double distance){
         reset();
         double distTraveled = (LeftEncoder.getDistance() + RightEncoder.getDistance())/2;
@@ -154,7 +154,7 @@ public class Drive implements Mechanism{
      * @return true when operation is complete
      */
     
-    //TODO: Fix logic
+
     
     public boolean turn(double degrees){
         reset();

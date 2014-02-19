@@ -22,7 +22,7 @@ public final class Logger {
     }
 
     private static void log(String msg){
-        if(Logger.priority >= priority){ // TODO: always?
+        if(Logger.priority >= priority){ 
             System.out.println("[Logger]: " + msg);
         }
     }

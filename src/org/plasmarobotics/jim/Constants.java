@@ -28,9 +28,9 @@ public final class Constants {
     *Shooter
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
-    
-    public static final double SHOOT_RANGE = 48;
-    public static final double SHOOT_TOLERANCE  = 6;
+    //TODO: Clean old Frobo constants
+    public static final double SHOOT_RANGE = 48;//TODO: get correct range
+    public static final double SHOOT_TOLERANCE  = 2;//TODO: adjust
     //Shooting ports
     public static final int FRONT_SHOOT_CHANNEL = 5;
     public static final int BACK_SHOOT_CHANNEL = 6;
@@ -89,11 +89,11 @@ public final class Constants {
     public static final int COMPRESSOR_RELAY_CHANNEL = 1;
     
     //Encoder
-    public static final int LEFT_ENCODER_A_CHANNEL = 4;
-    public static final int LEFT_ENCODER_B_CHANNEL = 5;
+    public static final int LEFT_ENCODER_A_CHANNEL = 13;
+    public static final int LEFT_ENCODER_B_CHANNEL = 14;
     
-    public static final int RIGHT_ENCODER_A_CHANNEL = 2;
-    public static final int RIGHT_ENCODER_B_CHANNEL = 3;
+    public static final int RIGHT_ENCODER_A_CHANNEL = 11;
+    public static final int RIGHT_ENCODER_B_CHANNEL = 12;
     
     public static final double ENCODER_DISTANCE_PER_PULSE = 0.05138;
     
@@ -116,7 +116,7 @@ public final class Constants {
     //shooter wait times
     public static final long TRUSS_SHOT_WAIT_TIME = 100;
     public static final long GOAL_SHOT_WAIT_TIME = 1000;
-    public static final long PASS_WAIT_TIME = 50;
+    public static final long PASS_WAIT_TIME = 60;
     
     //pickup 
     public static final int RIGHT_PICKUP_ROLLER_CHANNEL = 6;

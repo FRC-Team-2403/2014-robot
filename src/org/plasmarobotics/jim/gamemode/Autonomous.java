@@ -5,6 +5,7 @@
 package org.plasmarobotics.jim.gamemode;
 
 import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
@@ -16,8 +17,8 @@ import org.plasmarobotics.jim.mechanisms.Shoot;
  * @author cathy 
  */
 public class Autonomous {
-    private static final int SWITCH_ONE_PORT = 2,
-            SWITCH_TWO_PORT = 3;
+    private static final int SWITCH_ONE_PORT = 6,
+            SWITCH_TWO_PORT = 7;
     
     Drive drive;
     Shoot shooter;
@@ -55,16 +56,17 @@ public class Autonomous {
      * @author Jim
      */
     public void autoInit(){
+        setting = 0;
         drive.setupAutonomous();
         shooter.setupAutonomous();
-//        pickup.setupAutonomous();
+        pickup.setupAutonomous();
         if(optionsSwitchOne.get())
             setting += 1;
         
         if(optionSwitchTwo.get())
             setting += 2;
         
-        
+        SmartDashboard.putNumber("Auto mode:", setting);
     }
     /**
      * This is the code that runs continously during auto
@@ -72,16 +74,16 @@ public class Autonomous {
     public void run(){
         switch(setting){
             case 0:
-                autoRunOne();
+                driveForwardAuto();
                 break;
             case 1:
-                autoRunTwo();
+                moveNShootAuto();
                 break;
             case 2:
-                autoRunThree();
+                shootSecondBallAuto();
                 break;
             case 3:
-                autoRunFour();
+                avoidBlockerAuto();
                 break;
             
                       
@@ -92,7 +94,7 @@ public class Autonomous {
      * moves 3 ft during autonomous
      * @author cathy
      */
-    public void autoRunOne (){
+    public void driveForwardAuto (){
         switch(step) {
             case 0:
                 if(drive.drive(.3, 36))
@@ -107,7 +109,7 @@ public class Autonomous {
      * moves forward and shoots for the goal
      * @author cathy
      */
-    public void autoRunTwo () {
+    public void moveNShootAuto () {
         switch(step){
             case 0: 
                 if(drive.drive(.3, 36))
@@ -129,7 +131,7 @@ public class Autonomous {
      * moves forward, shoots, then picks up ball to shoot again
      * @author cathy
      */
-    public void autoRunThree () {
+    public void shootSecondBallAuto () {
         switch(step) {
             case 0:
                 //TODO: This distance MAY need to be adjusted based on the shooters ability 
@@ -180,7 +182,7 @@ public class Autonomous {
      * turns, moves forward and shoots
      * @author cathy
      */
-    public void autoRunFour () {
+    public void avoidBlockerAuto () {
         switch(step){
             case 0:
                 if (drive.turn(-90))

@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -31,7 +31,7 @@ public class Pickup implements Mechanism{
     DigitalInput pickupLoweredSwitch,
             pickupLiftedSwitch;
     
-    Encoder pickupEncoder;
+//    Encoder pickupEncoder;
     
     ControlPack controls;
     
@@ -44,10 +44,10 @@ public class Pickup implements Mechanism{
         leftPickupRoller = new Victor(Constants.LEFT_PICKUP_ROLLER_CHANNEL);
         pickupUpDown = new Victor(1, Constants.PICKUP_RAISE_LOWER_CHANNEL);
         
-        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_B_CHANNEL);
+//        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_B_CHANNEL);
         //sensors
-        pickupLoweredSwitch = new DigitalInput(Constants.PICKUP_LOWERED_CHANNEL);
-        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_CHANNEL);
+//        pickupLoweredSwitch = new DigitalInput(Constants.PICKUP_LOWERED_CHANNEL);
+//        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_CHANNEL);
         
         this.controls = ControlPack.getInstance();
         System.out.println("Pickup online");
@@ -59,7 +59,7 @@ public class Pickup implements Mechanism{
      */
     public boolean raise(){
         //not lifted
-        if(!pickupLiftedSwitch.get()){//TODO: add encoder
+        if(!pickupLiftedSwitch.get()){
             pickupUpDown.set(.3);
             return false;
         } else{//it is lifted
@@ -75,7 +75,7 @@ public class Pickup implements Mechanism{
      */
     public boolean lower(){
         //not lowered
-        if(!pickupLoweredSwitch.get()){//TODO: add encoder
+        if(!pickupLoweredSwitch.get()){
             pickupUpDown.set(-.3);
             return false;
         } else{
@@ -149,11 +149,11 @@ public class Pickup implements Mechanism{
 //      
         pickupUpDown.set(0);
         
-        if(controls.getGamepad().getLeftJoystickButton().get())
-            pickupUpDown.set(-.5);
+        if(controls.getGamepad().getAButton().get())
+            pickupUpDown.set(-1);
         
-        if(controls.getGamepad().getRightJoystickButton().get())
-            pickupUpDown.set(.5);
+        if(controls.getGamepad().getBButton().get())
+            pickupUpDown.set(1);
         
         
        //moving the rollers

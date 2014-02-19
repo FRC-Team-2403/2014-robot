@@ -14,7 +14,7 @@ import org.plasmarobotics.jim.Constants;
 public final class SensorPack {
     private static SensorPack pack = null;
     
-    private PlasmaGyro gyro = new PlasmaGyro(Constants.GYRO_CHANNEL, Constants.GYRO_SENSITIVITY);
+    private PlasmaGyro gyro = new PlasmaGyro(Constants.GYRO_CHANNEL);//TODO:gyro sensitivity
     
     private SonicRange rangeFinder = new SonicRange(Constants.RANGE_CHANNEL, 
             Constants.RANGE_CONSTANT);

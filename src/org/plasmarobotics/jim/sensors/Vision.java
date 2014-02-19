@@ -7,6 +7,7 @@
 package org.plasmarobotics.jim.sensors;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -21,10 +22,13 @@ public class Vision {
     public Vision(){
         server = NetworkTable.getTable("SmartDashboard");
         System.out.println("The Eye is open");
+        
+        
     }
     
     public void update(){
-      //  System.out.println("Distance " + server.getDouble("Distance", 0.0));
+        SmartDashboard.putNumber("Hot: ", server.getNumber("Hot", 0.0));
+        
     }
 }
 

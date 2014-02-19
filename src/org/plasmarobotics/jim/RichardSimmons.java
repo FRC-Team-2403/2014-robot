@@ -9,12 +9,15 @@ package org.plasmarobotics.jim;
 
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.gamemode.Autonomous;
 import org.plasmarobotics.jim.gamemode.Teleop;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.sensors.SensorPack;
+import org.plasmarobotics.jim.sensors.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,7 +30,9 @@ public class RichardSimmons extends IterativeRobot {
     private Autonomous auto;
     private Teleop teleop;
     private Compressor compressor;
-    
+    Vision vis = new Vision();
+    private Relay swagLights;
+    private static final int SWAG_LIGHT_PORT = 8;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -43,7 +48,8 @@ public class RichardSimmons extends IterativeRobot {
         compressor.start();
         SensorPack.getInstance().getGyro().reset();
         
-        
+        swagLights = new Relay(SWAG_LIGHT_PORT);
+        swagLights.set(Relay.Value.kOn);//TODO:fix swaglights
         
         System.out.println("Robot initilization complete.");
         
@@ -63,6 +69,7 @@ public class RichardSimmons extends IterativeRobot {
 
     public void teleopInit() {
         teleop.teleopInit();
+        
     }
 
     
@@ -71,6 +78,7 @@ public class RichardSimmons extends IterativeRobot {
      */
     public void teleopPeriodic() {
         teleop.run();
+        vis.update();
     }
 
     public void disabledInit() {
