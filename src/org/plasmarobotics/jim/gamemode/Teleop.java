@@ -6,7 +6,6 @@ package org.plasmarobotics.jim.gamemode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
-import org.plasmarobotics.jim.Constants;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.controls.PlasmaGamepad;
@@ -45,7 +44,7 @@ public class Teleop{
         this.shooter = mechanisms.getShooter();
         this.pickup = mechanisms.getPickup();
         
-        this.aimbot = new Aimbot(sensors, mechanisms);
+        this.aimbot = new Aimbot();
           
         
     }

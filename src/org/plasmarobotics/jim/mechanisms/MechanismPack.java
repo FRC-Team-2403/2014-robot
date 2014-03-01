@@ -17,9 +17,9 @@ public final class MechanismPack {
     private SensorPack sensors = SensorPack.getInstance();
     private ControlPack controls = ControlPack.getInstance();
     
-    private Drive drive = new Drive(controls, sensors);
-    private Shoot shooter = new Shoot(controls);
-    private Pickup pickup = new Pickup(controls, sensors);
+    private Drive drive = new Drive();
+    private Shoot shooter = new Shoot();
+    private Pickup pickup = new Pickup();
 
     /**
      * prevents instantiation

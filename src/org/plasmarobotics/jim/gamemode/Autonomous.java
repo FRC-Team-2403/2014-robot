@@ -137,7 +137,7 @@ public class Autonomous {
                 //TODO: This distance MAY need to be adjusted based on the shooters ability 
                 // to hit at that distance or not.  
                 
-                if (drive.drive(.3, 36))
+                if (drive.drive(.3, 36) && pickup.lower())
                     step++;
                 break;
             case 1:
@@ -148,15 +148,13 @@ public class Autonomous {
                 if (shooter.shoot(0))
                     step++;
                 break;
+            
             case 3:
-                if (pickup.lower())
-                    step++;
+                pickup.forward();
+                step++;
+                
                 break;
             case 4:
-                if (pickup.forward())
-                    step++;
-                break;
-            case 5:
                 //TODO: This distance MAY need to be adjusted based on the shooters ability 
                 // to hit at that distance or not.  
                 if (drive.drive(.3, -42))
@@ -185,7 +183,7 @@ public class Autonomous {
     public void avoidBlockerAuto () {
         switch(step){
             case 0:
-                if (drive.turn(-90))
+                if (drive.smartTurn(-90))
                     step++;
                 break;
             case 1:

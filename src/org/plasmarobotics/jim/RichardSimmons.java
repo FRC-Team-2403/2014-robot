@@ -27,12 +27,14 @@ import org.plasmarobotics.jim.sensors.Vision;
  * directory.
  */
 public class RichardSimmons extends IterativeRobot {
+    
     private Autonomous auto;
     private Teleop teleop;
     private Compressor compressor;
     Vision vis = new Vision();
+    
     private Relay swagLights;
-    private static final int SWAG_LIGHT_PORT = 8;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -44,11 +46,11 @@ public class RichardSimmons extends IterativeRobot {
                 MechanismPack.getInstance(), 
                 SensorPack.getInstance());
         
-        compressor = new Compressor(Constants.COMPRESSOR_PRESSURE_SWITCH_CHANNEL, Constants.COMPRESSOR_RELAY_CHANNEL);
+        compressor = new Compressor(Channels.COMPRESSOR_PRESSURE_SWITCH_CHANNEL, Channels.COMPRESSOR_RELAY_CHANNEL);
         compressor.start();
         SensorPack.getInstance().getGyro().reset();
         
-        swagLights = new Relay(SWAG_LIGHT_PORT);
+        swagLights = new Relay(Channels.SWAG_LIGHT_PORT);
         swagLights.set(Relay.Value.kOn);//TODO:fix swaglights
         
         System.out.println("Robot initilization complete.");

@@ -4,7 +4,7 @@
  */
 package org.plasmarobotics.jim.mechanisms;
 
-import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Channels;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import org.plasmarobotics.jim.Logger;
@@ -38,29 +38,27 @@ public class Drive implements Mechanism{
     
     /**
      * Used to create a FroboDrive object to control all driving operations
-     * 
-     * @param leftJoystick Left joystick for tank drive
-     * @param rightJoystick Right joystick for tank drive
+     *
      */
-    public Drive(ControlPack controls, SensorPack sensors){
+    public Drive(){
         //Binds the joysticks...
-        this.rightJoystick = controls.getRightJoystick();
-        this.leftJoystick = controls.getLeftJoystick(); 
-        this.gamepad = controls.getGamepad();
+        this.rightJoystick = ControlPack.getInstance().getRightJoystick();
+        this.leftJoystick = ControlPack.getInstance().getLeftJoystick(); 
+        this.gamepad = ControlPack.getInstance().getGamepad();
         
         
         //Creates a RobotDrive...
-        chassis = new RobotDrive(Constants.FRONT_LEFT_DRIVE_CHANNEL, 
-                Constants.BACK_LEFT_DRIVE_CHANNEL, 
-                Constants.FRONT_RIGHT_DRIVE_CHANNEL, 
-                Constants.BACK_RIGHT_DRIVE_CHANNEL);
+        chassis = new RobotDrive(Channels.FRONT_LEFT_DRIVE_CHANNEL, 
+                Channels.BACK_LEFT_DRIVE_CHANNEL, 
+                Channels.FRONT_RIGHT_DRIVE_CHANNEL, 
+                Channels.BACK_RIGHT_DRIVE_CHANNEL);
         
         //setting up encoders
-        this.LeftEncoder = sensors.getLeftEncoder();
-        this.RightEncoder = sensors.getRightEncoder();
+        this.LeftEncoder = SensorPack.getInstance().getLeftEncoder();
+        this.RightEncoder = SensorPack.getInstance().getRightEncoder();
                 
         //gyro
-        this.gyro = sensors.getGyro();
+        this.gyro = SensorPack.getInstance().getGyro();
         
         // resetNeeded = true;
         // ^ gyro already reset during init
@@ -99,7 +97,7 @@ public class Drive implements Mechanism{
      * called periodically during teleop
      */
     public void updateTeleop(){
-        if (Constants.USE_JOYSTICK) {
+        if (ControlPack.USE_JOYSTICK) {
             chassis.tankDrive(leftJoystick, rightJoystick); 
         } else {
             chassis.arcadeDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickXAxis());
@@ -122,13 +120,12 @@ public class Drive implements Mechanism{
     
     
     /**
-     * The robot will drive in a straight line for a given distance
+     * The robot will drive in a straight line for a given distance using two encoders and a gyro
      * @param speed Speed of motors (-1 to 1 scale)
      * @param distance Distance (in inches) to drive
-     * @return true when operation is completed
-     */
-    
-                
+     * @return true when operation is completed, false otherwise
+     * @author jim
+     */      
 
     public boolean drive(double speed, double distance){
         reset();
@@ -149,20 +146,19 @@ public class Drive implements Mechanism{
     }
     
     /**
-     * Turns the robot
+     * Turns the robot (needs upside down gyro)
      * @param degrees angle to rotate (degrees, not radians) positive is counter clockwise.
      * @return true when operation is complete
+     * @author jim
      */
     
-
-    
-    public boolean turn(double degrees){
+    public boolean smartTurn(double degrees){
         reset();
-        double distanceToTurn = degrees-gyro.getModdedAngle();
-        if(distanceToTurn > 4){
+        double distanceToTurn = degrees - gyro.getModdedAngle();
+        if(distanceToTurn > 4 || distanceToTurn < -184){ //TODO: test if works
             chassis.drive(.3, 1); //turn at .3 motor speed
             Logger.log("turning left", this, 4);
-        } else if (distanceToTurn < -4){
+        } else if (distanceToTurn < -4 || distanceToTurn > 184){ //TODO: test if works
             chassis.drive(.3, -1);
             Logger.log("turning right", this, 4);
         } else{
@@ -180,6 +176,25 @@ public class Drive implements Mechanism{
     }
     
     /**
+     * Turns a given angle
+     * @param degrees angle to rotate (degrees, not radians) positive is counter clockwise. 
+     * @return true when the action is completed. false otherwise.
+     * @author jim
+     */
+    public boolean stupidTurn(double degrees){
+        reset();
+        if((degrees - gyro.getAngle()) < -4)
+            chassis.drive(3, -1);
+        else if((degrees - gyro.getAngle()) > 4)
+            chassis.drive(.3, 1);
+        else{
+            chassis.drive(0, 0);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
      * tells drive its okay to reset
      * @author Cathy
      */
@@ -188,6 +203,7 @@ public class Drive implements Mechanism{
     }
     /**
      * resets the sensors on the robot
+     * @author jim
      */
     public void reset(){
         if(resetNeeded){
@@ -200,6 +216,9 @@ public class Drive implements Mechanism{
         
     }
 
+    /**
+     * Method called to clean up and disable the drive system.
+     */
     public void disable() {
        
     }

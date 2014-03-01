@@ -17,6 +17,10 @@ import org.plasmarobotics.jim.sensors.SonicRange;
  * @author jim
  */
 public class Aimbot {
+    
+    private static final double DISTANCE_TO_SHOOT = 48,//TODO: adjust
+            TOLERANCE_FOR_SHOT = 5;
+    
     private SonicRange rangeFinder;
     private PlasmaGyro gyro; //unique to Aimbot
     
@@ -67,13 +71,13 @@ public class Aimbot {
      * @param sensors sensor pack used with the rest of robot
      * @param mechanisms mechanism pack used with rest of robot
      */
-    public Aimbot(SensorPack sensors, MechanismPack mechanisms){
-        rangeFinder = sensors.getRangeFinder();
-        drive = mechanisms.getDrive();
+    public Aimbot(){
+        rangeFinder = SensorPack.getInstance().getRangeFinder();
+        drive = MechanismPack.getInstance().getDrive();
         
         Logger.log("Aimbot online.", this, 5);
         //unique to the robot, cannot be reset every action in auto
-        gyro = sensors.getGyro();
+        gyro = SensorPack.getInstance().getGyro();
     }
     
     public void logGyroAngles() {
@@ -88,7 +92,7 @@ public class Aimbot {
     public boolean faceWall(){
         // problem in here somewhere: never stops turning
         logGyroAngles();
-        return drive.turn(gyro.getZero());
+        return drive.smartTurn(gyro.getZero());
     }
     
     /**
@@ -97,14 +101,14 @@ public class Aimbot {
      */
     public boolean setRange(){
         Logger.log("Range: " + rangeFinder.getDistance(), this, 1);
-        if(rangeFinder.isClose(Constants.SHOOT_RANGE, Constants.SHOOT_TOLERANCE)){
+        if(rangeFinder.isClose(DISTANCE_TO_SHOOT, TOLERANCE_FOR_SHOT)){
             drive.drive(0, 0);
             return true;
         }
             
         
         //TODO: Calculate distances to travel
-        if(rangeFinder.getDistance() - Constants.SHOOT_RANGE > 0){//robot is to far
+        if(rangeFinder.getDistance() - DISTANCE_TO_SHOOT> 0){//robot is to far
             drive.drive(-.3, 12*4);//drive backwards
             Logger.log("Driving backwards...", this, 4);
             

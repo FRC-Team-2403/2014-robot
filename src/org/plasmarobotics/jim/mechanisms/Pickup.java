@@ -5,26 +5,20 @@
 package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
-import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.controls.ControlPack;
-import org.plasmarobotics.jim.sensors.SensorPack;
 
 /**
  * This class handles pickup operations of the robot
- * @author bryce
+ * @author jim
  */
 public class Pickup implements Mechanism{
-    /**
-     * all final ports need to be added to updated Constants class after testing
-     * on new robot
-     */
     
     //victor motor controlers, reset ports
     Victor leftPickupRoller,
-            rightPickupRoller,
-            pickupUpDown;
+        rightPickupRoller,
+        pickupUpDown;
 
   
     //check port for limit switchs | digital IO
@@ -38,24 +32,28 @@ public class Pickup implements Mechanism{
     boolean isRaised = true, //keep track of where pickup is
             isPickupering = false;
             
-    public Pickup(ControlPack controls, SensorPack sensors){
+    /**
+     * Creates a pickup object using the controlPack and sensorPack
+     */
+    public Pickup(){
         //motors
-        rightPickupRoller = new Victor(Constants.RIGHT_PICKUP_ROLLER_CHANNEL);
-        leftPickupRoller = new Victor(Constants.LEFT_PICKUP_ROLLER_CHANNEL);
-        pickupUpDown = new Victor(1, Constants.PICKUP_RAISE_LOWER_CHANNEL);
+        rightPickupRoller = new Victor(Channels.RIGHT_PICKUP_ROLLER_CHANNEL);
+        leftPickupRoller = new Victor(Channels.LEFT_PICKUP_ROLLER_CHANNEL);
+        pickupUpDown = new Victor(1, Channels.PICKUP_RAISE_LOWER_CHANNEL);
         
-//        pickupEncoder = new Encoder(Constants.PICKUP_ENCODER_A_CHANNEL, Constants.PICKUP_ENCODER_B_CHANNEL);
-        //sensors
-//        pickupLoweredSwitch = new DigitalInput(Constants.PICKUP_LOWERED_CHANNEL);
-//        pickupLiftedSwitch = new DigitalInput(Constants.PICKUP_RAISED_CHANNEL);
+//        pickupEncoder = new Encoder(Channels.PICKUP_ENCODER_A_CHANNEL, Channels.PICKUP_ENCODER_B_CHANNEL);
+//        sensors
+//        pickupLoweredSwitch = new DigitalInput(Channels.PICKUP_LOWERED_CHANNEL);
+//        pickupLiftedSwitch = new DigitalInput(Channels.PICKUP_RAISED_CHANNEL);
         
-        this.controls = ControlPack.getInstance();
+        
         System.out.println("Pickup online");
     }
     
     /**
      * raise the pickup mechanism
      * @return true when the pickup is raised false otherwise
+     * @author jim
      */
     public boolean raise(){
         //not lifted
@@ -88,32 +86,35 @@ public class Pickup implements Mechanism{
      * pickup the ball
      * @return if the pickup is picking up
      */
-    public boolean forward(){
+    public void forward(){
         leftPickupRoller.set(1);
         rightPickupRoller.set(1);
-        return true;
+        
     }
     
     /**
      * stop the pickup
-     * @return when the action is completed
+     * 
      */
-    public boolean stop(){
+    public void stop(){
         leftPickupRoller.set(0);
         rightPickupRoller.set(0);
-        return true;
+        
     }
     
     /**
      * reverse the pickup 
      * @return if the pickup is in reverse
      */
-    public boolean reverse(){
+    public void reverse(){
         leftPickupRoller.set(-1);
         rightPickupRoller.set(-1);
-        return true;
+        
     }
 
+    /**
+     * Stops the pickup and raises it
+     */
     public void disable() {
         this.stop();
         this.raise();

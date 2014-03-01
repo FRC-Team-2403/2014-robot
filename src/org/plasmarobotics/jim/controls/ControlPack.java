@@ -6,19 +6,20 @@ package org.plasmarobotics.jim.controls;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Channels;
 
 /**
  * Class to hold all controls of the robot
  * @author Jim
  */
 public final class ControlPack {
+    public static final boolean USE_JOYSTICK = false;
     private static ControlPack controlPack = null;
     
     //controllers
-    private PlasmaJoystick rightJoystick = new PlasmaJoystick(Constants.LEFT_STICK_PORT);
-    private PlasmaJoystick leftJoystick = new PlasmaJoystick(Constants.RIGHT_STICK_PORT);
-    private PlasmaGamepad gamepad = new PlasmaGamepad(Constants.GAMEPAD_PORT);
+    private PlasmaJoystick rightJoystick = new PlasmaJoystick(Channels.LEFT_STICK_PORT);
+    private PlasmaJoystick leftJoystick = new PlasmaJoystick(Channels.RIGHT_STICK_PORT);
+    private PlasmaGamepad gamepad = new PlasmaGamepad(Channels.GAMEPAD_PORT);
     
     /**
      * prevents instantiation
@@ -54,7 +55,7 @@ public final class ControlPack {
      * @return Button to activate aimbot
      */
     public ToggleableButton getAimbotButton(){
-        if(Constants.USE_JOYSTICK)
+        if(USE_JOYSTICK)
             return getLeftJoystick().getTriggerButton();
         else
             return getGamepad().getLeftBumper();
@@ -65,7 +66,7 @@ public final class ControlPack {
      * @return Button to activate the shooter
      */
     public ToggleableButton getShootButton(){
-        if(Constants.USE_JOYSTICK)
+        if(USE_JOYSTICK)
             return getRightJoystick().getTriggerButton();
         else
             return getGamepad().getRightBumper();
@@ -76,7 +77,7 @@ public final class ControlPack {
      * @return button to toggle raised state of the pickup
      */
     public ToggleableButton getRaiseLowerShooterButton(){ //R5 is labeled raise for pickup on board :(
-        if(Constants.USE_JOYSTICK)
+        if(USE_JOYSTICK)
             return getRightJoystick().getFive();
         else
             return getGamepad().getRightBumper();
@@ -88,21 +89,21 @@ public final class ControlPack {
      * @return button to toggle shooting mode of the robot
      */
     public ToggleableButton getToggleShootButton () { //toggles shoot (?)
-        if (Constants.USE_JOYSTICK)
+        if (USE_JOYSTICK)
             return getLeftJoystick().getThree();
         else 
             return getGamepad().getYButton(); //(?)
     }
     
     public ToggleableButton getFowardPickUpButton () {
-        if (Constants.USE_JOYSTICK)
+        if (USE_JOYSTICK)
             return getRightJoystick().getThree();
         else
             return getGamepad().getXButton();
     }
     
     public ToggleableButton getBackwardPickUpButton () {
-        if (Constants.USE_JOYSTICK)
+        if (USE_JOYSTICK)
             return getRightJoystick().getTwo();
         else 
             return getGamepad().getBButton();

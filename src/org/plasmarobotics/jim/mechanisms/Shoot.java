@@ -7,7 +7,7 @@ package org.plasmarobotics.jim.mechanisms;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 /**
@@ -15,26 +15,30 @@ import org.plasmarobotics.jim.controls.ControlPack;
  * @author Jim
  */
 public class Shoot implements Mechanism{
-
-    DoubleSolenoid leftSolenoid,
+    //shooter wait times
+    private static final long TRUSS_SHOT_WAIT_TIME = 100;
+    private static final long GOAL_SHOT_WAIT_TIME = 1000;
+    private static final long PASS_WAIT_TIME = 60;
+    
+    private DoubleSolenoid leftSolenoid,
             rightSolenoid;
 
-    ControlPack controls;
-    boolean goalShoot = true; //if shooting for goal
+    private boolean goalShoot = true; //if shooting for goal
     
-    boolean shoot = false;//allows for only one execution of shoot
-    int shootingMode = 0;//0=high, 1=truss, 2=pass
-    int step = 0;//step in the state machine
-    long timeToWait; //how long to sleep the thread in truss and pass shots
-    DigitalInput loadedSwitch = new DigitalInput(Constants.SHOOT_LOADED_CHANNEL);
-    DigitalInput pistonHalf = new DigitalInput(6);
+    private boolean shoot = false;//allows for only one execution of shoot
+    private int shootingMode = 0;//0=high, 1=truss, 2=pass
+    private int step = 0;//step in the state machine
+    private long timeToWait; //how long to sleep the thread in truss and pass shots
+    private DigitalInput loadedSwitch = new DigitalInput(Channels.SHOOT_LOADED_CHANNEL);
+    private DigitalInput pistonHalf = new DigitalInput(6);
     
-    public Shoot(ControlPack controls) {
-        this.controls = controls;
-        leftSolenoid = new DoubleSolenoid(Constants.LEFT_SOLENOID_FORWARD_CHANNEL, Constants.LEFT_SOLENOID_REVERSE_CHANNEL);
-        rightSolenoid = new DoubleSolenoid(Constants.RIGHT_SOLENOID_FORWARD_CHANNEL, Constants.RIGHT_SOLENOID_REVERSE_CHANNEL);
+    /**
+     * Creates a shoot object to control shooting aspects of the robot
+     */
+    public Shoot() {
+        leftSolenoid = new DoubleSolenoid(Channels.LEFT_SOLENOID_FORWARD_CHANNEL, Channels.LEFT_SOLENOID_REVERSE_CHANNEL);
+        rightSolenoid = new DoubleSolenoid(Channels.RIGHT_SOLENOID_FORWARD_CHANNEL, Channels.RIGHT_SOLENOID_REVERSE_CHANNEL);
         
-       
     }
         
     public void disable() {
@@ -52,16 +56,16 @@ public class Shoot implements Mechanism{
 
     public void updateTeleop() {
         SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
-        if (controls.getShootButton().isPressed()) {
+        if (ControlPack.getInstance().getShootButton().isPressed()) {
             shoot = true;
             System.out.println("shoot");
         }
         
-        if(controls.getToggleShootButton().isPressed()){
+        if(ControlPack.getInstance().getToggleShootButton().isPressed()){
             toggleShootMode();
         }
             
-        if(controls.getGamepad().getXButton().isPressed()){
+        if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
             retract();
         }
         
@@ -69,9 +73,6 @@ public class Shoot implements Mechanism{
             shoot(shootingMode);
         }
        
-        
-        
-        
     }
     
     /**
@@ -81,9 +82,7 @@ public class Shoot implements Mechanism{
      */
     public boolean shoot(int mode){
         shootingMode = mode;
-        
-
-
+       
         switch(step){
             case 0:
                 if(!loadedSwitch.get()){
@@ -111,8 +110,6 @@ public class Shoot implements Mechanism{
 
                 if(!pistonHalf.get())
                     step++;
-
-
                 break;
 
             case 2:
@@ -127,9 +124,7 @@ public class Shoot implements Mechanism{
                 shoot = false;
                 return true;
 
-
         }
-
        
         return false;
         
@@ -150,14 +145,12 @@ public class Shoot implements Mechanism{
         shootingMode += 1;
         
         if(shootingMode == 1)
-            timeToWait = Constants.TRUSS_SHOT_WAIT_TIME;
+            timeToWait = TRUSS_SHOT_WAIT_TIME;
         
         if(shootingMode == 2)
-            timeToWait = Constants.PASS_WAIT_TIME;
+            timeToWait = PASS_WAIT_TIME;
                 
         SmartDashboard.putNumber("shooting mode", shootingMode);
     }
-   
-    
     
 }

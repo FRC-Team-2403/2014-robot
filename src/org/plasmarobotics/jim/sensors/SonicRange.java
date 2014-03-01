@@ -7,7 +7,7 @@
 package org.plasmarobotics.jim.sensors;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
-import org.plasmarobotics.jim.Constants;
+import org.plasmarobotics.jim.Channels;
 
 /**
  *This class reads input from a supersonic rangefinder as an analog input
@@ -17,7 +17,7 @@ import org.plasmarobotics.jim.Constants;
 public class SonicRange {
     private AnalogChannel sensor;
     private double rangeConstant; 
-    
+    private static final double RANGE_CONSTANT = .0098;
     /**
      * Creates an instance of SonicRange at the specified channel with 
      * default rangeConstant of .0098
@@ -25,7 +25,7 @@ public class SonicRange {
      */
     public SonicRange(int channel){
         sensor = new AnalogChannel(channel);
-        rangeConstant = Constants.RANGE_CONSTANT;
+        rangeConstant = RANGE_CONSTANT;
     }
     
     /**

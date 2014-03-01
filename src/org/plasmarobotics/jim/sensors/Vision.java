@@ -26,9 +26,23 @@ public class Vision {
         
     }
     
+    /**
+     * called constantly during autonomous
+     */
     public void update(){
         SmartDashboard.putNumber("Hot: ", server.getNumber("Hot", 0.0));
         
+    }
+    
+    /**
+     * @return whether the goal is hot or not
+     */
+    public boolean isHot(){
+        double serverInput = server.getNumber("Hot", 0.0);
+        if(serverInput == 1)
+            return true;
+        else 
+            return false;
     }
 }
 
