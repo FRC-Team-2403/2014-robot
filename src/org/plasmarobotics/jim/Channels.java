@@ -75,6 +75,8 @@ public final class Channels {
     public static final int RIGHT_SOLENOID_FORWARD_CHANNEL = 3;
     public static final int RIGHT_SOLENOID_REVERSE_CHANNEL = 4;
    
-    
+    //catch
+    public static final int CATCH_SOLENOID_REVERSE_CHANNEL = 5;
+    public static final int CATCH_SOLENOID_FORWARD_CHANNEL = 6;
        
 }

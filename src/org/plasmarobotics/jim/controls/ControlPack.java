@@ -21,6 +21,21 @@ public final class ControlPack {
     private PlasmaJoystick leftJoystick = new PlasmaJoystick(Channels.RIGHT_STICK_PORT);
     private PlasmaGamepad gamepad = new PlasmaGamepad(Channels.GAMEPAD_PORT);
     
+    /*
+    *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    *ROBOT CONTROLS
+    *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * Forwards/Backwards -- left stick
+    * Turning -- right stick
+    * Aimbot -- LB
+    * Shoot -- RB
+    * Pickup intake -- RT
+    * Pickup outtake -- LT
+    * Toggle shooting mode -- Y
+    * Raise pickup -- B
+    * Lower pickup -- A
+    * Open catch -- X
+    */
     /**
      * prevents instantiation
      */
@@ -109,12 +124,14 @@ public final class ControlPack {
             return getGamepad().getBButton();
     }
     
+    public ToggleableButton getCatchButton(){
+        return gamepad.getXButton();
+    }
     public static ControlPack getInstance(){
         if(controlPack == null){
             controlPack = new ControlPack();
         }
         return controlPack;
     }
-    
-    
+       
 }

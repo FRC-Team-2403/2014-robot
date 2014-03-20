@@ -10,6 +10,7 @@ import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.controls.PlasmaGamepad;
 import org.plasmarobotics.jim.controls.PlasmaJoystick;
+import org.plasmarobotics.jim.mechanisms.Catch;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
@@ -29,7 +30,7 @@ public class Teleop{
     private Drive drive;
     private Shoot shooter;
     private Pickup pickup;
-    
+    private Catch catcher;
     private Aimbot aimbot;
     
     public Teleop(ControlPack controls, MechanismPack mechanisms, SensorPack sensors){
@@ -43,6 +44,7 @@ public class Teleop{
         this.drive = mechanisms.getDrive();
         this.shooter = mechanisms.getShooter();
         this.pickup = mechanisms.getPickup();
+        this.catcher = mechanisms.getCatcher();
         
         this.aimbot = new Aimbot();
           
@@ -89,6 +91,7 @@ public class Teleop{
             drive.updateTeleop(); // back to tank (AimBot took over
             shooter.updateTeleop();
             pickup.updateTeleop();
+            catcher.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
            
         

@@ -16,6 +16,7 @@ public interface Mechanism {
     public abstract void setupAutonomous();
     
     public abstract void setupTeleop();
+    
     public abstract void updateTeleop();
     
     public abstract void disable();

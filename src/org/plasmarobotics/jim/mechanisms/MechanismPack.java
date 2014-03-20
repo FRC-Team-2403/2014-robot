@@ -20,7 +20,7 @@ public final class MechanismPack {
     private Drive drive = new Drive();
     private Shoot shooter = new Shoot();
     private Pickup pickup = new Pickup();
-
+    private Catch catcher = new Catch();
     /**
      * prevents instantiation
      */
@@ -53,6 +53,13 @@ public final class MechanismPack {
             pack = new MechanismPack();
         }
         return pack;
+    }
+
+    /**
+     * @return the catcher
+     */
+    public Catch getCatcher() {
+        return catcher;
     }
     
 }
