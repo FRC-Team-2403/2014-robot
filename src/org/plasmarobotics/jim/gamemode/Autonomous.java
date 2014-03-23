@@ -4,13 +4,14 @@
  */
 package org.plasmarobotics.jim.gamemode;
 
-import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
 import org.plasmarobotics.jim.mechanisms.Shoot;
+import org.plasmarobotics.jim.sensors.SensorPack;
 
 /**
  * manages actions during autonomous mode
@@ -20,13 +21,15 @@ public class Autonomous {
     private static final int SWITCH_ONE_PORT = 6,
             SWITCH_TWO_PORT = 7;
     
+    String verbAutoModes[] = {"Drive Forward", "Move 'n' shoot", "2 balls", "avoid blocker"};
+    
     Drive drive;
     Shoot shooter;
     Pickup pickup;
     byte setting = 0, //which autonomous?
         step;
     Aimbot aimbot;
-    DigitalIOButton optionsSwitchOne,
+    boolean optionsSwitchOne,
             optionSwitchTwo; //autonomous mode selection switches
     /**
      * creates an autonomous object that handles all things autonomous
@@ -38,17 +41,17 @@ public class Autonomous {
         
         drive = mechanisms.getDrive();
         shooter = mechanisms.getShooter();
-//        pickup = mechanisms.getPickup();
+        pickup = mechanisms.getPickup();
         
         drive.setupAutonomous();
         shooter.setupAutonomous();
 //        pickup.setupAutonomous();
         
         step = 0;
-        
+        aimbot = new Aimbot();
         //get setting 
-        optionsSwitchOne = new DigitalIOButton(SWITCH_ONE_PORT);
-        optionSwitchTwo = new DigitalIOButton(SWITCH_TWO_PORT);
+        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
+        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
                 
     }
     /**
@@ -56,17 +59,21 @@ public class Autonomous {
      * @author Jim
      */
     public void autoInit(){
-        setting = 0;
+         //get setting 
+        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
+        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
+        
         drive.setupAutonomous();
         shooter.setupAutonomous();
         pickup.setupAutonomous();
-        if(optionsSwitchOne.get())
-            setting += 1;
-        
-        if(optionSwitchTwo.get())
-            setting += 2;
-        
-        SmartDashboard.putNumber("Auto mode:", setting);
+//        if(optionsSwitchOne)
+//            setting += 1;
+//        
+//        if(optionSwitchTwo)
+//            setting += 2;
+       setting = 0;
+        System.out.println("autoInit");
+        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
     /**
      * This is the code that runs continously during auto
@@ -74,7 +81,7 @@ public class Autonomous {
     public void run(){
         switch(setting){
             case 0:
-                driveForwardAuto();
+//                driveForwardAuto();
                 break;
             case 1:
                 moveNShootAuto();
@@ -88,7 +95,8 @@ public class Autonomous {
             
                       
         }
-            
+              SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
+        SmartDashboard.putNumber("distance: ", SensorPack.getInstance().getLeftEncoder().getDistance());
     }
     /**
      * moves 3 ft during autonomous
@@ -97,12 +105,20 @@ public class Autonomous {
     public void driveForwardAuto (){
         switch(step) {
             case 0:
-                if(drive.drive(.3, 36))
+//                drive.getChassis().drive(.5, 0);
+//                try{
+//                    Thread.sleep(4000);
+//                } catch (InterruptedException e){
+//                    e.printStackTrace();
+//                }
+                if(drive.drive(.5, 60))
                     step++;
                 break;
             
             default:
                 drive.drive(0, 0);
+                System.out.println("stoppeed");
+                break;
         }
     }
     /**
@@ -110,6 +126,7 @@ public class Autonomous {
      * @author cathy
      */
     public void moveNShootAuto () {
+        
         switch(step){
             case 0: 
                 if(drive.drive(.3, 36))
@@ -209,5 +226,19 @@ public class Autonomous {
         this.step = 0;
     }
     
-    
+    public void disabled(){
+         //get setting 
+        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
+        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
+        
+        setting = 0;
+        if(optionsSwitchOne)
+            setting += 1;
+        
+        if(optionSwitchTwo)
+            setting += 2;
+        
+//        System.out.println(setting);
+        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
+    }
 }

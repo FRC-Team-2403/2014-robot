@@ -6,6 +6,7 @@ package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.Logger;
@@ -18,8 +19,9 @@ public class Shoot implements Mechanism{
     //shooter wait times
     private static final long TRUSS_SHOT_WAIT_TIME = 100;
     private static final long GOAL_SHOT_WAIT_TIME = 1000;
-    private static final long PASS_WAIT_TIME = 60;
+    private static final long PASS_WAIT_TIME = 70;
     
+    private boolean switchOverride;
     private DoubleSolenoid leftSolenoid,
             rightSolenoid;
 
@@ -39,6 +41,7 @@ public class Shoot implements Mechanism{
         leftSolenoid = new DoubleSolenoid(Channels.LEFT_SOLENOID_FORWARD_CHANNEL, Channels.LEFT_SOLENOID_REVERSE_CHANNEL);
         rightSolenoid = new DoubleSolenoid(Channels.RIGHT_SOLENOID_FORWARD_CHANNEL, Channels.RIGHT_SOLENOID_REVERSE_CHANNEL);
         
+        
     }
         
     public void disable() {
@@ -55,15 +58,17 @@ public class Shoot implements Mechanism{
     }
 
     public void updateTeleop() {
-        SmartDashboard.putBoolean("Ball Loaded", !loadedSwitch.get());
+        switchOverride = DriverStation.getInstance().getDigitalIn(5);
+        SmartDashboard.putBoolean("Ball Loaded:", !loadedSwitch.get());
+        SmartDashboard.putBoolean("Switch override",!switchOverride);
         if (ControlPack.getInstance().getShootButton().isPressed()) {
             shoot = true;
             System.out.println("shoot");
         }
-        
-        if(ControlPack.getInstance().getToggleShootButton().isPressed()){
-            toggleShootMode();
-        }
+        shootingMode = 2;
+//        if(ControlPack.getInstance().getToggleShootButton().isPressed()){
+//            toggleShootMode();
+//        }
             
         if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
             retract();
@@ -84,8 +89,9 @@ public class Shoot implements Mechanism{
         shootingMode = mode;
        
         switch(step){
+            //shoot ball out
             case 0:
-                if(!loadedSwitch.get()){
+                if(!loadedSwitch.get() || !switchOverride){
                     leftSolenoid.set(DoubleSolenoid.Value.kForward);
                     rightSolenoid.set(DoubleSolenoid.Value.kForward);
                     step++;    
@@ -96,22 +102,23 @@ public class Shoot implements Mechanism{
 
                 break;
 
+                   //sleep thread
             case 1:
-                if(shootingMode != 0){
+//                if(shootingMode != 0){
                     try{
-                        Thread.sleep(timeToWait);
+                        Thread.sleep(PASS_WAIT_TIME);
                         System.out.println("Sleeping");
                     }catch(Exception e){
-
+                        e.printStackTrace();
                     }
                     step++;
-                }
+                
 
 
-                if(!pistonHalf.get())
-                    step++;
+//                if(!pistonHalf.get())
+//                    step++;
                 break;
-
+                //pull back
             case 2:
                 leftSolenoid.set(DoubleSolenoid.Value.kReverse);
                 rightSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -144,13 +151,17 @@ public class Shoot implements Mechanism{
         
         shootingMode += 1;
         
+        if(shootingMode == 0)
+            timeToWait = GOAL_SHOT_WAIT_TIME;
+        
         if(shootingMode == 1)
             timeToWait = TRUSS_SHOT_WAIT_TIME;
         
         if(shootingMode == 2)
             timeToWait = PASS_WAIT_TIME;
                 
-        SmartDashboard.putNumber("shooting mode", shootingMode);
+        String[] shootingModes = {"Goal", "Truss", "pass"};
+        SmartDashboard.putString("Shooting Mode:", shootingModes[shootingMode] + " shot");
     }
     
 }

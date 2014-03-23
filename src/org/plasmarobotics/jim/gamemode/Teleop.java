@@ -30,7 +30,7 @@ public class Teleop{
     private Drive drive;
     private Shoot shooter;
     private Pickup pickup;
-    private Catch catcher;
+//    private Catch catcher;
     private Aimbot aimbot;
     
     public Teleop(ControlPack controls, MechanismPack mechanisms, SensorPack sensors){
@@ -44,7 +44,7 @@ public class Teleop{
         this.drive = mechanisms.getDrive();
         this.shooter = mechanisms.getShooter();
         this.pickup = mechanisms.getPickup();
-        this.catcher = mechanisms.getCatcher();
+//        this.catcher = mechanisms.getCatcher();
         
         this.aimbot = new Aimbot();
           
@@ -57,7 +57,7 @@ public class Teleop{
     public void teleopInit(){
         drive.setupTeleop();
         shooter.setupTeleop();
-    //    pickup.setupTeleop();
+        pickup.setupTeleop();
     }
     /**
      * This gets called periodically during teleop
@@ -91,10 +91,11 @@ public class Teleop{
             drive.updateTeleop(); // back to tank (AimBot took over
             shooter.updateTeleop();
             pickup.updateTeleop();
-            catcher.updateTeleop();
+//            catcher.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
-           
-        
+            SmartDashboard.putNumber("voltage", SensorPack.getInstance().getRangeFinder().getVoltage());
+            SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
+            SmartDashboard.putNumber("encoder", SensorPack.getInstance().getRightEncoder().get());
         }
         
     }

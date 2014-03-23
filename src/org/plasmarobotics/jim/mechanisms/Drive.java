@@ -72,10 +72,10 @@ public class Drive implements Mechanism{
      * -sets all motor direction
      */
     public void setupTeleop(){
-        chassis.setInvertedMotor(RobotDrive.MotorType.kFrontLeft,true);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kRearLeft,true);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kFrontRight,true);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kRearRight,true);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,true);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,true);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,true);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,true);
         System.out.println("Drive prepared for teleop");
     }
     
@@ -85,10 +85,10 @@ public class Drive implements Mechanism{
      * resets the encoders and gyro
      */
     public void setupAutonomous(){
-        chassis.setInvertedMotor(RobotDrive.MotorType.kFrontLeft,false);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kRearLeft,false);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kFrontRight,false);
-        chassis.setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,false);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,false);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,false);
+        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
         reset();
         System.out.println("Drive prepared for autonomous");
     }
@@ -98,9 +98,9 @@ public class Drive implements Mechanism{
      */
     public void updateTeleop(){
         if (ControlPack.USE_JOYSTICK) {
-            chassis.tankDrive(leftJoystick, rightJoystick); 
+            getChassis().tankDrive(leftJoystick, rightJoystick); 
         } else {
-            chassis.arcadeDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickXAxis());
+            getChassis().arcadeDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickXAxis());
             //chassis.tankDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickYAxis());
         }
         
@@ -129,15 +129,15 @@ public class Drive implements Mechanism{
 
     public boolean drive(double speed, double distance){
         reset();
-        double distTraveled = (LeftEncoder.getDistance() + RightEncoder.getDistance())/2;
+        double distTraveled = -(LeftEncoder.getDistance() + RightEncoder.getDistance())/2;
         
         
         if(distTraveled < distance){
-            chassis.drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve
+            getChassis().drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve 
             return false;
         } else{
             resetNeeded = true;
-            chassis.drive(0, 0);//stop robot
+            getChassis().drive(0, 0);//stop robot
             return true;
            
         }
@@ -155,14 +155,14 @@ public class Drive implements Mechanism{
     public boolean smartTurn(double degrees){
         reset();
         double distanceToTurn = degrees - gyro.getModdedAngle();
-        if(distanceToTurn > 4 || distanceToTurn < -184){ //TODO: test if works
-            chassis.drive(.3, 1); //turn at .3 motor speed
+        if(distanceToTurn > 4 ){ //TODO: test if works
+            getChassis().drive(.3, 1); //turn at .3 motor speed
             Logger.log("turning left", this, 4);
-        } else if (distanceToTurn < -4 || distanceToTurn > 184){ //TODO: test if works
-            chassis.drive(.3, -1);
+        } else if (distanceToTurn < -4  ){ //TODO: test if works
+            getChassis().drive(.3, -1);
             Logger.log("turning right", this, 4);
         } else{
-            chassis.drive(0, 0);
+            getChassis().drive(0, 0);
             Logger.log("stopping robot", this, 4);
             resetNeeded = true;
             return true;
@@ -184,11 +184,11 @@ public class Drive implements Mechanism{
     public boolean stupidTurn(double degrees){
         reset();
         if((degrees - gyro.getAngle()) < -4)
-            chassis.drive(3, -1);
+            getChassis().drive(3, -1);
         else if((degrees - gyro.getAngle()) > 4)
-            chassis.drive(.3, 1);
+            getChassis().drive(.3, 1);
         else{
-            chassis.drive(0, 0);
+            getChassis().drive(0, 0);
             return true;
         }
         return false;
@@ -221,6 +221,13 @@ public class Drive implements Mechanism{
      */
     public void disable() {
        
+    }
+
+    /**
+     * @return the chassis
+     */
+    public RobotDrive getChassis() {
+        return chassis;
     }
     
     

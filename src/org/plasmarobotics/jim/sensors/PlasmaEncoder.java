@@ -22,10 +22,11 @@ public class PlasmaEncoder extends Encoder{
      */
     public PlasmaEncoder(int aChannel, int bChannel, boolean reverseDirection, EncodingType encodingType, double distancePerPulse) {
         super(aChannel, bChannel, reverseDirection, encodingType);
-        this.setDistancePerPulse(distancePerPulse);
+        this.setDistancePerPulse(.04112);
         this.start();
     }
     
     
+
     
 }

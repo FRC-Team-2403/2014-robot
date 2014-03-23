@@ -9,7 +9,6 @@ package org.plasmarobotics.jim;
 
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
 import org.plasmarobotics.jim.controls.ControlPack;
@@ -89,6 +88,10 @@ public class RichardSimmons extends IterativeRobot {
 
     public void disabledContinuous() {
         
+    }
+
+    public void disabledPeriodic() {
+        auto.disabled();
     }
     
     

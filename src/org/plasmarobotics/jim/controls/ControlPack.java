@@ -4,8 +4,6 @@
  */
 package org.plasmarobotics.jim.controls;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.plasmarobotics.jim.Channels;
 
 /**

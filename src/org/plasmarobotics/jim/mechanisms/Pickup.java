@@ -46,7 +46,7 @@ public class Pickup implements Mechanism{
 //        pickupLoweredSwitch = new DigitalInput(Channels.PICKUP_LOWERED_CHANNEL);
 //        pickupLiftedSwitch = new DigitalInput(Channels.PICKUP_RAISED_CHANNEL);
         
-        
+        controls = ControlPack.getInstance();
         System.out.println("Pickup online");
     }
     

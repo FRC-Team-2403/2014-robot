@@ -58,7 +58,7 @@ public class PlasmaGyro extends Gyro{
      * @author jim
      */
     public double getModdedAngle(){
-        return super.getAngle()%360;
+        return -super.getAngle()%360;
             
     }
     
