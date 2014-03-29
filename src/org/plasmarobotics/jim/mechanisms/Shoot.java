@@ -28,7 +28,7 @@ public class Shoot implements Mechanism{
     private boolean goalShoot = true; //if shooting for goal
     
     private boolean shoot = false;//allows for only one execution of shoot
-    private int shootingMode = 0;//0=high, 1=truss, 2=pass
+    private int shootingMode = 0;//0=high, 2=pass
     private int step = 0;//step in the state machine
     private long timeToWait; //how long to sleep the thread in truss and pass shots
     private DigitalInput loadedSwitch = new DigitalInput(Channels.SHOOT_LOADED_CHANNEL);
@@ -65,10 +65,10 @@ public class Shoot implements Mechanism{
             shoot = true;
             System.out.println("shoot");
         }
-        shootingMode = 2;
-//        if(ControlPack.getInstance().getToggleShootButton().isPressed()){
-//            toggleShootMode();
-//        }
+//        shootingMode = 2;
+        if(ControlPack.getInstance().getToggleShootButton().isPressed()){
+            toggleShootMode();
+        }
             
         if(ControlPack.getInstance().getGamepad().getXButton().isPressed()){
             retract();
@@ -86,7 +86,7 @@ public class Shoot implements Mechanism{
      * @return true when the shot is complete, false if no ball or shot not complete
      */
     public boolean shoot(int mode){
-        shootingMode = mode;
+        
        
         switch(step){
             //shoot ball out
@@ -105,8 +105,13 @@ public class Shoot implements Mechanism{
                    //sleep thread
             case 1:
 //                if(shootingMode != 0){
+                if(mode == 0)
+                    timeToWait = PASS_WAIT_TIME;
+                else
+                    timeToWait = GOAL_SHOT_WAIT_TIME;
+                
                     try{
-                        Thread.sleep(PASS_WAIT_TIME);
+                        Thread.sleep(timeToWait);
                         System.out.println("Sleeping");
                     }catch(Exception e){
                         e.printStackTrace();
@@ -146,21 +151,12 @@ public class Shoot implements Mechanism{
 
     private void toggleShootMode(){
         System.out.println("Changing shooting mode");
-        if(shootingMode == 2)
-            shootingMode = -1;
-        
-        shootingMode += 1;
-        
         if(shootingMode == 0)
-            timeToWait = GOAL_SHOT_WAIT_TIME;
-        
-        if(shootingMode == 1)
-            timeToWait = TRUSS_SHOT_WAIT_TIME;
-        
-        if(shootingMode == 2)
-            timeToWait = PASS_WAIT_TIME;
+            shootingMode = 1;
+        else 
+            shootingMode = 0;
                 
-        String[] shootingModes = {"Goal", "Truss", "pass"};
+        String[] shootingModes = {"Goal", "pass"};
         SmartDashboard.putString("Shooting Mode:", shootingModes[shootingMode] + " shot");
     }
     
