@@ -75,7 +75,11 @@ public class Shoot implements Mechanism{
         }
         
         if(shoot){
-            shoot(shootingMode);
+            if(ControlPack.getInstance().getShiftTrigger().get())
+                shoot(1);
+            else
+               shoot(0);
+            
         }
        
     }
@@ -87,6 +91,10 @@ public class Shoot implements Mechanism{
      */
     public boolean shoot(int mode){
         
+        if(mode == 0)
+            timeToWait = GOAL_SHOT_WAIT_TIME;
+        else
+            timeToWait = PASS_WAIT_TIME;
        
         switch(step){
             //shoot ball out
@@ -105,10 +113,7 @@ public class Shoot implements Mechanism{
                    //sleep thread
             case 1:
 //                if(shootingMode != 0){
-                if(mode == 0)
-                    timeToWait = PASS_WAIT_TIME;
-                else
-                    timeToWait = GOAL_SHOT_WAIT_TIME;
+                
                 
                     try{
                         Thread.sleep(timeToWait);

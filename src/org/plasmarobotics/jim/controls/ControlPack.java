@@ -73,7 +73,9 @@ public final class ControlPack {
         else
             return getGamepad().getLeftBumper();
     }
-    
+    public ToggleableButton getShiftTrigger(){
+        return getGamepad().getLeftJoystickButton();
+    }
     /**
      * 
      * @return Button to activate the shooter
