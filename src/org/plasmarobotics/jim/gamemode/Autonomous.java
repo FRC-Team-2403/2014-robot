@@ -7,6 +7,7 @@ package org.plasmarobotics.jim.gamemode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
+import org.plasmarobotics.jim.mechanisms.Catch;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
@@ -71,7 +72,7 @@ public class Autonomous {
 //        
 //        if(optionSwitchTwo)
 //            setting += 2;
-       setting = 1;
+       setting = 1;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         System.out.println("autoInit");
         SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
@@ -95,8 +96,9 @@ public class Autonomous {
             
                       
         }
-              SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
-        SmartDashboard.putNumber("distance: ", SensorPack.getInstance().getLeftEncoder().getDistance());
+//              SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
+        SmartDashboard.putNumber("left encoder dist", SensorPack.getInstance().getLeftEncoder().getDistance());
+        SmartDashboard.putNumber("right encoder dist", SensorPack.getInstance().getRightEncoder().getDistance());
         SmartDashboard.putNumber("Range:", SensorPack.getInstance().getRangeFinder().getDistance());
     }
     /**
@@ -130,18 +132,19 @@ public class Autonomous {
         
         switch(step){
             case 0: 
-                if(drive.drive(.5, 60))
+                if(drive.drive(.5, 214))
                     step++;
                 SmartDashboard.putString("Progress", "Driving");
                 break;
             case 1:
-                if (aimbot.aim())
+//                if (aimbot.aim())
                     step++;
                 SmartDashboard.putString("Progress", "Aimbotting");
                 break;
             case 2:
-                pickup.lower();
                 SmartDashboard.putString("Progress", "Lowering");
+                pickup.raise();
+                
                 try{
                     Thread.sleep(2000);
                 } catch(InterruptedException e){
@@ -151,8 +154,29 @@ public class Autonomous {
             case 3:
                 shooter.shoot(0);
                 SmartDashboard.putString("Progress", "Shooting");
-                break;
                 
+                step++;
+                break;
+            case 4:
+                SmartDashboard.putString("Progress", "Raising pickup");
+                pickup.lower();
+                try{
+                    Thread.sleep(500);
+                }catch (InterruptedException e){
+                    
+                }
+                
+                step++;
+                break;
+//            case 5:
+//                shooter.retract();
+//                SmartDashboard.putString("Progress", "retracting Shoot");
+//                step++;
+//                break;
+            case 5:
+                SmartDashboard.putString("Progress", "Done.");
+                pickup.stop();
+                break;
             default:
                 drive.drive(0, 0);
                 SmartDashboard.putString("Progress", "ERROR");
@@ -238,6 +262,7 @@ public class Autonomous {
     
     public void reset(){
         this.step = 0;
+//        autoInit();
     }
     
     public void disabled(){
@@ -254,5 +279,6 @@ public class Autonomous {
         
 //        System.out.println(setting);
         SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
+        reset();
     }
 }

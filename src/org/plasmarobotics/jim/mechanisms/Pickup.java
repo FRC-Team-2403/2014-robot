@@ -22,8 +22,8 @@ public class Pickup implements Mechanism{
 
   
     //check port for limit switchs | digital IO
-    DigitalInput pickupLoweredSwitch,
-            pickupLiftedSwitch;
+//    DigitalInput pickupLoweredSwitch,
+//            pickupLiftedSwitch;
     
 //    Encoder pickupEncoder;
     
@@ -55,16 +55,16 @@ public class Pickup implements Mechanism{
      * @return true when the pickup is raised false otherwise
      * @author jim
      */
-    public boolean raise(){
+    public boolean raise(){//TODO: RENAME
         //not lifted
-        if(!pickupLiftedSwitch.get()){
+//        if(!pickupLiftedSwitch.get()){
             pickupUpDown.set(.6);
-            return false;
-        } else{//it is lifted
-            pickupUpDown.set(0);
-            return true;
-        }
-            
+//            return false;
+//        } else{//it is lifted
+//            pickupUpDown.set(0);
+//            return true;
+//        }
+        return true;          
     }
     
     /**
@@ -73,13 +73,14 @@ public class Pickup implements Mechanism{
      */
     public boolean lower(){
         //not lowered
-        if(!pickupLoweredSwitch.get()){
+//        if(!pickupLoweredSwitch.get()){
             pickupUpDown.set(-.6);
-            return false;
-        } else{
-            pickupUpDown.set(0);
+//            return false;
+//        } else{
+//            pickupUpDown.set(0);
+//            return true;
+//        }
             return true;
-        }
     }
     
     /**
@@ -99,7 +100,7 @@ public class Pickup implements Mechanism{
     public void stop(){
         leftPickupRoller.set(0);
         rightPickupRoller.set(0);
-        
+        pickupUpDown.set(0);
     }
     
     /**

@@ -147,7 +147,7 @@ public class Shoot implements Mechanism{
         
     }
      
-    private void retract(){
+    public void retract(){
         leftSolenoid.set(DoubleSolenoid.Value.kReverse);
         rightSolenoid.set(DoubleSolenoid.Value.kReverse);
         step = 0;
