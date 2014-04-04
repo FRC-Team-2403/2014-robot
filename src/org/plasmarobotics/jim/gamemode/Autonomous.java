@@ -45,7 +45,7 @@ public class Autonomous {
         
         drive.setupAutonomous();
         shooter.setupAutonomous();
-//        pickup.setupAutonomous();
+        pickup.setupAutonomous();
         
         step = 0;
         aimbot = new Aimbot();
@@ -71,7 +71,7 @@ public class Autonomous {
 //        
 //        if(optionSwitchTwo)
 //            setting += 2;
-       setting = 0;
+       setting = 1;
         System.out.println("autoInit");
         SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
@@ -81,10 +81,10 @@ public class Autonomous {
     public void run(){
         switch(setting){
             case 0:
-//                driveForwardAuto();
+                driveForwardAuto();
                 break;
             case 1:
-                moveNShootAuto();
+                moveNShootAuto(); //TODO: RANGES IN AUTO
                 break;
             case 2:
                 shootSecondBallAuto();
@@ -97,6 +97,7 @@ public class Autonomous {
         }
               SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
         SmartDashboard.putNumber("distance: ", SensorPack.getInstance().getLeftEncoder().getDistance());
+        SmartDashboard.putNumber("Range:", SensorPack.getInstance().getRangeFinder().getDistance());
     }
     /**
      * moves 3 ft during autonomous
@@ -129,19 +130,32 @@ public class Autonomous {
         
         switch(step){
             case 0: 
-                if(drive.drive(.3, 36))
+                if(drive.drive(.5, 60))
                     step++;
+                SmartDashboard.putString("Progress", "Driving");
                 break;
             case 1:
                 if (aimbot.aim())
                     step++;
+                SmartDashboard.putString("Progress", "Aimbotting");
                 break;
             case 2:
+                pickup.lower();
+                SmartDashboard.putString("Progress", "Lowering");
+                try{
+                    Thread.sleep(2000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                step++;
+            case 3:
                 shooter.shoot(0);
+                SmartDashboard.putString("Progress", "Shooting");
                 break;
                 
             default:
                 drive.drive(0, 0);
+                SmartDashboard.putString("Progress", "ERROR");
         }
     }
     /**

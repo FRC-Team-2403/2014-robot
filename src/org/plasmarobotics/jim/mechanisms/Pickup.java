@@ -58,7 +58,7 @@ public class Pickup implements Mechanism{
     public boolean raise(){
         //not lifted
         if(!pickupLiftedSwitch.get()){
-            pickupUpDown.set(.3);
+            pickupUpDown.set(.6);
             return false;
         } else{//it is lifted
             pickupUpDown.set(0);
@@ -74,7 +74,7 @@ public class Pickup implements Mechanism{
     public boolean lower(){
         //not lowered
         if(!pickupLoweredSwitch.get()){
-            pickupUpDown.set(-.3);
+            pickupUpDown.set(-.6);
             return false;
         } else{
             pickupUpDown.set(0);
