@@ -107,15 +107,14 @@ public class Aimbot {
             return true;
         }
             
-        
+        double difference = rangeFinder.getDistance() - DISTANCE_TO_SHOOT;
         //TODO: Calculate distances to travel
-        if(rangeFinder.getDistance() - DISTANCE_TO_SHOOT> 0){//robot is to far
-            drive.drive(-.3, 12*4);//drive backwards
+        if(difference > 0){//robot is to far
+            drive.drive(-.3, Math.abs(difference));//drive backwards
             Logger.log("Driving backwards...", this, 4);
             
-            
         } else { //robot is too close
-            drive.drive(.3, 120); //drive backwards
+            drive.drive(.3, Math.abs(difference)); //drive backwards
             Logger.log("Driving forwards...", this, 4);
         }
         
