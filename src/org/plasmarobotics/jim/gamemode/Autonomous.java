@@ -132,7 +132,7 @@ public class Autonomous {
         
         switch(step){
             case 0: 
-                if(drive.drive(.5, 214))
+                if(drive.drive(.5, 220))
                     step++;
                 SmartDashboard.putString("Progress", "Driving");
                 break;
@@ -146,7 +146,7 @@ public class Autonomous {
                 pickup.raise();
                 
                 try{
-                    Thread.sleep(2000);
+                    Thread.sleep(2500);
                 } catch(InterruptedException e){
                     e.printStackTrace();
                 }
