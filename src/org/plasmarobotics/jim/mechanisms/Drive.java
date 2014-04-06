@@ -69,7 +69,8 @@ public class Drive implements Mechanism{
     
     /**
      * Meant to be run once before teleop. 
-     * -sets all motor direction
+     * 
+     * 
      */
     public void setupTeleop(){
 //        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,true);
@@ -81,7 +82,7 @@ public class Drive implements Mechanism{
     
     /**
      * Meant to be run once before autonomous
-     * -sets all motor direction
+     * 
      * resets the encoders and gyro
      */
     public void setupAutonomous(){
@@ -115,10 +116,6 @@ public class Drive implements Mechanism{
     }
 
     
-    
-    
-    
-    
     /**
      * The robot will drive in a straight line for a given distance using two encoders and a gyro
      * @param speed Speed of motors (-1 to 1 scale)
@@ -136,7 +133,7 @@ public class Drive implements Mechanism{
             if(speed  > 0)
                 getChassis().drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve 
             else
-                getChassis().drive(speed, -(gyro.getModdedAngle() * .03));//stay on track backwards with .03 curve 
+                getChassis().drive(speed, -(gyro.getModdedAngle() * .03));//- because of backwards
             
             return false;
         } else{
@@ -151,6 +148,7 @@ public class Drive implements Mechanism{
     
     /**
      * Turns the robot (needs upside down gyro)
+     * lol, this will probs never be run
      * @param degrees angle to rotate (degrees, not radians) positive is counter clockwise.
      * @return true when operation is complete
      * @author jim
@@ -184,6 +182,7 @@ public class Drive implements Mechanism{
      * @param degrees angle to rotate (degrees, not radians) positive is counter clockwise. 
      * @return true when the action is completed. false otherwise.
      * @author jim
+     * 
      */
     public boolean stupidTurn(double degrees){
         reset();
