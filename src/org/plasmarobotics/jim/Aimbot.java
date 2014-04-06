@@ -18,7 +18,7 @@ import org.plasmarobotics.jim.sensors.SonicRange;
  */
 public class Aimbot {
     
-    private static final double DISTANCE_TO_SHOOT = 40,//TODO: adjust
+    private static final double DISTANCE_TO_SHOOT = 40,
             TOLERANCE_FOR_SHOT = 5;
     
     private SonicRange rangeFinder;
@@ -110,7 +110,7 @@ public class Aimbot {
         }
             
         double difference = rangeFinder.getDistance() - DISTANCE_TO_SHOOT;
-        //TODO: Calculate distances to travel
+        
         if(difference > 0 || mode == 1){//robot is to far
             drive.drive(.3, Math.abs(difference));//drive backwards
             Logger.log("Driving backwards...", this, 4);

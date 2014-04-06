@@ -63,10 +63,7 @@ public class PlasmaGyro extends Gyro{
     }
     
     
-    /*  TODO: fix stuff. resets gyro @ beginning of every turn
-        turn as far as parameter provided, keep going until
-        reach thingy
-    */
+
     
     /**
      * Resets the gyro and records where zero is

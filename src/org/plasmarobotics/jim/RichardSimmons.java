@@ -50,8 +50,7 @@ public class RichardSimmons extends IterativeRobot {
         SensorPack.getInstance().getGyro().reset();
         
         swagLights = new Relay(Channels.SWAG_LIGHT_PORT);
-        swagLights.set(Relay.Value.kOn);//TODO:fix swaglights
-        
+        swagLights.set(Relay.Value.kOn);//TODO: NEEDED?
         System.out.println("Robot initilization complete.");
         
         

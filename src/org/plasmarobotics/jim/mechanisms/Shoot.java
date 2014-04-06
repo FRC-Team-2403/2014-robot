@@ -21,7 +21,7 @@ public class Shoot implements Mechanism{
     private static final long GOAL_SHOT_WAIT_TIME = 1000;
     private static final long PASS_WAIT_TIME = 70;
     
-    private boolean switchOverride;
+//    private boolean switchOverride;
     private DoubleSolenoid leftSolenoid,
             rightSolenoid;
 
@@ -31,8 +31,8 @@ public class Shoot implements Mechanism{
     private int shootingMode = 0;//0=high, 2=pass
     private int step = 0;//step in the state machine
     private long timeToWait; //how long to sleep the thread in truss and pass shots
-    private DigitalInput loadedSwitch = new DigitalInput(Channels.SHOOT_LOADED_CHANNEL);
-    private DigitalInput pistonHalf = new DigitalInput(6);
+//    private DigitalInput loadedSwitch = new DigitalInput(Channels.SHOOT_LOADED_CHANNEL);
+//    private DigitalInput pistonHalf = new DigitalInput(6);
     
     /**
      * Creates a shoot object to control shooting aspects of the robot
@@ -44,7 +44,11 @@ public class Shoot implements Mechanism{
         
     }
         
+    /**
+     * Only to be used when shit goes down
+     */
     public void disable() {
+        retract();
         Logger.log("disabled", this, 5);
     }
 
@@ -58,14 +62,15 @@ public class Shoot implements Mechanism{
     }
 
     public void updateTeleop() {
-        switchOverride = DriverStation.getInstance().getDigitalIn(5);
-        SmartDashboard.putBoolean("Ball Loaded:", !loadedSwitch.get());
-        SmartDashboard.putBoolean("Switch override",!switchOverride);
+//        switchOverride = DriverStation.getInstance().getDigitalIn(5);
+//        SmartDashboard.putBoolean("Ball Loaded:", !loadedSwitch.get());
+//        SmartDashboard.putBoolean("Switch override",!switchOverride);
         if (ControlPack.getInstance().getShootButton().isPressed()) {
             shoot = true;
             System.out.println("shoot");
         }
-//        shootingMode = 2;
+        
+        //should never run
         if(ControlPack.getInstance().getToggleShootButton().isPressed()){
             toggleShootMode();
         }
@@ -100,15 +105,15 @@ public class Shoot implements Mechanism{
         switch(step){
             //shoot ball out
             case 0:
-                if(!loadedSwitch.get() || !switchOverride){
+//                if(!loadedSwitch.get() || !switchOverride){
                     leftSolenoid.set(DoubleSolenoid.Value.kForward);
                     rightSolenoid.set(DoubleSolenoid.Value.kForward);
                     step++;    
-                } else{
-                    shoot = false;
-                    return false;
-                }
-
+//                } else{
+//                    shoot = false;
+//                    return false;
+//                }
+//
                 break;
 
                    //sleep thread
@@ -118,9 +123,9 @@ public class Shoot implements Mechanism{
                 
                     try{
                         Thread.sleep(timeToWait);
-                        System.out.println("Sleeping");
-                    }catch(Exception e){
-                        e.printStackTrace();
+                        System.out.println("Sleeping in method shoot()");
+                    }catch(InterruptedException e){
+                        System.out.println("HOLY SHIT THREAD.SLEEP FAILED");
                     }
                     step++;
                 
@@ -131,13 +136,13 @@ public class Shoot implements Mechanism{
                 break;
                 //pull back
             case 2:
-                leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-                rightSolenoid.set(DoubleSolenoid.Value.kReverse);
-                step++;
-                break;
+                retract();
+                shoot = false;
+                return true;
+                
 
             default:
-
+                System.err.println("shoot() switch statement derailed");
                 step = 0;
                 shoot = false;
                 return true;
@@ -148,6 +153,9 @@ public class Shoot implements Mechanism{
         
     }
      
+    /**
+     * Retracts the shooter and resets the state machine
+     */
     public void retract(){
         leftSolenoid.set(DoubleSolenoid.Value.kReverse);
         rightSolenoid.set(DoubleSolenoid.Value.kReverse);
@@ -155,6 +163,10 @@ public class Shoot implements Mechanism{
         
     }
 
+    /**
+     * Toggles the robot between the three shooting modes
+     * @deprecated 
+     */
     private void toggleShootMode(){
         System.out.println("Changing shooting mode");
         if(shootingMode == 0)

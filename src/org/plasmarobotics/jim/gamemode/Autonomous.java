@@ -72,7 +72,7 @@ public class Autonomous {
 //        
 //        if(optionSwitchTwo)
 //            setting += 2;
-       setting = 1;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       setting = 1;//TODO: smart dashboard
         System.out.println("autoInit");
         SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
@@ -85,7 +85,7 @@ public class Autonomous {
                 driveForwardAuto();
                 break;
             case 1:
-                moveNShootAuto(); //TODO: RANGES IN AUTO
+                moveNShootAuto();
                 break;
             case 2:
                 shootSecondBallAuto();
@@ -193,8 +193,7 @@ public class Autonomous {
     public void shootSecondBallAuto () {
         switch(step) {
             case 0:
-                //TODO: This distance MAY need to be adjusted based on the shooters ability 
-                // to hit at that distance or not.  
+
                 
                 if (drive.drive(.3, 36) && pickup.lower())
                     step++;
@@ -214,8 +213,7 @@ public class Autonomous {
                 
                 break;
             case 4:
-                //TODO: This distance MAY need to be adjusted based on the shooters ability 
-                // to hit at that distance or not.  
+
                 if (drive.drive(.3, -42))
                     step++;
                 break;

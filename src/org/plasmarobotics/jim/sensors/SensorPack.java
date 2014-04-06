@@ -16,7 +16,7 @@ public final class SensorPack {
     
     private static SensorPack pack = null;
     
-    private PlasmaGyro gyro = new PlasmaGyro(Channels.GYRO_CHANNEL);//TODO:gyro sensitivity
+    private PlasmaGyro gyro = new PlasmaGyro(Channels.GYRO_CHANNEL);
     
     private SonicRange rangeFinder = new SonicRange(Channels.RANGE_CHANNEL);
     
