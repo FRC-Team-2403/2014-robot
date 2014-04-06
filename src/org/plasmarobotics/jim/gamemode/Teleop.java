@@ -74,7 +74,7 @@ public class Teleop{
         
         
         if(ControlPack.getInstance().getAimbotButton().get()){
-            aimbot.aim();
+            aimbot.aim(0);
             aimbotNeedReset = true;
             Logger.log("aimbotting", this, 5);
         } else {

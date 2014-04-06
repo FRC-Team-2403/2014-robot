@@ -72,10 +72,10 @@ public class Drive implements Mechanism{
      * -sets all motor direction
      */
     public void setupTeleop(){
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,true);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,true);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,true);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,true);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,true);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,true);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,true);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,true);
         System.out.println("Drive prepared for teleop");
     }
     
@@ -85,10 +85,10 @@ public class Drive implements Mechanism{
      * resets the encoders and gyro
      */
     public void setupAutonomous(){
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,false);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,false);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,false);
-        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontLeft,false);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearLeft,false);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kFrontRight,false);
+//        getChassis().setInvertedMotor(RobotDrive.MotorType.kRearRight,false);
         reset();
         System.out.println("Drive prepared for autonomous");
     }
@@ -100,7 +100,7 @@ public class Drive implements Mechanism{
         if (ControlPack.USE_JOYSTICK) {
             getChassis().tankDrive(leftJoystick, rightJoystick); 
         } else {
-            getChassis().arcadeDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickXAxis());
+            getChassis().arcadeDrive(-gamepad.getLeftJoystickYAxis(), -gamepad.getRightJoystickXAxis());
             //chassis.tankDrive(gamepad.getLeftJoystickYAxis(), gamepad.getRightJoystickYAxis());
         }
         
@@ -133,7 +133,11 @@ public class Drive implements Mechanism{
         
         
         if(distTraveled < distance){
-            getChassis().drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve 
+            if(speed  > 0)
+                getChassis().drive(speed, (gyro.getModdedAngle() * .03));//stay on track with .03 curve 
+            else
+                getChassis().drive(speed, -(gyro.getModdedAngle() * .03));//stay on track backwards with .03 curve 
+            
             return false;
         } else{
             resetNeeded = true;

@@ -132,14 +132,15 @@ public class Autonomous {
         
         switch(step){
             case 0: 
-                if(drive.drive(.5, 220))
+                if(drive.drive(.6, 220))
                     step++;
                 SmartDashboard.putString("Progress", "Driving");
                 break;
             case 1:
-//                if (aimbot.aim())
+                 SmartDashboard.putString("Progress", "Aimbotting");
+                if (aimbot.aim(1))
                     step++;
-                SmartDashboard.putString("Progress", "Aimbotting");
+               
                 break;
             case 2:
                 SmartDashboard.putString("Progress", "Lowering");
@@ -176,7 +177,10 @@ public class Autonomous {
             case 5:
                 SmartDashboard.putString("Progress", "Done.");
                 pickup.stop();
+                step++;
                 break;
+            case 6:
+                shooter.retract();
             default:
                 drive.drive(0, 0);
                 SmartDashboard.putString("Progress", "ERROR");
@@ -196,7 +200,7 @@ public class Autonomous {
                     step++;
                 break;
             case 1:
-                if (aimbot.aim())
+                if (aimbot.aim(1))
                     step++;
                 break;
             case 2:
@@ -216,7 +220,7 @@ public class Autonomous {
                     step++;
                 break;
             case 6:
-                if (aimbot.aim())
+                if (aimbot.aim(1))
                     step++;
                 break;
             case 7:
@@ -246,7 +250,7 @@ public class Autonomous {
                     step++;
                 break;
             case 2:
-                if (aimbot.aim())
+                if (aimbot.aim(1))
                     step++;
                 break;
             case 3:

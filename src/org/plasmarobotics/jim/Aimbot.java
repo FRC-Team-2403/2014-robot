@@ -29,9 +29,10 @@ public class Aimbot {
     
     /**
      * Puts the robot in the perfect place for shooting
+     * @param mode 0 for teleop 1 for auto
      * @return true when it is in position
      */
-    public boolean aim(){
+    public boolean aim(int mode){
         switch(step){
             case 0: // nothing yet
                 Logger.log("Facing wall...", this, 4);
@@ -50,7 +51,7 @@ public class Aimbot {
                 break;
                 
             case 3:
-                if(this.setRange())
+                if(this.setRange(mode))
                     step++;
                 break;
                 
@@ -98,9 +99,10 @@ public class Aimbot {
     
     /**
      * Gets robot to perfect range off the wall
+     * @param mode 0 for teleop 1 for auto
      * @return true when action complete. false when not in range
      */
-    public boolean setRange(){
+    public boolean setRange(int mode){
         Logger.log("Range: " + rangeFinder.getDistance(), this, 1);
         if(rangeFinder.isClose(DISTANCE_TO_SHOOT, TOLERANCE_FOR_SHOT)){
             drive.drive(0, 0);
@@ -109,12 +111,12 @@ public class Aimbot {
             
         double difference = rangeFinder.getDistance() - DISTANCE_TO_SHOOT;
         //TODO: Calculate distances to travel
-        if(difference > 0){//robot is to far
-            drive.drive(-.3, Math.abs(difference));//drive backwards
+        if(difference > 0 || mode == 1){//robot is to far
+            drive.drive(.3, Math.abs(difference));//drive backwards
             Logger.log("Driving backwards...", this, 4);
             
         } else { //robot is too close
-            drive.drive(.3, Math.abs(difference)); //drive backwards
+            drive.drive(-.3, Math.abs(difference)); //drive forwards
             Logger.log("Driving forwards...", this, 4);
         }
         

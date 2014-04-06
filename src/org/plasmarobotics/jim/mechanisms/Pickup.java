@@ -39,7 +39,7 @@ public class Pickup implements Mechanism{
         //motors
         rightPickupRoller = new Victor(Channels.RIGHT_PICKUP_ROLLER_CHANNEL);
         leftPickupRoller = new Victor(Channels.LEFT_PICKUP_ROLLER_CHANNEL);
-        pickupUpDown = new Victor(1, Channels.PICKUP_RAISE_LOWER_CHANNEL);
+        pickupUpDown = new Victor(Channels.PICKUP_RAISE_LOWER_CHANNEL);//was (1, CONSTANT)
         
 //        pickupEncoder = new Encoder(Channels.PICKUP_ENCODER_A_CHANNEL, Channels.PICKUP_ENCODER_B_CHANNEL);
 //        sensors

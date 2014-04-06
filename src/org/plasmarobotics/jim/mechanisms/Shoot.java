@@ -89,6 +89,7 @@ public class Shoot implements Mechanism{
      * @param mode to shoot the ball (0 = goal shot, 1 = truss shot, 2 = pass)
      * @return true when the shot is complete, false if no ball or shot not complete
      */
+    
     public boolean shoot(int mode){
         
         if(mode == 0)
