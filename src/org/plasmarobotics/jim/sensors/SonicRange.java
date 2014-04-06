@@ -7,7 +7,6 @@
 package org.plasmarobotics.jim.sensors;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
-import org.plasmarobotics.jim.Channels;
 
 /**
  *This class reads input from a supersonic rangefinder as an analog input

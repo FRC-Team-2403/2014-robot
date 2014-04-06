@@ -3,7 +3,7 @@ package org.plasmarobotics.jim.controls;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
- *
+ * Handels input from an xbox360 controller
  * @author Allek
  */
 public class PlasmaGamepad extends Joystick {

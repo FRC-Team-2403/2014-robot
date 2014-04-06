@@ -10,7 +10,6 @@ import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
 import org.plasmarobotics.jim.controls.PlasmaGamepad;
 import org.plasmarobotics.jim.controls.PlasmaJoystick;
-import org.plasmarobotics.jim.mechanisms.Catch;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;

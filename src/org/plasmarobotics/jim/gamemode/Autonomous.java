@@ -7,7 +7,6 @@ package org.plasmarobotics.jim.gamemode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
-import org.plasmarobotics.jim.mechanisms.Catch;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
@@ -51,8 +50,8 @@ public class Autonomous {
         step = 0;
         aimbot = new Aimbot();
         //get setting 
-        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
-        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
+//        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
+//        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
                 
     }
     /**
@@ -72,7 +71,7 @@ public class Autonomous {
 //        
 //        if(optionSwitchTwo)
 //            setting += 2;
-       setting = 1;//TODO: smart dashboard
+       setting = (byte) SmartDashboard.getNumber("auto mode");
         System.out.println("autoInit");
         SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
@@ -144,7 +143,7 @@ public class Autonomous {
                 break;
             case 2:
                 SmartDashboard.putString("Progress", "Lowering");
-                pickup.raise();
+                pickup.lower();
                 
                 try{
                     Thread.sleep(2500);
@@ -160,7 +159,7 @@ public class Autonomous {
                 break;
             case 4:
                 SmartDashboard.putString("Progress", "Raising pickup");
-                pickup.lower();
+                pickup.raise();
                 try{
                     Thread.sleep(500);
                 }catch (InterruptedException e){
@@ -195,7 +194,7 @@ public class Autonomous {
             case 0:
 
                 
-                if (drive.drive(.3, 36) && pickup.lower())
+                if (drive.drive(.3, 36) && pickup.raise())
                     step++;
                 break;
             case 1:
@@ -269,18 +268,18 @@ public class Autonomous {
     
     public void disabled(){
          //get setting 
-        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
-        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
+//        optionsSwitchOne = DriverStation.getInstance().getDigitalIn(SWITCH_ONE_PORT);
+//        optionSwitchTwo = DriverStation.getInstance().getDigitalIn(SWITCH_TWO_PORT);
         
-        setting = 0;
-        if(optionsSwitchOne)
-            setting += 1;
-        
-        if(optionSwitchTwo)
-            setting += 2;
+//        setting = 0;
+//        if(optionsSwitchOne)
+//            setting += 1;
+//        
+//        if(optionSwitchTwo)
+//            setting += 2;
         
 //        System.out.println(setting);
-        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
+//        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
         reset();
     }
 }

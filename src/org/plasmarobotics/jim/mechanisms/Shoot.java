@@ -4,9 +4,7 @@
  */
 package org.plasmarobotics.jim.mechanisms;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.Logger;

@@ -4,7 +4,6 @@
  */
 package org.plasmarobotics.jim.mechanisms;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.controls.ControlPack;
@@ -51,11 +50,11 @@ public class Pickup implements Mechanism{
     }
     
     /**
-     * raise the pickup mechanism
-     * @return true when the pickup is raised false otherwise
+     * lower the pickup mechanism
+     * @return true when the pickup is lowered false otherwise
      * @author jim
      */
-    public boolean raise(){//TODO: RENAME
+    public boolean lower(){//TODO: RENAME
         //not lifted
 //        if(!pickupLiftedSwitch.get()){
             pickupUpDown.set(.6);
@@ -68,10 +67,10 @@ public class Pickup implements Mechanism{
     }
     
     /**
-     * lower the pickup mechanism
-     * @return true if the mechanism is lowered, false otherwise
+     * raise the pickup mechanism
+     * @return true if the mechanism is raised, false otherwise
      */
-    public boolean lower(){
+    public boolean raise(){
         //not lowered
 //        if(!pickupLoweredSwitch.get()){
             pickupUpDown.set(-.6);
@@ -114,11 +113,11 @@ public class Pickup implements Mechanism{
     }
 
     /**
-     * Stops the pickup and raises it
+     * Stops the pickup and lowers it
      */
     public void disable() {
         this.stop();
-        this.raise();
+        this.lower();
         
     }
 
@@ -142,9 +141,9 @@ public class Pickup implements Mechanism{
     public void updateTeleop() {
 //       if(controls.getRaiseLowerShooterButton().isPressed()){
 //           if(isRaised)
-//               this.lower();
-//           else
 //               this.raise();
+//           else
+//               this.lower();
 //           
 //           isRaised = !isRaised;
 //       }
