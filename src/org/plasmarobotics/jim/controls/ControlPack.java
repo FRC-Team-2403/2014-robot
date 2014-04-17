@@ -110,20 +110,26 @@ public final class ControlPack {
             return getGamepad().getYButton(); //(?)
     }
     
-    public ToggleableButton getFowardPickUpButton () {
-        if (USE_JOYSTICK)
-            return getRightJoystick().getThree();
-        else
-            return getGamepad().getXButton();
-    }
+//    public ToggleableButton getFowardPickUpButton () {
+//        if (USE_JOYSTICK)
+//            return getRightJoystick().getThree();
+//        else
+//            return getGamepad().getXButton();
+//    }
+//    
+//    public ToggleableButton getBackwardPickUpButton () {
+//        if (USE_JOYSTICK)
+//            return getRightJoystick().getTwo();
+//        else 
+//            return getGamepad().getBButton();
+//    }
     
-    public ToggleableButton getBackwardPickUpButton () {
-        if (USE_JOYSTICK)
-            return getRightJoystick().getTwo();
-        else 
-            return getGamepad().getBButton();
+    public ToggleableButton getRaisePickupButton(){
+        return gamepad.getAButton();
     }
-    
+    public ToggleableButton getLowerPickupButton(){
+        return gamepad.getRightJoystickButton();
+    }
     public ToggleableButton getCatchButton(){
         return gamepad.getXButton();
     }

@@ -95,6 +95,7 @@ public class Teleop{
             SmartDashboard.putNumber("voltage", SensorPack.getInstance().getRangeFinder().getVoltage());
             SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
             SmartDashboard.putNumber("encoder", SensorPack.getInstance().getRightEncoder().get());
+            
         }
         
     }

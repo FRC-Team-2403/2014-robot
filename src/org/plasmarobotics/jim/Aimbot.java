@@ -6,6 +6,7 @@
 
 package org.plasmarobotics.jim;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.sensors.PlasmaGyro;
@@ -130,5 +131,9 @@ public class Aimbot {
         Logger.log("Resetting...", this, 5);
         this.step = 0;
         drive.resetNeeded();
+    }
+    public void updateTeleop(){
+        SmartDashboard.putBoolean("Within Range", SensorPack.getInstance().getRangeFinder().isClose(DISTANCE_TO_SHOOT, TOLERANCE_FOR_SHOT));
+        
     }
 }

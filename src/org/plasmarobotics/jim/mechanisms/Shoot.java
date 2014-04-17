@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
+import org.plasmarobotics.jim.sensors.SensorPack;
 /**
  *Class to manage shooting functionality of the robot
  * @author Jim
@@ -84,7 +85,7 @@ public class Shoot implements Mechanism{
                shoot(0);
             
         }
-       
+        
     }
     
     /**
@@ -92,7 +93,7 @@ public class Shoot implements Mechanism{
      * @param mode to shoot the ball (0 = goal shot, 1 = truss shot, 2 = pass)
      * @return true when the shot is complete, false if no ball or shot not complete
      */
-    
+    //TODO: System.currentTimeMilis()
     public boolean shoot(int mode){
         
         if(mode == 0)

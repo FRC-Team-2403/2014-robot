@@ -5,6 +5,7 @@
 package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.controls.ControlPack;
 
@@ -54,7 +55,7 @@ public class Pickup implements Mechanism{
      * @return true when the pickup is lowered false otherwise
      * @author jim
      */
-    public boolean lower(){//TODO: RENAME
+    public boolean lower(){
         //not lifted
 //        if(!pickupLiftedSwitch.get()){
             pickupUpDown.set(.6);
@@ -150,10 +151,10 @@ public class Pickup implements Mechanism{
 //      
         pickupUpDown.set(0);
         
-        if(controls.getGamepad().getAButton().get())
+        if(ControlPack.getInstance().getRaisePickupButton().get())
             pickupUpDown.set(-1);
         
-        if(controls.getGamepad().getBButton().get())
+        if(ControlPack.getInstance().getLowerPickupButton().get())
             pickupUpDown.set(1);
         
         
