@@ -20,11 +20,14 @@ public class Shoot implements Mechanism{
     private static final long GOAL_SHOT_WAIT_TIME = 1000;
     private static final long PASS_WAIT_TIME = 70;
     
+    
 //    private boolean switchOverride;
     private DoubleSolenoid leftSolenoid,
             rightSolenoid;
 
     private boolean goalShoot = true; //if shooting for goal
+    
+    private long shootStartTime; //current time milis at start
     
     private boolean shoot = false;//allows for only one execution of shoot
     private int shootingMode = 0;//0=high, 2=pass
@@ -95,7 +98,7 @@ public class Shoot implements Mechanism{
      */
     //TODO: System.currentTimeMilis()
     public boolean shoot(int mode){
-        
+            
         if(mode == 0)
             timeToWait = GOAL_SHOT_WAIT_TIME;
         else
@@ -104,10 +107,12 @@ public class Shoot implements Mechanism{
         switch(step){
             //shoot ball out
             case 0:
+                shootStartTime = System.currentTimeMillis();
 //                if(!loadedSwitch.get() || !switchOverride){
-                    leftSolenoid.set(DoubleSolenoid.Value.kForward);
-                    rightSolenoid.set(DoubleSolenoid.Value.kForward);
-                    step++;    
+                leftSolenoid.set(DoubleSolenoid.Value.kForward);
+                rightSolenoid.set(DoubleSolenoid.Value.kForward);
+                step++;
+                    
 //                } else{
 //                    shoot = false;
 //                    return false;
@@ -119,14 +124,13 @@ public class Shoot implements Mechanism{
             case 1:
 //                if(shootingMode != 0){
                 
-                
-                    try{
-                        Thread.sleep(timeToWait);
-                        System.out.println("Sleeping in method shoot()");
-                    }catch(InterruptedException e){
-                        System.out.println("HOLY SHIT THREAD.SLEEP FAILED");
-                    }
+                if((System.currentTimeMillis() - shootStartTime) >= timeToWait){
+                    
                     step++;
+                }
+                    
+                    
+                    
                 
 
 
