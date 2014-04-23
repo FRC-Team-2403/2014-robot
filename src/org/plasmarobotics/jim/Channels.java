@@ -27,9 +27,11 @@ public final class Channels {
     
        
     //pickup 
-    public static final int PICKUP_RAISE_LOWER_CHANNEL = 5;
-    public static final int RIGHT_PICKUP_ROLLER_CHANNEL = 6;
-    public static final int LEFT_PICKUP_ROLLER_CHANNEL = 7;
+    //TODO: assign values
+    public static final int PICKUP_RAISE_LOWER_RIGHT_CHANNEL = 5;
+    public static final int PICKUP_RAISE_LOWER_LEFT_CHANNEL = 5;
+    public static final int PICKUP_ROLLER_CHANNEL = 6;
+    
     
     /*~~~~~~~~~~~~~~~~~~~~~~~~
     *DIGITAL IO

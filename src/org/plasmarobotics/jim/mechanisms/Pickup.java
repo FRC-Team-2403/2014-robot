@@ -5,7 +5,6 @@
 package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.controls.ControlPack;
 
@@ -15,10 +14,9 @@ import org.plasmarobotics.jim.controls.ControlPack;
  */
 public class Pickup implements Mechanism{
     
-    //victor motor controlers, reset ports
-    Victor leftPickupRoller,
-        rightPickupRoller,
-        pickupUpDown;
+    Victor pickupRoller,
+        rightPickupUpDown,
+        leftPickupUpDown;
 
   
     //check port for limit switchs | digital IO
@@ -37,10 +35,10 @@ public class Pickup implements Mechanism{
      */
     public Pickup(){
         //motors
-        rightPickupRoller = new Victor(Channels.RIGHT_PICKUP_ROLLER_CHANNEL);
-        leftPickupRoller = new Victor(Channels.LEFT_PICKUP_ROLLER_CHANNEL);
-        pickupUpDown = new Victor(Channels.PICKUP_RAISE_LOWER_CHANNEL);//was (1, CONSTANT)
-        
+        rightPickupUpDown = new Victor(Channels.PICKUP_RAISE_LOWER_RIGHT_CHANNEL);
+        leftPickupUpDown = new Victor(Channels.PICKUP_RAISE_LOWER_LEFT_CHANNEL);//was (1, CONSTANT)
+        pickupRoller = new Victor(Channels.PICKUP_ROLLER_CHANNEL);
+                
 //        pickupEncoder = new Encoder(Channels.PICKUP_ENCODER_A_CHANNEL, Channels.PICKUP_ENCODER_B_CHANNEL);
 //        sensors
 //        pickupLoweredSwitch = new DigitalInput(Channels.PICKUP_LOWERED_CHANNEL);
@@ -58,10 +56,10 @@ public class Pickup implements Mechanism{
     public boolean lower(){
         //not lifted
 //        if(!pickupLiftedSwitch.get()){
-            pickupUpDown.set(.6);
+            leftPickupUpDown.set(.6);
 //            return false;
 //        } else{//it is lifted
-//            pickupUpDown.set(0);
+//            leftPickupUpDown.set(0);
 //            return true;
 //        }
         return true;          
@@ -74,10 +72,11 @@ public class Pickup implements Mechanism{
     public boolean raise(){
         //not lowered
 //        if(!pickupLoweredSwitch.get()){
-            pickupUpDown.set(-.6);
+            leftPickupUpDown.set(-.6);
+            rightPickupUpDown.set(-.6);
 //            return false;
 //        } else{
-//            pickupUpDown.set(0);
+//            leftPickupUpDown.set(0);
 //            return true;
 //        }
             return true;
@@ -85,11 +84,10 @@ public class Pickup implements Mechanism{
     
     /**
      * pickup the ball
-     * @return if the pickup is picking up
      */
     public void forward(){
-        leftPickupRoller.set(1);
-        rightPickupRoller.set(1);
+        pickupRoller.set(1);
+       
         
     }
     
@@ -98,9 +96,9 @@ public class Pickup implements Mechanism{
      * 
      */
     public void stop(){
-        leftPickupRoller.set(0);
-        rightPickupRoller.set(0);
-        pickupUpDown.set(0);
+        pickupRoller.set(0);
+        rightPickupUpDown.set(0);
+        leftPickupUpDown.set(0);
     }
     
     /**
@@ -108,8 +106,8 @@ public class Pickup implements Mechanism{
      * @return if the pickup is in reverse
      */
     public void reverse(){
-        leftPickupRoller.set(-1);
-        rightPickupRoller.set(-1);
+        pickupRoller.set(-1);
+        
         
     }
 
@@ -149,18 +147,18 @@ public class Pickup implements Mechanism{
 //           isRaised = !isRaised;
 //       }
 //      
-        pickupUpDown.set(0);
+        leftPickupUpDown.set(0);
         
         if(ControlPack.getInstance().getRaisePickupButton().get())
-            pickupUpDown.set(-1);
+            this.raise();
         
         if(ControlPack.getInstance().getLowerPickupButton().get())
-            pickupUpDown.set(1);
+            this.lower();
         
         
        //moving the rollers
-       leftPickupRoller.set(controls.getGamepad().getTriggerAxis());
-       rightPickupRoller.set(controls.getGamepad().getTriggerAxis());
+       pickupRoller.set(controls.getGamepad().getTriggerAxis());
+       
            
         
 //       if(controls.getBackwardPickUpButton().isPressed()){
