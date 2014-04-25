@@ -5,8 +5,10 @@
 package org.plasmarobotics.jim.gamemode;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Aimbot;
+import org.plasmarobotics.jim.mechanisms.Catch;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
 import org.plasmarobotics.jim.mechanisms.Pickup;
@@ -29,6 +31,7 @@ public class Autonomous {
     byte setting = 0, //which autonomous?
         step;
     Aimbot aimbot;
+    int check = 0;
     boolean optionsSwitchOne,
             optionSwitchTwo; //autonomous mode selection switches
     /**
@@ -71,15 +74,17 @@ public class Autonomous {
 //        
 //        if(optionSwitchTwo)
 //            setting += 2;
-       setting = (byte) SmartDashboard.getNumber("auto mode");
+       
         System.out.println("autoInit");
-        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
+//        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
     }
     /**
      * This is the code that runs continously during auto
      */
     public void run(){
+       check = 0; 
         switch(setting){
+           
             case 0:
                 driveForwardAuto();
                 break;
@@ -92,7 +97,8 @@ public class Autonomous {
             case 3:
                 avoidBlockerAuto();
                 break;
-            
+            default:
+                break;
                       
         }
 //              SmartDashboard.putNumber("Gyro angle:", SensorPack.getInstance().getGyro().getModdedAngle());
@@ -113,13 +119,13 @@ public class Autonomous {
 //                } catch (InterruptedException e){
 //                    e.printStackTrace();
 //                }
-                if(drive.drive(.5, 60))
+                if(drive.drive(.5, Preferences.getInstance().getDouble("driveForwardDistance", 48)))
                     step++;
                 break;
             
             default:
                 drive.drive(0, 0);
-                System.out.println("stoppeed");
+                System.out.println("stopped");
                 break;
         }
     }
@@ -130,56 +136,64 @@ public class Autonomous {
     public void moveNShootAuto () {
         
         switch(step){
-            case 0: 
-                if(drive.drive(.6, 220))
+            case 1: 
+                if(drive.drive(.6, Preferences.getInstance().getDouble("moveNShootDriveDist", 220)))
                     step++;
                 SmartDashboard.putString("Progress", "Driving");
                 break;
-            case 1:
+            case 2:
                  SmartDashboard.putString("Progress", "Aimbotting");
                 if (aimbot.aim(1))
                     step++;
                
                 break;
-            case 2:
+            case 0:
                 SmartDashboard.putString("Progress", "Lowering");
-                pickup.lower();
+                pickup.lower(.2);
                 
                 try{
-                    Thread.sleep(2500);
+                    Thread.sleep(500);
+                    step++;
                 } catch(InterruptedException e){
                     e.printStackTrace();
                 }
-                step++;
+                break;
             case 3:
                 shooter.shoot(0);
                 SmartDashboard.putString("Progress", "Shooting");
-                
-                step++;
-                break;
-            case 4:
-                SmartDashboard.putString("Progress", "Raising pickup");
-                pickup.raise();
                 try{
                     Thread.sleep(500);
-                }catch (InterruptedException e){
-                    
+                    step++;
+                }catch(InterruptedException e){
+                    e.printStackTrace();
                 }
                 
+                break;
+            case 4:
+//                SmartDashboard.putString("Progress", "Raising pickup");
+//                pickup.lower(.4);
+//                try{
+//                    Thread.sleep(50);
+//                }catch (InterruptedException e){
+//                    
+//                }
+                pickup.disable();
                 step++;
                 break;
 //            case 5:
 //                shooter.retract();
-//                SmartDashboard.putString("Progress", "retracting Shoot");
+////                SmartDashboard.putString("Progress", "retracting Shoot");
 //                step++;
 //                break;
             case 5:
                 SmartDashboard.putString("Progress", "Done.");
-                pickup.stop();
+                
                 step++;
                 break;
             case 6:
                 shooter.retract();
+//                step++;
+                break;
             default:
                 drive.drive(0, 0);
                 SmartDashboard.putString("Progress", "ERROR");
@@ -192,10 +206,19 @@ public class Autonomous {
     public void shootSecondBallAuto () {
         switch(step) {
             case 0:
-
+                pickup.lower(2);
+                try{
+                    Thread.sleep(500);
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
                 
-                if (drive.drive(.3, 36) && pickup.raise())
+                if (drive.drive(.3, 36) && pickup.lower(.2)){
+                    pickup.disable();
+                    pickup.forward();
                     step++;
+                }
+                    
                 break;
             case 1:
                 if (aimbot.aim(1))
@@ -222,7 +245,7 @@ public class Autonomous {
                 break;
             case 7:
                 if (shooter.shoot(0)){
-                    pickup.stop();
+                    pickup.disable();
                     step++;
                 }
                 break;
@@ -263,7 +286,8 @@ public class Autonomous {
     
     public void reset(){
         this.step = 0;
-//        autoInit();
+        aimbot.reset();
+        autoInit();
     }
     
     public void disabled(){
@@ -279,7 +303,22 @@ public class Autonomous {
 //            setting += 2;
         
 //        System.out.println(setting);
-//        SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
-        reset();
+        try{
+            SmartDashboard.putString("Auto mode:", verbAutoModes[setting]);
+        }catch(ArrayIndexOutOfBoundsException e){
+            SmartDashboard.putString("Auto mode:", "No move");
+        }
+        
+        setting = (byte) Preferences.getInstance().getInt("amode", 127);
+        
+        drive.disable();
+        shooter.disable();
+        pickup.disable();
+        
+        if(check == 0){
+            reset();
+            check++;
+        }
+        
     }
 }

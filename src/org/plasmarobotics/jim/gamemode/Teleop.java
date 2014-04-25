@@ -90,6 +90,7 @@ public class Teleop{
             drive.updateTeleop(); // back to tank (AimBot took over
             shooter.updateTeleop();
             pickup.updateTeleop();
+            aimbot.updateTeleop();
 //            catcher.updateTeleop();
             SmartDashboard.putNumber("RANGE: ", SensorPack.getInstance().getRangeFinder().getDistance());
             SmartDashboard.putNumber("voltage", SensorPack.getInstance().getRangeFinder().getVoltage());

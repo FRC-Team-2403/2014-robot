@@ -215,7 +215,7 @@ public class Drive implements Mechanism{
             gyro.reset();
             resetNeeded = false;
             Logger.log("resetting...", this, 5);
-        }
+        } 
         
     }
 
@@ -223,7 +223,7 @@ public class Drive implements Mechanism{
      * Method called to clean up and disable the drive system.
      */
     public void disable() {
-       
+       resetNeeded = true;
     }
 
     /**

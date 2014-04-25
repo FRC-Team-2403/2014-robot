@@ -4,6 +4,7 @@
  */
 package org.plasmarobotics.jim.mechanisms;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Victor;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.controls.ControlPack;
@@ -13,7 +14,8 @@ import org.plasmarobotics.jim.controls.ControlPack;
  * @author jim
  */
 public class Pickup implements Mechanism{
-    
+    double raisePower,
+            lowerPower;
     Victor pickupRoller,
         rightPickupUpDown,
         leftPickupUpDown;
@@ -53,10 +55,12 @@ public class Pickup implements Mechanism{
      * @return true when the pickup is lowered false otherwise
      * @author jim
      */
-    public boolean lower(){
+    public boolean lower(double power){
         //not lifted
 //        if(!pickupLiftedSwitch.get()){
-            leftPickupUpDown.set(.6);
+            leftPickupUpDown.set(power);
+            rightPickupUpDown.set(-power);
+                 
 //            return false;
 //        } else{//it is lifted
 //            leftPickupUpDown.set(0);
@@ -69,11 +73,11 @@ public class Pickup implements Mechanism{
      * raise the pickup mechanism
      * @return true if the mechanism is raised, false otherwise
      */
-    public boolean raise(){
+    public boolean raise(double power){
         //not lowered
 //        if(!pickupLoweredSwitch.get()){
-            leftPickupUpDown.set(-.6);
-            rightPickupUpDown.set(-.6);
+            leftPickupUpDown.set(-power);
+            rightPickupUpDown.set(power);
 //            return false;
 //        } else{
 //            leftPickupUpDown.set(0);
@@ -91,15 +95,7 @@ public class Pickup implements Mechanism{
         
     }
     
-    /**
-     * stop the pickup
-     * 
-     */
-    public void stop(){
-        pickupRoller.set(0);
-        rightPickupUpDown.set(0);
-        leftPickupUpDown.set(0);
-    }
+   
     
     /**
      * reverse the pickup 
@@ -115,13 +111,15 @@ public class Pickup implements Mechanism{
      * Stops the pickup and lowers it
      */
     public void disable() {
-        this.stop();
-        this.lower();
+        pickupRoller.set(0);
+        rightPickupUpDown.set(0);
+        leftPickupUpDown.set(0);
         
     }
 
     public void setupAutonomous() {
         System.out.println("Pickup prepared for autonomous");
+        
         //preps pickup
     }
 
@@ -147,13 +145,15 @@ public class Pickup implements Mechanism{
 //           isRaised = !isRaised;
 //       }
 //      
+        raisePower = Preferences.getInstance().getDouble("raisePower", .5);
+        lowerPower = Preferences.getInstance().getDouble("lowerPower", .5);
         leftPickupUpDown.set(0);
-        
+        rightPickupUpDown.set(0);
         if(ControlPack.getInstance().getRaisePickupButton().get())
-            this.raise();
+            this.raise(raisePower);
         
         if(ControlPack.getInstance().getLowerPickupButton().get())
-            this.lower();
+            this.lower(lowerPower);
         
         
        //moving the rollers

@@ -51,7 +51,7 @@ public class Shoot implements Mechanism{
      */
     public void disable() {
         retract();
-        Logger.log("disabled", this, 5);
+//        Logger.log("disabled", this, 5);
     }
 
     public void setupAutonomous() {

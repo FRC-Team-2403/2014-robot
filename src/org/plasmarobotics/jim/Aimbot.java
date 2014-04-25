@@ -6,6 +6,7 @@
 
 package org.plasmarobotics.jim;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.mechanisms.Drive;
 import org.plasmarobotics.jim.mechanisms.MechanismPack;
@@ -19,7 +20,7 @@ import org.plasmarobotics.jim.sensors.SonicRange;
  */
 public class Aimbot {
     
-    private static final double DISTANCE_TO_SHOOT = 40,
+    private static double DISTANCE_TO_SHOOT = 40,
             TOLERANCE_FOR_SHOT = 5;
     
     private SonicRange rangeFinder;
@@ -134,6 +135,6 @@ public class Aimbot {
     }
     public void updateTeleop(){
         SmartDashboard.putBoolean("Within Range", SensorPack.getInstance().getRangeFinder().isClose(DISTANCE_TO_SHOOT, TOLERANCE_FOR_SHOT));
-        
+        DISTANCE_TO_SHOOT = Preferences.getInstance().getDouble("Range", DISTANCE_TO_SHOOT);
     }
 }
