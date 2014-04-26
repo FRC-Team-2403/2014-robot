@@ -5,11 +5,12 @@
 package org.plasmarobotics.jim.mechanisms;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.plasmarobotics.jim.Channels;
 import org.plasmarobotics.jim.Logger;
 import org.plasmarobotics.jim.controls.ControlPack;
-import org.plasmarobotics.jim.sensors.SensorPack;
 /**
  *Class to manage shooting functionality of the robot
  * @author Jim
@@ -18,7 +19,7 @@ public class Shoot implements Mechanism{
     //shooter wait times
     private static final long TRUSS_SHOT_WAIT_TIME = 100;
     private static final long GOAL_SHOT_WAIT_TIME = 1000;
-    private static final long PASS_WAIT_TIME = 70;
+    private static long PASS_WAIT_TIME = 70;
     
     
 //    private boolean switchOverride;
@@ -64,6 +65,7 @@ public class Shoot implements Mechanism{
     }
 
     public void updateTeleop() {
+        PASS_WAIT_TIME = Preferences.getInstance().getLong("Passwaittime", PASS_WAIT_TIME);
 //        switchOverride = DriverStation.getInstance().getDigitalIn(5);
 //        SmartDashboard.putBoolean("Ball Loaded:", !loadedSwitch.get());
 //        SmartDashboard.putBoolean("Switch override",!switchOverride);
@@ -129,11 +131,6 @@ public class Shoot implements Mechanism{
                     step++;
                 }
                     
-                    
-                    
-                
-
-
 //                if(!pistonHalf.get())
 //                    step++;
                 break;

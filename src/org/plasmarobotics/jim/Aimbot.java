@@ -20,7 +20,7 @@ import org.plasmarobotics.jim.sensors.SonicRange;
  */
 public class Aimbot {
     
-    private static double DISTANCE_TO_SHOOT = 40,
+    private static double DISTANCE_TO_SHOOT = 55,
             TOLERANCE_FOR_SHOT = 5;
     
     private SonicRange rangeFinder;

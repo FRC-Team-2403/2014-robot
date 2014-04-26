@@ -159,14 +159,15 @@ public class Autonomous {
                 }
                 break;
             case 3:
-                shooter.shoot(0);
-                SmartDashboard.putString("Progress", "Shooting");
-                try{
-                    Thread.sleep(500);
+                if(shooter.shoot(0))
                     step++;
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }
+//                SmartDashboard.putString("Progress", "Shooting");
+//                try{
+//                    Thread.sleep(500);
+//                    step++;
+//                }catch(InterruptedException e){
+//                    e.printStackTrace();
+//                }
                 
                 break;
             case 4:

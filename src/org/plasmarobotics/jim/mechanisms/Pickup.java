@@ -86,6 +86,9 @@ public class Pickup implements Mechanism{
             return true;
     }
     
+//    public void stahp(){
+//        leftPickupUpDown.set(Victor.);
+//    }
     /**
      * pickup the ball
      */
